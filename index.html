@@ -1547,16 +1547,16 @@ async function syncToServer(audit) {
         });
         
         if (response.ok) {
-            // Mark as synced locally
-            const index = auditData.findIndex(a => a.id === audit.id);
-            if (index !== -1) {
-                auditData[index].synced = true;
-                saveData(); // Only save once after marking as synced
-                updateDashboard();
-            }
+            // Don't add to auditData here - let the next page load fetch it
+            console.log('Audit saved to server successfully');
+            // Optionally show success message
+            alert('Audit saved successfully!');
+        } else {
+            throw new Error('Server save failed');
         }
     } catch (error) {
-        console.error('Error syncing to server:', error);
+        console.error('Error saving to server:', error);
+        alert('Failed to save audit. Please try again.');
     }
 }
 
