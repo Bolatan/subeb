@@ -1542,6 +1542,8 @@ if (isOnline) {
 // Add this new function to sync individual audit to server
 async function syncToServer(audit) {
     try {
+        console.log('syncToServer called with audit ID:', audit.id);
+        
         const response = await fetch('/api/audits', {
             method: 'POST',
             headers: {
@@ -1551,12 +1553,26 @@ async function syncToServer(audit) {
         });
         
         if (response.ok) {
-            // Reload fresh data from server
-            location.reload(); // Simple page refresh
+            console.log('Server response OK - auditData length before adding:', auditData.length);
+            
+            const existingAudit = auditData.find(a => a.id === audit.id);
+            if (!existingAudit) {
+                auditData.push(audit);
+                console.log('Added new audit - auditData length now:', auditData.length);
+                updateDashboard();
+            } else {
+                console.log('Audit already exists, not adding duplicate');
+            }
         }
     } catch (error) {
         console.error('Error saving audit:', error);
     }
+}
+
+
+if (isOnline) {
+    syncToServer(audit);
+    console.log('After syncToServer call - auditData length:', auditData.length);
 }
 
 
