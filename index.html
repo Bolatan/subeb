@@ -1513,7 +1513,9 @@ function saveAudit(event) {
 
 // Main submission logic
 if (isOnline) {
-    syncToServer(audit);
+    syncToServer(audit).then(() => {
+        console.log('Sync complete, dashboard updated');
+    });
 } else {
     // Handle offline - save locally and mark for sync
     audit.synced = false;
