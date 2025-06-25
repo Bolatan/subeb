@@ -1509,13 +1509,20 @@ function saveAudit(event) {
         synced: false // Initially not synced
     };
 // Always try server first
+
+
+// Save locally first
+audit.synced = false;
+auditData.push(audit);
+saveData();
+
+// Try to sync to server if online
 if (isOnline) {
-    await syncToServer(audit);
-} else {
-    // Queue for later sync
-    audit.pendingSync = true;
-    auditData.push(audit);
-    saveData();
+    syncToServer(audit).then(() => {
+        console.log('Sync completed');
+    }).catch(error => {
+        console.error('Sync failed:', error);
+    });
 }
     
     alert('Audit saved successfully!');
