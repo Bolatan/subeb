@@ -798,6 +798,8 @@ body {
     background: var(--lagos-blue);
 }
 
+
+
 /* Sidebar with Lagos State styling */
 .sidebar {
     background: var(--lagos-navy);
@@ -1209,16 +1211,7 @@ body {
                     <div id="auditSection" class="section hidden">
                         <h2>New Personnel & Facility Audit</h2>
                         <form class="audit-form" onsubmit="saveAudit(event)">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="schoolName">School Name *</label>
-                                    <input type="text" id="schoolName" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="localGov">Local Government *</label>
-                                    <input type="text" id="localGov" class="form-control" required>
-                                </div>
-                            </div>
+                            <div class="form-row"> <div class="form-group"> <label for="localGov">Local Government *</label> <select id="localGov" class="form-control" required onchange="loadSchools()"> <option value="">Select Local Government</option> </select> </div> <div class="form-group"> <label for="schoolName">Primary School *</label> <select id="schoolName" class="form-control" required disabled> <option value="">Select LGA first</option> </select> </div> </div>
 
                             <div class="form-row full">
                                 <div class="form-group">
@@ -1329,123 +1322,22 @@ body {
     </div>
 
     <script>
+
+// Lagos State Local Government Areas and Primary Schools Data 
+const lagosStateData = { "Agege": [ "Agege Primary School I", "Agege Primary School II", "Oko-Oba Primary School", "Mulero Primary School", "Pen Cinema Primary School", "Dopemu Primary School" ], "Ajeromi-Ifelodun": [ "Ajeromi Primary School", "Ifelodun Primary School I", "Ifelodun Primary School II", "Boundary Primary School", "Alakija Primary School", "Olodi Primary School" ], "Alimosho": [ "Alimosho Primary School I", "Alimosho Primary School II", "Idimu Primary School", "Ikotun Primary School", "Egbe Primary School", "Iyana Ipaja Primary School" ], "Amuwo-Odofin": [ "Amuwo-Odofin Primary School", "Festac Primary School I", "Festac Primary School II", "Trade Fair Primary School", "Mile 2 Primary School", "Kirikiri Primary School" ], "Apapa": [ "Apapa Primary School I", "Apapa Primary School II", "Liverpool Primary School", "Creek Road Primary School", "Point Road Primary School", "Warehouse Primary School" ], "Badagry": [ "Badagry Primary School I", "Badagry Primary School II", "Ajara Primary School", "Iworo Primary School", "Koga Primary School", "Topo Primary School" ], "Epe": [ "Epe Primary School I", "Epe Primary School II", "Ejinrin Primary School", "Noforija Primary School", "Lekki Primary School", "Orimedu Primary School" ], "Eti-Osa": [ "Victoria Island Primary School", "Ikoyi Primary School", "Lekki Phase I Primary School", "Ajah Primary School", "Eti-Osa Primary School", "Ilasan Primary School" ], "Ibeju-Lekki": [ "Ibeju Primary School", "Lekki Primary School", "Akodo Primary School", "Elemoro Primary School", "Bogije Primary School", "Eleko Primary School" ], "Ifako-Ijaiye": [ "Ifako Primary School", "Ijaiye Primary School I", "Ijaiye Primary School II", "Alakuko Primary School", "Ojokoro Primary School", "Agbado Primary School" ], "Ikeja": [ "Ikeja Primary School I", "Ikeja Primary School II", "GRA Primary School", "Maryland Primary School", "Alausa Primary School", "Computer Village Primary School" ], "Ikorodu": [ "Ikorodu Primary School I", "Ikorodu Primary School II", "Igbogbo Primary School", "Bayeku Primary School", "Ijede Primary School", "Imota Primary School" ], "Kosofe": [ "Kosofe Primary School", "Ketu Primary School I", "Ketu Primary School II", "Mile 12 Primary School", "Owode Primary School", "Agboyi Primary School" ], "Lagos Island": [ "Lagos Island Primary School I", "Lagos Island Primary School II", "Tafawa Balewa Primary School", "Campos Primary School", "Oke-Arin Primary School", "Marina Primary School" ], "Lagos Mainland": [ "Lagos Mainland Primary School", "Yaba Primary School I", "Yaba Primary School II", "Ebute-Metta Primary School", "Oyingbo Primary School", "Sabo Primary School" ], "Mushin": [ "Mushin Primary School I", "Mushin Primary School II", "Papa Ajao Primary School", "Isolo Primary School", "Idi-Oro Primary School", "Oke-Afa Primary School" ], "Ojo": [ "Ojo Primary School I", "Ojo Primary School II", "Alaba Primary School", "Okokomaiko Primary School", "Shibiri Primary School", "Igando Primary School" ], "Oshodi-Isolo": [ "Oshodi Primary School I", "Oshodi Primary School II", "Isolo Primary School I", "Isolo Primary School II", "Mafoluku Primary School", "Bolade Primary School" ], "Shomolu": [ "Shomolu Primary School I", "Shomolu Primary School II", "Bariga Primary School", "Pedro Primary School", "Akoka Primary School", "Gbagada Primary School" ], "Surulere": [ "Surulere Primary School I", "Surulere Primary School II", "Itire Primary School", "Lawanson Primary School", "Aguda Primary School", "Adelabu Primary School" ] };
+
         // Global variables
         let currentUser = null;
         let auditData = [];
         let uploadedFiles = [];
         let isOnline = navigator.onLine;
-
-// Lagos State Local Governments and Primary Schools Data
-        const lagosData = {
-            "Agege": [
-                "St. Michael Primary School", "Methodist Primary School Agege", "Baptist Primary School Agege",
-                "Community Primary School Agege", "Orile Primary School", "Tabon Tabon Primary School",
-                "Dopemu Primary School", "Mulero Primary School", "Oko-Oba Primary School"
-            ],
-            "Ajeromi-Ifelodun": [
-                "Ajeromi Primary School", "Ifelodun Primary School", "Tolu Primary School",
-                "Boundary Primary School", "Alaba Primary School", "Kirikiri Primary School",
-                "Layeni Primary School", "Trinity Primary School Ajegunle", "Community Primary School Ajegunle"
-            ],
-            "Alimosho": [
-                "Iyana Ipaja Primary School", "Idimu Primary School", "Egbe Primary School",
-                "Ikotun Primary School", "Akowonjo Primary School", "Shasha Primary School",
-                "Igando Primary School", "Isheri Primary School", "Pleasure Primary School"
-            ],
-            "Amuwo-Odofin": [
-                "Amuwo Primary School", "Odofin Primary School", "Trade Fair Primary School",
-                "Satellite Town Primary School", "Mile 2 Primary School", "Oroge Primary School",
-                "Navy Town Primary School", "Festac Primary School", "Alakija Primary School"
-            ],
-            "Apapa": [
-                "Apapa Primary School", "Liverpool Primary School", "Creek Primary School",
-                "Marine Primary School", "Wharf Primary School", "Point Road Primary School",
-                "Tin Can Primary School", "Western Avenue Primary School", "Suru-Alaba Primary School"
-            ],
-            "Badagry": [
-                "Badagry Primary School", "Ajara Primary School", "Gberefu Primary School",
-                "Posukoh Primary School", "Topo Primary School", "Akarakumo Primary School",
-                "Ikoga Primary School", "Imeke Primary School", "Agbara Primary School"
-            ],
-            "Epe": [
-                "Epe Primary School", "Ejinrin Primary School", "Noforija Primary School",
-                "Orimedu Primary School", "Agbowa Primary School", "Lekki Primary School",
-                "Ibeju Primary School", "Bogije Primary School", "Sangotedo Primary School"
-            ],
-            "Eti-Osa": [
-                "Victoria Island Primary School", "Ikoyi Primary School", "Lekki Phase 1 Primary School",
-                "Ajah Primary School", "Eko Atlantic Primary School", "Oniru Primary School",
-                "Ikate Primary School", "Ligali Ayorinde Primary School", "Parkview Primary School"
-            ],
-            "Ibeju-Lekki": [
-                "Ibeju Primary School", "Lekki Primary School", "Akodo Primary School",
-                "Eleko Primary School", "Igbo-Efon Primary School", "Magbon Primary School",
-                "Orimedu Primary School", "Elemoro Primary School", "Lakowe Primary School"
-            ],
-            "Ifako-Ijaiye": [
-                "Ifako Primary School", "Ijaiye Primary School", "Agbado Primary School",
-                "Alakuko Primary School", "Iju Primary School", "Fagba Primary School",
-                "Zion Primary School", "Ojokoro Primary School", "Powerline Primary School"
-            ],
-            "Ikeja": [
-                "Ikeja Primary School", "GRA Primary School Ikeja", "Allen Avenue Primary School",
-                "Obafemi Awolowo Way Primary School", "Maryland Primary School", "Oregun Primary School",
-                "Ojodu Primary School", "Berger Primary School", "Magodo Primary School"
-            ],
-            "Ikorodu": [
-                "Ikorodu Primary School", "Igbogbo Primary School", "Bayeku Primary School",
-                "Ijede Primary School", "Imota Primary School", "Agric Primary School",
-                "Erikorodo Primary School", "Owode Primary School", "Gberigbe Primary School"
-            ],
-            "Kosofe": [
-                "Kosofe Primary School", "Ketu Primary School", "Ikosi Primary School",
-                "Agboyi Primary School", "Mile 12 Primary School", "Owode Onirin Primary School",
-                "Ogudu Primary School", "Anthony Primary School", "Gbagada Primary School"
-            ],
-            "Lagos Island": [
-                "Lagos Island Primary School", "CMS Primary School", "Broad Street Primary School",
-                "Marina Primary School", "Catholic Mission Primary School", "Tafawa Balewa Primary School",
-                "Adeniji Adele Primary School", "Sandgrouse Primary School", "Idumota Primary School"
-            ],
-            "Lagos Mainland": [
-                "Yaba Primary School", "Ebute-Metta Primary School", "Oyingbo Primary School",
-                "Jibowu Primary School", "Sabo Primary School", "Fadeyi Primary School",
-                "Onike Primary School", "Herbert Macaulay Primary School", "Iddo Primary School"
-            ],
-            "Mushin": [
-                "Mushin Primary School", "Papa Ajao Primary School", "Daleko Primary School",
-                "Idi-Oro Primary School", "Fadeyi Primary School", "Itire Primary School",
-                "Ilupeju Primary School", "Palm Avenue Primary School", "Railway Primary School"
-            ],
-            "Ojo": [
-                "Ojo Primary School", "Alaba Rago Primary School", "Okokomaiko Primary School",
-                "Igbede Primary School", "Ajangbadi Primary School", "Era Primary School",
-                "Ilogbo Primary School", "Shibiri Primary School", "Oto-Awori Primary School"
-            ],
-            "Oshodi-Isolo": [
-                "Oshodi Primary School", "Isolo Primary School", "Ejigbo Primary School",
-                "Okota Primary School", "Bucknor Primary School", "Jakande Primary School",
-                "Airport Road Primary School", "Ago Palace Primary School", "Cele Primary School"
-            ],
-            "Shomolu": [
-                "Shomolu Primary School", "Bariga Primary School", "Akoka Primary School",
-                "Pedro Primary School", "Palmgrove Primary School", "Onipanu Primary School",
-                "Fola Agoro Primary School", "Ilupeju Primary School", "Somolu Primary School"
-            ],
-            "Surulere": [
-                "Surulere Primary School", "Shitta Primary School", "Bode Thomas Primary School",
-                "Adeniran Ogunsanya Primary School", "Eric Moore Primary School", "Randle Avenue Primary School",
-                "Akerele Primary School", "Ojuelegba Primary School", "Itire Primary School"
-            ]
-        };
-
-
         
         // Replace the existing window.onload function
 window.onload = function() {
     console.log('App initialized');
     loadData();
     loadSession(); // Add this line
+    loadLocalGovernments();
     updateDashboard();
     updateConnectionStatus();
     loadFromServer(); // Add this line
@@ -1585,6 +1477,15 @@ function logout() {
             });
         }
 
+ // Load Local Government Areas into dropdown 
+ function loadLocalGovernments() { const localGovDropdown = document.getElementById('localGov'); const lgas = Object.keys(lagosStateData).sort(); // Clear existing options except the first one 
+ localGovDropdown.innerHTML = '<option value="">Select Local Government</option>'; // Add LGA options 
+ lgas.forEach(lga => { const option = document.createElement('option'); option.value = lga; option.textContent = lga; localGovDropdown.appendChild(option); }); } // Load schools based on selected LGA 
+ function loadSchools() { const localGov = document.getElementById('localGov').value; const schoolDropdown = document.getElementById('schoolName'); // Clear existing schools 
+ schoolDropdown.innerHTML = '<option value="">Select Primary School</option>'; if (!localGov) { schoolDropdown.disabled = true; schoolDropdown.innerHTML = '<option value="">Select LGA first</option>'; return; } // Enable school dropdown and populate with schools 
+ schoolDropdown.disabled = false; const schools = lagosStateData[localGov] || []; schools.forEach(school => { const option = document.createElement('option'); option.value = school; option.textContent = school; schoolDropdown.appendChild(option); }); }
+
+
         // Save audit
        // Replace the existing saveAudit function with this enhanced version
 function saveAudit(event) {
@@ -1619,12 +1520,11 @@ function saveAudit(event) {
     
     alert('Audit saved successfully!');
     
-    // Reset form
-    event.target.reset();
-    uploadedFiles = [];
-    document.getElementById('uploadedFiles').innerHTML = '';
-    
-    updateDashboard();
+    // Replace the form reset section in saveAudit function with: // Reset form 
+    event.target.reset(); uploadedFiles = []; document.getElementById('uploadedFiles').innerHTML = ''; // Reset dropdowns properly 
+    document.getElementById('localGov').value = ''; document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>'; document.getElementById('schoolName').disabled = true; updateDashboard();
+
+
 }
 
 
