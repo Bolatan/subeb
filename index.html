@@ -1536,16 +1536,6 @@ if (isOnline) {
 
 
 
-// Before calling syncToServer
-console.log('=== SUBMITTING NEW AUDIT ===');
-console.log('auditData before submit:', auditData.length);
-console.log('Audit ID being submitted:', audit.id);
-
-if (isOnline) {
-    syncToServer(audit); // Remove await
-}
-
-console.log('auditData after submit:', auditData.length);
 
 
 
@@ -1561,19 +1551,13 @@ async function syncToServer(audit) {
         });
         
         if (response.ok) {
-            // Don't add to auditData here - let the next page load fetch it
-            console.log('Audit saved to server successfully');
-            // Optionally show success message
-            alert('Audit saved successfully!');
-        } else {
-            throw new Error('Server save failed');
+            // Reload fresh data from server
+            location.reload(); // Simple page refresh
         }
     } catch (error) {
-        console.error('Error saving to server:', error);
-        alert('Failed to save audit. Please try again.');
+        console.error('Error saving audit:', error);
     }
 }
-
 
 
 
