@@ -1508,18 +1508,14 @@ function saveAudit(event) {
         timestamp: new Date().toISOString(),
         synced: false // Initially not synced
     };
-
- // Save locally first
+// Save locally first
+audit.synced = false; // Mark as not synced initially
 auditData.push(audit);
 saveData();
 
-// Try to sync to server if online (don't save again, just sync)
+// Try to sync to server if online
 if (isOnline) {
-    syncToServer(audit).then(() => {
-        // Mark as synced
-        audit.synced = true;
-        saveData(); // Update local storage with sync status
-    });
+    syncToServer(audit);
 }
     
     alert('Audit saved successfully!');
@@ -1548,7 +1544,7 @@ async function syncToServer(audit) {
             const index = auditData.findIndex(a => a.id === audit.id);
             if (index !== -1) {
                 auditData[index].synced = true;
-                saveData();
+                saveData(); // Only save once after marking as synced
                 updateDashboard();
             }
         }
