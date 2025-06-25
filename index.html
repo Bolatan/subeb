@@ -1508,20 +1508,12 @@ function saveAudit(event) {
         timestamp: new Date().toISOString(),
         synced: false // Initially not synced
     };
+// Always try server first
 if (isOnline) {
-    // Only save to server
-    const response = await fetch('/api/audits', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(audit)
-    });
-    if (response.ok) {
-        // Add to local array for UI, but don't persist
-        auditData.push(audit);
-        updateDashboard();
-    }
+    await syncToServer(audit);
 } else {
-    // Only save locally when offline
+    // Queue for later sync
+    audit.pendingSync = true;
     auditData.push(audit);
     saveData();
 }
