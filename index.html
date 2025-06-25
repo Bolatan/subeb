@@ -1511,18 +1511,8 @@ function saveAudit(event) {
 // Always try server first
 
 
-// Save locally first
-audit.synced = false;
-auditData.push(audit);
-saveData();
-
-// Try to sync to server if online
 if (isOnline) {
-    syncToServer(audit).then(() => {
-        console.log('Sync completed');
-    }).catch(error => {
-        console.error('Sync failed:', error);
-    });
+    syncToServer(audit); // whatever your audit object is called
 }
     
     alert('Audit saved successfully!');
@@ -1540,10 +1530,9 @@ if (isOnline) {
 
 
 // Add this new function to sync individual audit to server
+// Updated syncToServer function
 async function syncToServer(audit) {
     try {
-        console.log('syncToServer called with audit ID:', audit.id);
-        
         const response = await fetch('/api/audits', {
             method: 'POST',
             headers: {
@@ -1553,29 +1542,29 @@ async function syncToServer(audit) {
         });
         
         if (response.ok) {
-            console.log('Server response OK - auditData length before adding:', auditData.length);
-            
-            const existingAudit = auditData.find(a => a.id === audit.id);
-            if (!existingAudit) {
-                auditData.push(audit);
-                console.log('Added new audit - auditData length now:', auditData.length);
-                updateDashboard();
-            } else {
-                console.log('Audit already exists, not adding duplicate');
-            }
+            // Force reload all data from server to avoid duplicates
+            await reloadAllData();
         }
     } catch (error) {
         console.error('Error saving audit:', error);
     }
 }
 
-
-if (isOnline) {
-    syncToServer(audit);
-    console.log('After syncToServer call - auditData length:', auditData.length);
+// New function to reload all data
+async function reloadAllData() {
+    try {
+        const response = await fetch('/api/audits');
+        const serverData = await response.json();
+        
+        // Replace local data completely with server data
+        auditData = serverData;
+        updateDashboard();
+        
+        console.log('Reloaded', auditData.length, 'records from server');
+    } catch (error) {
+        console.error('Error reloading data:', error);
+    }
 }
-
-
 
               // Data management
         function saveData() {
