@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        .status-dot.offline {
+            background: #ef4444;
+        }
+
+        .auth-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            margin: 50px auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1f2937;
+            font-size: 28px;
+        }
+
+        .credentials-info {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            margin-top: 10px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            height: calc(100vh - 140px);
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .content-area {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .audit-form {
+            max-width: 800px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .file-upload {
+            border: 2px dashed #d1d5db;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: #4f46e5;
+            background: rgba(79, 70, 229, 0.05);
+        }
+
+        .file-upload.dragover {
+            border-color: #4f46e5;
+            background: rgba(79, 70, 229, 0.1);
+        }
+
+        .uploaded-files {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .file-preview {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 1;
+        }
+
+        .file-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .file-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .data-table th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+/* Lagos State Color Variables */
+:root {
+    --lagos-red: #DC2626;
+    --lagos-blue: #1E40AF;
+    --lagos-yellow: #FACC15;
+    --lagos-green: #16A34A;
+    --lagos-white: #FFFFFF;
+    --lagos-gold: #B45309;
+    --lagos-navy: #1E3A8A;
+    --lagos-light-blue: #3B82F6;
+}
+
+/* Update body background with Lagos State colors */
+body {
+    background: linear-gradient(135deg, var(--lagos-blue) 0%, var(--lagos-green) 35%, var(--lagos-yellow) 70%, var(--lagos-red) 100%);
+    min-height: 100vh;
+}
+
+/* Header with Lagos State branding */
+.header {
+    background: linear-gradient(135deg, var(--lagos-red), var(--lagos-blue));
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(to bottom, 
+        var(--lagos-red) 0%, 
+        var(--lagos-red) 25%, 
+        var(--lagos-blue) 25%, 
+        var(--lagos-blue) 50%, 
+        var(--lagos-yellow) 50%, 
+        var(--lagos-yellow) 75%, 
+        var(--lagos-green) 75%, 
+        var(--lagos-green) 100%
+    );
+}
+
+/* Lagos State Logo placeholder */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 30px;
+    position: relative;
+}
+
+.logo::before {
+    content: '🏛️';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+/* Update primary buttons with Lagos State colors */
+.btn {
+    background: linear-gradient(135deg, var(--lagos-blue), var(--lagos-red));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(30, 64, 175, 0.3);
+}
+
+/* Secondary button styling */
+.btn-secondary {
+    background: linear-gradient(135deg, var(--lagos-green), var(--lagos-yellow));
+    color: var(--lagos-navy);
+    font-weight: 700;
+}
+
+/* Location button with Lagos green */
+.location-btn {
+    background: linear-gradient(135deg, var(--lagos-green), #059669);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.location-btn:hover {
+    background: linear-gradient(135deg, #059669, var(--lagos-green));
+    transform: translateY(-1px);
+}
+
+/* Dashboard stat cards with Lagos colors */
+.stat-card {
+    background: linear-gradient(135deg, var(--lagos-blue), var(--lagos-red));
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg); }
+}
+
+.stat-card:nth-child(2) {
+    background: linear-gradient(135deg, var(--lagos-green), var(--lagos-yellow));
+    color: var(--lagos-navy);
+}
+
+.stat-card:nth-child(3) {
+    background: linear-gradient(135deg, var(--lagos-yellow), var(--lagos-red));
+    color: var(--lagos-navy);
+}
+
+/* Sidebar with Lagos State styling */
+.sidebar {
+    background: linear-gradient(135deg, rgba(30, 64, 175, 0.9), rgba(22, 163, 74, 0.9));
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
+    position: relative;
+}
+
+.sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, 
+        var(--lagos-red) 0%, 
+        var(--lagos-red) 25%, 
+        var(--lagos-blue) 25%, 
+        var(--lagos-blue) 50%, 
+        var(--lagos-yellow) 50%, 
+        var(--lagos-yellow) 75%, 
+        var(--lagos-green) 75%, 
+        var(--lagos-green) 100%
+    );
+    border-radius: 2px;
+}
+
+/* Navigation items */
+.nav-item {
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+.nav-item.active {
+    background: linear-gradient(135deg, var(--lagos-red), var(--lagos-yellow));
+    color: var(--lagos-navy);
+    font-weight: 600;
+}
+
+/* Form focus colors */
+.form-control:focus {
+    outline: none;
+    border-color: var(--lagos-blue);
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+/* Auth container with Lagos branding */
+.auth-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 400px;
+    margin: 50px auto;
+    box-shadow: 0 20px 40px rgba(30, 64, 175, 0.2);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+}
+
+.auth-container::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(45deg, var(--lagos-red), var(--lagos-blue), var(--lagos-yellow), var(--lagos-green));
+    border-radius: 23px;
+    z-index: -1;
+}
+
+/* Credentials info box */
+.credentials-info {
+    background: linear-gradient(135deg, #dbeafe, #dcfce7);
+    border: 2px solid var(--lagos-blue);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    position: relative;
+}
+
+.credentials-info::before {
+    content: '🏛️';
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 18px;
+}
+
+/* File upload area */
+.file-upload:hover {
+    border-color: var(--lagos-blue);
+    background: rgba(30, 64, 175, 0.05);
+}
+
+.file-upload.dragover {
+    border-color: var(--lagos-red);
+    background: rgba(220, 38, 38, 0.1);
+}
+
+/* Sync status indicators */
+.sync-status.synced {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    color: var(--lagos-green);
+    border: 1px solid var(--lagos-green);
+}
+
+.sync-status.pending {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: var(--lagos-yellow);
+    border: 1px solid var(--lagos-yellow);
+}
+
+/* Data table header */
+.data-table th {
+    background: linear-gradient(135deg, var(--lagos-blue), var(--lagos-light-blue));
+    color: white;
+    font-weight: 600;
+}
+
+/* Status dot for connection */
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--lagos-green);
+    box-shadow: 0 0 10px rgba(22, 163, 74, 0.5);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(22, 163, 74, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(22, 163, 74, 0.8); }
+}
+
+.status-dot.offline {
+    background: var(--lagos-red);
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+}
+
+/* Content area with subtle Lagos branding */
+.content-area {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 30px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.content-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(45deg, var(--lagos-red), var(--lagos-blue), var(--lagos-yellow), var(--lagos-green));
+    opacity: 0.03;
+    border-radius: 50%;
+    transform: translate(50%, -50%);
+}
+
+/* Lagos State motto/text styling */
+.auth-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--lagos-navy);
+    font-size: 28px;
+    position: relative;
+}
+
+.auth-title::after {
+    content: 'Centre of Excellence';
+    display: block;
+    font-size: 12px;
+    color: var(--lagos-blue);
+    font-weight: normal;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* Lagos State Color Variables */
+:root {
+    --lagos-red: #DC2626;
+    --lagos-blue: #1E40AF;
+    --lagos-yellow: #FACC15;
+    --lagos-green: #16A34A;
+    --lagos-white: #FFFFFF;
+    --lagos-gold: #B45309;
+    --lagos-navy: #1E3A8A;
+    --lagos-light-blue: #3B82F6;
+    --lagos-light-gray: #F8FAFC;
+    --lagos-dark-gray: #64748B;
+}
+
+/* Update body background with Lagos State primary color */
+body {
+    background: var(--lagos-blue);
+    min-height: 100vh;
+}
+
+/* Header with Lagos State branding */
+.header {
+    background: var(--lagos-navy);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    position: relative;
+    border-left: 8px solid var(--lagos-red);
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 20px;
+    background: var(--lagos-yellow);
+    border-radius: 4px;
+}
+
+/* Lagos State Logo placeholder */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    position: relative;
+    color: var(--lagos-white);
+}
+
+.logo::before {
+    content: '🏛️';
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+/* Update primary buttons with Lagos State colors */
+.btn {
+    background: var(--lagos-blue);
+    color: white;
+    border: 2px solid var(--lagos-red);
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background: var(--lagos-red);
+    border-color: var(--lagos-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Secondary button styling */
+.btn-secondary {
+    background: var(--lagos-green);
+    border-color: var(--lagos-yellow);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: var(--lagos-yellow);
+    border-color: var(--lagos-green);
+    color: var(--lagos-navy);
+}
+
+/* Location button with Lagos green */
+.location-btn {
+    background: var(--lagos-green);
+    color: white;
+    border: 2px solid var(--lagos-yellow);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.location-btn:hover {
+    background: var(--lagos-yellow);
+    border-color: var(--lagos-green);
+    color: var(--lagos-navy);
+    transform: translateY(-1px);
+}
+
+/* Dashboard stat cards with Lagos colors */
+.stat-card {
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+    border: 3px solid var(--lagos-white);
+}
+
+.stat-card:nth-child(1) {
+    background: var(--lagos-red);
+}
+
+.stat-card:nth-child(2) {
+    background: var(--lagos-green);
+}
+
+.stat-card:nth-child(3) {
+    background: var(--lagos-yellow);
+    color: var(--lagos-navy);
+}
+
+.stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--lagos-blue);
+}
+
+/* Sidebar with Lagos State styling */
+.sidebar {
+    background: var(--lagos-navy);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
+    position: relative;
+    border-left: 6px solid var(--lagos-red);
+}
+
+.sidebar::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    background: var(--lagos-yellow);
+    border-radius: 50%;
+}
+
+/* Navigation items */
+.nav-item {
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-left-color: var(--lagos-yellow);
+    transform: translateX(5px);
+}
+
+.nav-item.active {
+    background: var(--lagos-red);
+    color: white;
+    font-weight: 600;
+    border-left-color: var(--lagos-yellow);
+}
+
+/* Form focus colors */
+.form-control:focus {
+    outline: none;
+    border-color: var(--lagos-blue);
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.2);
+}
+
+/* Auth container with Lagos branding */
+.auth-container {
+    background: var(--lagos-white);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 400px;
+    margin: 50px auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 4px solid var(--lagos-blue);
+    position: relative;
+}
+
+.auth-container::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 20px;
+    height: calc(100% + 8px);
+    background: var(--lagos-red);
+    border-radius: 16px 0 0 16px;
+}
+
+.auth-container::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    background: var(--lagos-yellow);
+    border-radius: 50%;
+}
+
+/* Credentials info box */
+.credentials-info {
+    background: var(--lagos-light-gray);
+    border: 2px solid var(--lagos-green);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    position: relative;
+}
+
+.credentials-info::before {
+    content: '🏛️';
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 18px;
+}
+
+/* File upload area */
+.file-upload:hover {
+    border-color: var(--lagos-blue);
+    background: rgba(30, 64, 175, 0.05);
+}
+
+.file-upload.dragover {
+    border-color: var(--lagos-red);
+    background: rgba(220, 38, 38, 0.1);
+}
+
+/* Sync status indicators */
+.sync-status.synced {
+    background: var(--lagos-green);
+    color: white;
+    border: 1px solid var(--lagos-navy);
+}
+
+.sync-status.pending {
+    background: var(--lagos-yellow);
+    color: var(--lagos-navy);
+    border: 1px solid var(--lagos-red);
+}
+
+/* Data table header */
+.data-table th {
+    background: var(--lagos-blue);
+    color: white;
+    font-weight: 600;
+    position: relative;
+}
+
+.data-table th::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--lagos-red);
+}
+
+/* Status dot for connection */
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--lagos-green);
+    box-shadow: 0 0 10px rgba(22, 163, 74, 0.5);
+    animation: pulse 2s infinite;
+    border: 2px solid var(--lagos-white);
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(22, 163, 74, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(22, 163, 74, 0.8); }
+}
+
+.status-dot.offline {
+    background: var(--lagos-red);
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+}
+
+/* Content area with subtle Lagos branding */
+.content-area {
+    background: var(--lagos-white);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 30px;
+    overflow-y: auto;
+    position: relative;
+    border-top: 4px solid var(--lagos-blue);
+}
+
+.content-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--lagos-red);
+}
+
+.content-area::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 60px;
+    width: 60px;
+    height: 4px;
+    background: var(--lagos-yellow);
+}
+
+/* Lagos State motto/text styling */
+.auth-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--lagos-navy);
+    font-size: 28px;
+    position: relative;
+    padding-left: 30px;
+}
+
+.auth-title::after {
+    content: 'Centre of Excellence';
+    display: block;
+    font-size: 12px;
+    color: var(--lagos-blue);
+    font-weight: normal;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* Additional Lagos State elements */
+.main-content {
+    position: relative;
+}
+
+.main-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--lagos-red);
+    border-radius: 2px;
+    z-index: 1;
+}
+
+/* Section headers with Lagos branding */
+.section h2 {
+    color: var(--lagos-navy);
+    border-bottom: 3px solid var(--lagos-blue);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    right: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--lagos-red);
+}
+
+.section h3 {
+    color: var(--lagos-navy);
+    margin-top: 30px;
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.section h3::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 20px;
+    background: var(--lagos-yellow);
+    border-radius: 2px;
+}
+
+        .sync-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .sync-status.synced {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .sync-status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .location-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Authentication Screen -->
+        <div id="authScreen" class="auth-container">
+            <h1 class="auth-title">Audit App Login</h1>
+            
+            <div class="credentials-info">
+                <strong>Demo Credentials:</strong><br>
+                Username: <code>admin</code> | Password: <code>password123</code><br>
+                Username: <code>auditor</code> | Password: <code>audit2024</code>
+            </div>
+            
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control" required>
+            </div>
+            <button type="button" class="btn" onclick="login()">Login</button>
+        </div>
+
+        <!-- Main Application -->
+        <div id="mainApp" class="hidden">
+            <div class="header">
+                <div class="logo">Personnel & Facility Audit</div>
+                <div class="status">
+                    <div id="connectionStatus" class="status-dot"></div>
+                    <span id="connectionText">Online</span>
+                    <button class="btn btn-secondary" style="width:auto;padding:8px 16px;margin-left:20px;" onclick="logout()">Logout</button>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="sidebar">
+                    <div class="nav-item active" onclick="showSection('dashboard')">📊 Dashboard</div>
+                    <div class="nav-item" onclick="showSection('audit')">📝 New Audit</div>
+                    <div class="nav-item" onclick="showSection('records')">📋 Records</div>
+                    <div class="nav-item" onclick="showSection('sync')">🔄 Sync Data</div>
+                </div>
+
+                <div class="content-area">
+                    <!-- Dashboard Section -->
+                    <div id="dashboardSection" class="section">
+                        <h2>Dashboard</h2>
+                        <div class="dashboard-grid">
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalAudits">0</div>
+                                <div class="stat-label">Total Audits</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="pendingSync">0</div>
+                                <div class="stat-label">Pending Sync</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="completedToday">0</div>
+                                <div class="stat-label">Completed Today</div>
+                            </div>
+                        </div>
+
+                        <h3>Recent Audits</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>School Name</th>
+                                    <th>Local Government</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentAuditsTable">
+                                <tr>
+                                    <td colspan="4" style="text-align:center;padding:40px;color:#6b7280;">No audits completed yet</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Audit Form Section -->
+                    <div id="auditSection" class="section hidden">
+                        <h2>New Personnel & Facility Audit</h2>
+                        <form class="audit-form" onsubmit="saveAudit(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="schoolName">School Name *</label>
+                                    <input type="text" id="schoolName" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="localGov">Local Government *</label>
+                                    <input type="text" id="localGov" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row full">
+                                <div class="form-group">
+                                    <label for="schoolAddress">School Address *</label>
+                                    <textarea id="schoolAddress" class="form-control" rows="3" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="latitude">Latitude</label>
+                                    <input type="number" id="latitude" class="form-control" step="any" readonly>
+                                    <button type="button" class="location-btn" onclick="getLocation()">📍 Get Current Location</button>
+                                </div>
+                                <div class="form-group">
+                                    <label for="longitude">Longitude</label>
+                                    <input type="number" id="longitude" class="form-control" step="any" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="principalName">Principal Name</label>
+                                    <input type="text" id="principalName" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="totalTeachers">Total Teachers</label>
+                                    <input type="number" id="totalTeachers" class="form-control" min="0">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="totalStudents">Total Students</label>
+                                    <input type="number" id="totalStudents" class="form-control" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="facilityCondition">Facility Condition</label>
+                                    <select id="facilityCondition" class="form-control">
+                                        <option value="">Select condition</option>
+                                        <option value="excellent">Excellent</option>
+                                        <option value="good">Good</option>
+                                        <option value="fair">Fair</option>
+                                        <option value="poor">Poor</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row full">
+                                <div class="form-group">
+                                    <label for="additionalNotes">Additional Notes/Observations</label>
+                                    <textarea id="additionalNotes" class="form-control" rows="4"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Upload Photos</label>
+                                <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                                    <div>📸 Click to upload photos or drag & drop</div>
+                                    <div style="font-size:14px;color:#6b7280;margin-top:10px;">JPG, PNG files only</div>
+                                </div>
+                                <input type="file" id="fileInput" multiple accept="image/*" style="display:none;" onchange="handleFiles(this.files)">
+                                <div class="uploaded-files" id="uploadedFiles"></div>
+                            </div>
+
+                            <button type="submit" class="btn">💾 Save Audit</button>
+                        </form>
+                    </div>
+
+                    <!-- Records Section -->
+                    <div id="recordsSection" class="section hidden">
+                        <h2>Audit Records</h2>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>School Name</th>
+                                    <th>Local Government</th>
+                                    <th>Date</th>
+                                    <th>Principal</th>
+                                    <th>Teachers</th>
+                                    <th>Students</th>
+                                    <th>Sync Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recordsTable">
+                                <tr>
+                                    <td colspan="7" style="text-align:center;padding:40px;color:#6b7280;">No records found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Sync Section -->
+                    <div id="syncSection" class="section hidden">
+                        <h2>Data Synchronization</h2>
+                        <div style="background:#f0f9ff;padding:20px;border-radius:10px;margin-bottom:20px;">
+                            <h3>Sync Status</h3>
+                            <p>Pending sync: <span id="pendingSyncCount">0</span> records</p>
+                            <button class="btn" style="width:auto;padding:12px 24px;margin-top:10px;" onclick="syncData()">🔄 Sync Now</button>
+                        </div>
+                        <div id="syncLog" style="background:#f9fafb;padding:20px;border-radius:10px;max-height:300px;overflow-y:auto;">
+                            <p style="color:#6b7280;">Sync log will appear here...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let auditData = [];
+        let uploadedFiles = [];
+        let isOnline = navigator.onLine;
+        
+        // Replace the existing window.onload function
+window.onload = function() {
+    console.log('App initialized');
+    loadData();
+    loadSession(); // Add this line
+    updateDashboard();
+    updateConnectionStatus();
+    loadFromServer(); // Add this line
+
+};
+
+
+// Add this new function to load saved session
+function loadSession() {
+    try {
+        const savedUser = localStorage.getItem('auditAppCurrentUser');
+        if (savedUser) {
+            currentUser = savedUser;
+            document.getElementById('authScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            console.log('Session restored for user:', currentUser);
+        }
+    } catch (e) {
+        console.error('Error loading session:', e);
+    }
+}
+
+
+       function login() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    
+    console.log('Login attempt:', username, password);
+    
+    if ((username === 'admin' && password === 'password123') || 
+        (username === 'auditor' && password === 'audit2024')) {
+        
+        currentUser = username;
+        // Save session to localStorage
+        localStorage.setItem('auditAppCurrentUser', username);
+        
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        console.log('Login successful');
+        
+    } else {
+        alert('Invalid credentials!\n\nValid login credentials:\n• admin / password123\n• auditor / audit2024');
+        console.log('Login failed');
+    }
+}
+        
+// Modify the existing logout function (replace the existing one)
+function logout() {
+    currentUser = null;
+    // Remove session from localStorage
+    localStorage.removeItem('auditAppCurrentUser');
+    
+    document.getElementById('authScreen').classList.remove('hidden');
+    document.getElementById('mainApp').classList.add('hidden');
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+
+}
+
+        // Navigation
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.add('hidden'));
+            
+            // Show selected section
+            document.getElementById(sectionName + 'Section').classList.remove('hidden');
+            
+            // Update navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (sectionName === 'records') loadRecords();
+            if (sectionName === 'sync') updateSyncSection();
+        }
+
+        // Get current location
+        function getLocation() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by this browser.');
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    document.getElementById('latitude').value = position.coords.latitude;
+                    document.getElementById('longitude').value = position.coords.longitude;
+                    alert('Location captured successfully!');
+                },
+                function(error) {
+                    alert('Error getting location: ' + error.message);
+                }
+            );
+        }
+
+        // Handle file uploads
+        function handleFiles(files) {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        uploadedFiles.push({
+                            name: file.name,
+                            data: e.target.result,
+                            type: file.type
+                        });
+                        displayFile(file.name, e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+
+        function displayFile(name, dataUrl) {
+            const container = document.getElementById('uploadedFiles');
+            const fileDiv = document.createElement('div');
+            fileDiv.className = 'file-preview';
+            fileDiv.innerHTML = `
+                <img src="${dataUrl}" alt="${name}">
+                <button class="file-remove" onclick="removeFile('${name}')">×</button>
+            `;
+            container.appendChild(fileDiv);
+        }
+
+        function removeFile(name) {
+            uploadedFiles = uploadedFiles.filter(file => file.name !== name);
+            updateFileDisplay();
+        }
+
+        function updateFileDisplay() {
+            const container = document.getElementById('uploadedFiles');
+            container.innerHTML = '';
+            uploadedFiles.forEach(file => {
+                displayFile(file.name, file.data);
+            });
+        }
+
+        // Save audit
+       // Replace the existing saveAudit function with this enhanced version
+function saveAudit(event) {
+    event.preventDefault();
+    
+    const audit = {
+        id: Date.now(),
+        schoolName: document.getElementById('schoolName').value,
+        localGov: document.getElementById('localGov').value,
+        schoolAddress: document.getElementById('schoolAddress').value,
+        latitude: parseFloat(document.getElementById('latitude').value) || null,
+        longitude: parseFloat(document.getElementById('longitude').value) || null,
+        principalName: document.getElementById('principalName').value,
+        totalTeachers: parseInt(document.getElementById('totalTeachers').value) || 0,
+        totalStudents: parseInt(document.getElementById('totalStudents').value) || 0,
+        facilityCondition: document.getElementById('facilityCondition').value,
+        additionalNotes: document.getElementById('additionalNotes').value,
+        photos: [...uploadedFiles],
+        auditor: currentUser,
+        timestamp: new Date().toISOString(),
+        synced: false // Initially not synced
+    };
+
+    // Save locally first
+    auditData.push(audit);
+    saveData();
+    
+    // Try to sync to server if online
+    if (isOnline) {
+        syncToServer(audit);
+    }
+    
+    alert('Audit saved successfully!');
+    
+    // Reset form
+    event.target.reset();
+    uploadedFiles = [];
+    document.getElementById('uploadedFiles').innerHTML = '';
+    
+    updateDashboard();
+}
+
+
+// Add this new function to sync individual audit to server
+async function syncToServer(audit) {
+    try {
+        const response = await fetch('/api/audits', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(audit)
+        });
+        
+        if (response.ok) {
+            // Mark as synced locally
+            const index = auditData.findIndex(a => a.id === audit.id);
+            if (index !== -1) {
+                auditData[index].synced = true;
+                saveData();
+                updateDashboard();
+            }
+        }
+    } catch (error) {
+        console.error('Error syncing to server:', error);
+    }
+}
+
+
+
+
+              // Data management
+        function saveData() {
+            try {
+                const dataToSave = JSON.stringify(auditData);
+                localStorage.setItem('auditAppData', dataToSave);
+                console.log('Data saved:', auditData.length + ' records');
+            } catch (e) {
+                console.error('Error saving data:', e);
+                alert('Error saving data. Please try again.');
+            }
+        }
+
+        function loadData() {
+            try {
+                const savedData = localStorage.getItem('auditAppData');
+                if (savedData) {
+                    auditData = JSON.parse(savedData);
+                    console.log('Data loaded:', auditData.length + ' records');
+                } else {
+                    auditData = [];
+                    console.log('No saved data found, starting fresh');
+                }
+            } catch (e) {
+                console.error('Error loading data:', e);
+                auditData = [];
+                alert('Error loading saved data. Starting with empty records.');
+            }
+        }
+        // Dashboard updates
+        function updateDashboard() {
+            const totalAudits = auditData.length;
+            const pendingSync = auditData.filter(audit => !audit.synced).length;
+            const today = new Date().toDateString();
+            const completedToday = auditData.filter(audit => 
+                new Date(audit.timestamp).toDateString() === today
+            ).length;
+
+            document.getElementById('totalAudits').textContent = totalAudits;
+            document.getElementById('pendingSync').textContent = pendingSync;
+            document.getElementById('completedToday').textContent = completedToday;
+
+            updateRecentAuditsTable();
+        }
+
+        function updateRecentAuditsTable() {
+            const tableBody = document.getElementById('recentAuditsTable');
+            if (auditData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:40px;color:#6b7280;">No audits completed yet</td></tr>';
+            } else {
+                const recentAudits = auditData.slice(-5).reverse();
+                tableBody.innerHTML = recentAudits.map(audit => `
+                    <tr>
+                        <td>${audit.schoolName}</td>
+                        <td>${audit.localGov}</td>
+                        <td>${new Date(audit.timestamp).toLocaleDateString()}</td>
+                        <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function loadRecords() {
+            const tableBody = document.getElementById('recordsTable');
+            if (auditData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#6b7280;">No records found</td></tr>';
+            } else {
+                tableBody.innerHTML = auditData.map(audit => `
+                    <tr>
+                        <td>${audit.schoolName}</td>
+                        <td>${audit.localGov}</td>
+                        <td>${new Date(audit.timestamp).toLocaleDateString()}</td>
+                        <td>${audit.principalName || '-'}</td>
+                        <td>${audit.totalTeachers}</td>
+                        <td>${audit.totalStudents}</td>
+                        <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function updateSyncSection() {
+            const pendingCount = auditData.filter(audit => !audit.synced).length;
+            document.getElementById('pendingSyncCount').textContent = pendingCount;
+        }
+
+        async function syncData() {
+    const unsyncedRecords = auditData.filter(audit => !audit.synced);
+    
+    if (unsyncedRecords.length === 0) {
+        document.getElementById('syncLog').innerHTML = '<p style="color:#10b981;">✅ All records are already synced!</p>';
+        return;
+    }
+
+    if (!isOnline) {
+        document.getElementById('syncLog').innerHTML = '<p style="color:#ef4444;">❌ Cannot sync: No internet connection</p>';
+        return;
+    }
+
+    // Show syncing message
+    document.getElementById('syncLog').innerHTML = '<p style="color:#0ea5e9;">🔄 Syncing ' + unsyncedRecords.length + ' records...</p>';
+    
+    try {
+        const response = await fetch('/api/sync', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ audits: unsyncedRecords })
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            
+            // Mark all records as synced
+            auditData.forEach(audit => {
+                if (!audit.synced) audit.synced = true;
+            });
+            
+            saveData();
+            updateDashboard();
+            updateSyncSection();
+            
+            document.getElementById('syncLog').innerHTML = `<p style="color:#10b981;">✅ ${result.message}</p>`;
+        } else {
+            throw new Error('Sync failed');
+        }
+    } catch (error) {
+        console.error('Error syncing data:', error);
+        document.getElementById('syncLog').innerHTML = '<p style="color:#ef4444;">❌ Sync failed. Please try again.</p>';
+    }
+}
+
+async function loadFromServer() {
+    if (!isOnline) return;
+    
+    try {
+        const response = await fetch('/api/audits');
+        if (response.ok) {
+            const serverData = await response.json();
+            
+            // Merge server data with local data
+            const localIds = auditData.map(a => a.id);
+            const newServerData = serverData.filter(a => !localIds.includes(a.id));
+            
+            if (newServerData.length > 0) {
+                auditData = [...auditData, ...newServerData];
+                saveData();
+                updateDashboard();
+                console.log(`Loaded ${newServerData.length} records from server`);
+            }
+        }
+    } catch (error) {
+        console.error('Error loading from server:', error);
+    }
+}
+
+
+
+
+
+
+
+
+        function updateConnectionStatus() {
+            const statusDot = document.getElementById('connectionStatus');
+            const statusText = document.getElementById('connectionText');
+            
+            if (isOnline) {
+                statusDot.classList.remove('offline');
+                statusText.textContent = 'Online';
+            } else {
+                statusDot.classList.add('offline');
+                statusText.textContent = 'Offline';
+            }
+        }
+
+        // Online/offline detection
+        window.addEventListener('online', function() {
+            isOnline = true;
+            updateConnectionStatus();
+        });
+
+        window.addEventListener('offline', function() {
+            isOnline = false;
+            updateConnectionStatus();
+        });
+
+        // Allow Enter key to submit login
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !document.getElementById('authScreen').classList.contains('hidden')) {
+                login();
+            }
+        });
+    </script>
+</body>
+</html>
