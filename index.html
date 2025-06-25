@@ -1334,6 +1334,112 @@ body {
         let auditData = [];
         let uploadedFiles = [];
         let isOnline = navigator.onLine;
+
+// Lagos State Local Governments and Primary Schools Data
+        const lagosData = {
+            "Agege": [
+                "St. Michael Primary School", "Methodist Primary School Agege", "Baptist Primary School Agege",
+                "Community Primary School Agege", "Orile Primary School", "Tabon Tabon Primary School",
+                "Dopemu Primary School", "Mulero Primary School", "Oko-Oba Primary School"
+            ],
+            "Ajeromi-Ifelodun": [
+                "Ajeromi Primary School", "Ifelodun Primary School", "Tolu Primary School",
+                "Boundary Primary School", "Alaba Primary School", "Kirikiri Primary School",
+                "Layeni Primary School", "Trinity Primary School Ajegunle", "Community Primary School Ajegunle"
+            ],
+            "Alimosho": [
+                "Iyana Ipaja Primary School", "Idimu Primary School", "Egbe Primary School",
+                "Ikotun Primary School", "Akowonjo Primary School", "Shasha Primary School",
+                "Igando Primary School", "Isheri Primary School", "Pleasure Primary School"
+            ],
+            "Amuwo-Odofin": [
+                "Amuwo Primary School", "Odofin Primary School", "Trade Fair Primary School",
+                "Satellite Town Primary School", "Mile 2 Primary School", "Oroge Primary School",
+                "Navy Town Primary School", "Festac Primary School", "Alakija Primary School"
+            ],
+            "Apapa": [
+                "Apapa Primary School", "Liverpool Primary School", "Creek Primary School",
+                "Marine Primary School", "Wharf Primary School", "Point Road Primary School",
+                "Tin Can Primary School", "Western Avenue Primary School", "Suru-Alaba Primary School"
+            ],
+            "Badagry": [
+                "Badagry Primary School", "Ajara Primary School", "Gberefu Primary School",
+                "Posukoh Primary School", "Topo Primary School", "Akarakumo Primary School",
+                "Ikoga Primary School", "Imeke Primary School", "Agbara Primary School"
+            ],
+            "Epe": [
+                "Epe Primary School", "Ejinrin Primary School", "Noforija Primary School",
+                "Orimedu Primary School", "Agbowa Primary School", "Lekki Primary School",
+                "Ibeju Primary School", "Bogije Primary School", "Sangotedo Primary School"
+            ],
+            "Eti-Osa": [
+                "Victoria Island Primary School", "Ikoyi Primary School", "Lekki Phase 1 Primary School",
+                "Ajah Primary School", "Eko Atlantic Primary School", "Oniru Primary School",
+                "Ikate Primary School", "Ligali Ayorinde Primary School", "Parkview Primary School"
+            ],
+            "Ibeju-Lekki": [
+                "Ibeju Primary School", "Lekki Primary School", "Akodo Primary School",
+                "Eleko Primary School", "Igbo-Efon Primary School", "Magbon Primary School",
+                "Orimedu Primary School", "Elemoro Primary School", "Lakowe Primary School"
+            ],
+            "Ifako-Ijaiye": [
+                "Ifako Primary School", "Ijaiye Primary School", "Agbado Primary School",
+                "Alakuko Primary School", "Iju Primary School", "Fagba Primary School",
+                "Zion Primary School", "Ojokoro Primary School", "Powerline Primary School"
+            ],
+            "Ikeja": [
+                "Ikeja Primary School", "GRA Primary School Ikeja", "Allen Avenue Primary School",
+                "Obafemi Awolowo Way Primary School", "Maryland Primary School", "Oregun Primary School",
+                "Ojodu Primary School", "Berger Primary School", "Magodo Primary School"
+            ],
+            "Ikorodu": [
+                "Ikorodu Primary School", "Igbogbo Primary School", "Bayeku Primary School",
+                "Ijede Primary School", "Imota Primary School", "Agric Primary School",
+                "Erikorodo Primary School", "Owode Primary School", "Gberigbe Primary School"
+            ],
+            "Kosofe": [
+                "Kosofe Primary School", "Ketu Primary School", "Ikosi Primary School",
+                "Agboyi Primary School", "Mile 12 Primary School", "Owode Onirin Primary School",
+                "Ogudu Primary School", "Anthony Primary School", "Gbagada Primary School"
+            ],
+            "Lagos Island": [
+                "Lagos Island Primary School", "CMS Primary School", "Broad Street Primary School",
+                "Marina Primary School", "Catholic Mission Primary School", "Tafawa Balewa Primary School",
+                "Adeniji Adele Primary School", "Sandgrouse Primary School", "Idumota Primary School"
+            ],
+            "Lagos Mainland": [
+                "Yaba Primary School", "Ebute-Metta Primary School", "Oyingbo Primary School",
+                "Jibowu Primary School", "Sabo Primary School", "Fadeyi Primary School",
+                "Onike Primary School", "Herbert Macaulay Primary School", "Iddo Primary School"
+            ],
+            "Mushin": [
+                "Mushin Primary School", "Papa Ajao Primary School", "Daleko Primary School",
+                "Idi-Oro Primary School", "Fadeyi Primary School", "Itire Primary School",
+                "Ilupeju Primary School", "Palm Avenue Primary School", "Railway Primary School"
+            ],
+            "Ojo": [
+                "Ojo Primary School", "Alaba Rago Primary School", "Okokomaiko Primary School",
+                "Igbede Primary School", "Ajangbadi Primary School", "Era Primary School",
+                "Ilogbo Primary School", "Shibiri Primary School", "Oto-Awori Primary School"
+            ],
+            "Oshodi-Isolo": [
+                "Oshodi Primary School", "Isolo Primary School", "Ejigbo Primary School",
+                "Okota Primary School", "Bucknor Primary School", "Jakande Primary School",
+                "Airport Road Primary School", "Ago Palace Primary School", "Cele Primary School"
+            ],
+            "Shomolu": [
+                "Shomolu Primary School", "Bariga Primary School", "Akoka Primary School",
+                "Pedro Primary School", "Palmgrove Primary School", "Onipanu Primary School",
+                "Fola Agoro Primary School", "Ilupeju Primary School", "Somolu Primary School"
+            ],
+            "Surulere": [
+                "Surulere Primary School", "Shitta Primary School", "Bode Thomas Primary School",
+                "Adeniran Ogunsanya Primary School", "Eric Moore Primary School", "Randle Avenue Primary School",
+                "Akerele Primary School", "Ojuelegba Primary School", "Itire Primary School"
+            ]
+        };
+
+
         
         // Replace the existing window.onload function
 window.onload = function() {
