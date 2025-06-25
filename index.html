@@ -1511,8 +1511,33 @@ function saveAudit(event) {
 // Always try server first
 
 
+// Main submission logic
 if (isOnline) {
-    syncToServer(audit); // whatever your audit object is called
+    syncToServer(audit);
+} else {
+    // Handle offline - save locally and mark for sync
+    audit.synced = false;
+    audit.pendingSync = true;
+    auditData.push(audit);
+    saveData(); // Save to localStorage for offline
+    updateDashboard();
+    
+    console.log('Saved offline - will sync when online');
+}
+
+// Function to sync pending audits when back online
+async function syncPendingAudits() {
+    const pendingAudits = auditData.filter(audit => audit.pendingSync);
+    
+    for (const audit of pendingAudits) {
+        try {
+            await syncToServer(audit);
+            // Remove pending flag after successful sync
+            audit.pendingSync = false;
+        } catch (error) {
+            console.error('Failed to sync audit:', audit.id);
+        }
+    }
 }
     
     alert('Audit saved successfully!');
@@ -1542,7 +1567,7 @@ async function syncToServer(audit) {
         });
         
         if (response.ok) {
-            // Force reload all data from server to avoid duplicates
+            // Wait for data to reload before updating dashboard
             await reloadAllData();
         }
     } catch (error) {
