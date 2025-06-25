@@ -1541,10 +1541,13 @@ console.log('auditData before submit:', auditData.length);
 console.log('Audit ID being submitted:', audit.id);
 
 if (isOnline) {
-    await syncToServer(audit);
+    syncToServer(audit); // Remove await
 }
 
 console.log('auditData after submit:', auditData.length);
+
+
+
 
 // Add this new function to sync individual audit to server
 async function syncToServer(audit) {
