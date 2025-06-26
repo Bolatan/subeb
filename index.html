@@ -415,7 +415,7 @@
         <div id="mainApp" class="hidden">
             <div class="header">
                 <div class="logo">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Lagos_State_Seal.png" alt="Lagos State Logo">
+                    <img src="subeb.jpg" alt="Lagos State Logo">
                     Personnel & Facility Audit
                 </div>
                 <div class="status">
@@ -531,13 +531,14 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Upload Photos</label>
+                                <label>Upload Photos (Max 5)</label>
                                 <div class="file-upload" onclick="document.getElementById('fileInput').click()">
-                                    <div>📸 Click to upload photos or drag & drop</div>
+                                    <div>📸 Click to upload up to 5 photos or drag & drop</div>
                                     <div style="font-size:14px;color:#6b7280;margin-top:10px;">JPG, PNG files only</div>
                                 </div>
                                 <input type="file" id="fileInput" multiple accept="image/*" style="display:none;" onchange="handleFiles(this.files)">
                                 <div class="uploaded-files" id="uploadedFiles"></div>
+                                <div id="photoLimitMsg" style="color:var(--lagos-red);font-size:13px;margin-top:8px;display:none;">You can only upload up to 5 photos.</div>
                             </div>
 
                             <button type="submit" class="btn">💾 Save Audit</button>
@@ -547,6 +548,7 @@
                     <!-- Records Section -->
                     <div id="recordsSection" class="section hidden">
                         <h2>Audit Records</h2>
+                        <button class="btn" style="width:auto;margin-bottom:20px;" onclick="exportToCSV()">⬇️ Export to CSV</button>
                         <table class="data-table">
                             <thead>
                                 <tr>
@@ -557,11 +559,12 @@
                                     <th>Teachers</th>
                                     <th>Students</th>
                                     <th>Sync Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="recordsTable">
                                 <tr>
-                                    <td colspan="7" style="text-align:center;padding:40px;color:#6b7280;">No records found</td>
+                                    <td colspan="8" style="text-align:center;padding:40px;color:#6b7280;">No records found</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -699,8 +702,16 @@ function logout() {
 
         // Handle file uploads
         function handleFiles(files) {
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
+            const maxPhotos = 5;
+            let filesToAdd = Array.from(files);
+            if (uploadedFiles.length + filesToAdd.length > maxPhotos) {
+                filesToAdd = filesToAdd.slice(0, maxPhotos - uploadedFiles.length);
+                document.getElementById('photoLimitMsg').style.display = 'block';
+            } else {
+                document.getElementById('photoLimitMsg').style.display = 'none';
+            }
+            for (let i = 0; i < filesToAdd.length; i++) {
+                const file = filesToAdd[i];
                 if (file.type.startsWith('image/')) {
                     const reader = new FileReader();
                     reader.onload = function(e) {
@@ -714,8 +725,8 @@ function logout() {
                     reader.readAsDataURL(file);
                 }
             }
+            updateFileDisplay();
         }
-
         function displayFile(name, dataUrl) {
             const container = document.getElementById('uploadedFiles');
             const fileDiv = document.createElement('div');
@@ -726,18 +737,24 @@ function logout() {
             `;
             container.appendChild(fileDiv);
         }
-
         function removeFile(name) {
             uploadedFiles = uploadedFiles.filter(file => file.name !== name);
             updateFileDisplay();
+            if (uploadedFiles.length < 5) {
+                document.getElementById('photoLimitMsg').style.display = 'none';
+            }
         }
-
         function updateFileDisplay() {
             const container = document.getElementById('uploadedFiles');
             container.innerHTML = '';
             uploadedFiles.forEach(file => {
                 displayFile(file.name, file.data);
             });
+            if (uploadedFiles.length >= 5) {
+                document.getElementById('fileInput').disabled = true;
+            } else {
+                document.getElementById('fileInput').disabled = false;
+            }
         }
 
  // Load Local Government Areas into dropdown 
@@ -753,7 +770,10 @@ function logout() {
        // Replace the existing saveAudit function with this enhanced version
 function saveAudit(event) {
     event.preventDefault();
-    
+    if (uploadedFiles.length > 5) {
+        alert('You can only upload up to 5 photos.');
+        return;
+    }
     const audit = {
         id: Date.now(),
         schoolName: document.getElementById('schoolName').value,
@@ -921,9 +941,9 @@ async function reloadAllData() {
         function loadRecords() {
             const tableBody = document.getElementById('recordsTable');
             if (auditData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#6b7280;">No records found</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#6b7280;">No records found</td></tr>';
             } else {
-                tableBody.innerHTML = auditData.map(audit => `
+                tableBody.innerHTML = auditData.map((audit, idx) => `
                     <tr>
                         <td>${audit.schoolName}</td>
                         <td>${audit.localGov}</td>
@@ -932,6 +952,7 @@ async function reloadAllData() {
                         <td>${audit.totalTeachers}</td>
                         <td>${audit.totalStudents}</td>
                         <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
+                        <td><button class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="deleteRecord(${audit.id})">Delete</button></td>
                     </tr>
                 `).join('');
             }
@@ -1050,6 +1071,65 @@ async function loadFromServer() {
                 login();
             }
         });
+
+        function exportToCSV() {
+    if (!auditData.length) {
+        alert('No records to export.');
+        return;
+    }
+    const header = [
+        'School Name',
+        'Local Government',
+        'Date',
+        'Principal',
+        'Teachers',
+        'Students',
+        'Facility Condition',
+        'Additional Notes',
+        'Latitude',
+        'Longitude',
+        'Auditor',
+        'Sync Status',
+        'Photos'
+    ];
+    const rows = auditData.map(audit => [
+        audit.schoolName,
+        audit.localGov,
+        new Date(audit.timestamp).toLocaleString(),
+        audit.principalName || '',
+        audit.totalTeachers,
+        audit.totalStudents,
+        audit.facilityCondition || '',
+        audit.additionalNotes ? audit.additionalNotes.replace(/\n/g, ' ') : '',
+        audit.latitude || '',
+        audit.longitude || '',
+        audit.auditor || '',
+        audit.synced ? 'Synced' : 'Pending',
+        (audit.photos && audit.photos.length) ? audit.photos.map(p => p.name).join('; ') : ''
+    ]);
+    let csvContent = '';
+    csvContent += header.join(',') + '\r\n';
+    rows.forEach(row => {
+        csvContent += row.map(field => '"' + String(field).replace(/"/g, '""') + '"').join(',') + '\r\n';
+    });
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'audit_records.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+function deleteRecord(auditId) {
+    if (!confirm('Are you sure you want to delete this record?')) return;
+    auditData = auditData.filter(audit => audit.id !== auditId);
+    saveData();
+    updateDashboard();
+    loadRecords();
+}
     </script>
 </body>
 </html>
