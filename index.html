@@ -1520,7 +1520,7 @@ if (isOnline) {
     }).catch(error => {
         console.error('Sync failed:', error);
     });
-}
+
 } else {
     // Handle offline - save locally and mark for sync
     audit.synced = false;
