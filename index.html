@@ -568,357 +568,6 @@ body {
 
 /* Sync status indicators */
 .sync-status.synced {
-    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-    color: var(--lagos-green);
-    border: 1px solid var(--lagos-green);
-}
-
-.sync-status.pending {
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
-    color: var(--lagos-yellow);
-    border: 1px solid var(--lagos-yellow);
-}
-
-/* Data table header */
-.data-table th {
-    background: linear-gradient(135deg, var(--lagos-blue), var(--lagos-light-blue));
-    color: white;
-    font-weight: 600;
-}
-
-/* Status dot for connection */
-.status-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--lagos-green);
-    box-shadow: 0 0 10px rgba(22, 163, 74, 0.5);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { box-shadow: 0 0 10px rgba(22, 163, 74, 0.5); }
-    50% { box-shadow: 0 0 20px rgba(22, 163, 74, 0.8); }
-}
-
-.status-dot.offline {
-    background: var(--lagos-red);
-    box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
-}
-
-/* Content area with subtle Lagos branding */
-.content-area {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 30px;
-    overflow-y: auto;
-    position: relative;
-}
-
-.content-area::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 100px;
-    background: linear-gradient(45deg, var(--lagos-red), var(--lagos-blue), var(--lagos-yellow), var(--lagos-green));
-    opacity: 0.03;
-    border-radius: 50%;
-    transform: translate(50%, -50%);
-}
-
-/* Lagos State motto/text styling */
-.auth-title {
-    text-align: center;
-    margin-bottom: 30px;
-    color: var(--lagos-navy);
-    font-size: 28px;
-    position: relative;
-}
-
-.auth-title::after {
-    content: 'Centre of Excellence';
-    display: block;
-    font-size: 12px;
-    color: var(--lagos-blue);
-    font-weight: normal;
-    margin-top: 5px;
-    font-style: italic;
-}
-
-/* Lagos State Color Variables */
-:root {
-    --lagos-red: #DC2626;
-    --lagos-blue: #1E40AF;
-    --lagos-yellow: #FACC15;
-    --lagos-green: #16A34A;
-    --lagos-white: #FFFFFF;
-    --lagos-gold: #B45309;
-    --lagos-navy: #1E3A8A;
-    --lagos-light-blue: #3B82F6;
-    --lagos-light-gray: #F8FAFC;
-    --lagos-dark-gray: #64748B;
-}
-
-/* Update body background with Lagos State primary color */
-body {
-    background: var(--lagos-blue);
-    min-height: 100vh;
-}
-
-/* Header with Lagos State branding */
-.header {
-    background: var(--lagos-navy);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-    position: relative;
-    border-left: 8px solid var(--lagos-red);
-}
-
-.header::after {
-    content: '';
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 20px;
-    background: var(--lagos-yellow);
-    border-radius: 4px;
-}
-
-/* Lagos State Logo placeholder */
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    position: relative;
-    color: var(--lagos-white);
-}
-
-.logo::before {
-    content: '🏛️';
-    margin-right: 10px;
-    font-size: 20px;
-}
-
-/* Update primary buttons with Lagos State colors */
-.btn {
-    background: var(--lagos-blue);
-    color: white;
-    border: 2px solid var(--lagos-red);
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn:hover {
-    background: var(--lagos-red);
-    border-color: var(--lagos-blue);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
-}
-
-.btn:active {
-    transform: translateY(0);
-}
-
-/* Secondary button styling */
-.btn-secondary {
-    background: var(--lagos-green);
-    border-color: var(--lagos-yellow);
-    color: white;
-}
-
-.btn-secondary:hover {
-    background: var(--lagos-yellow);
-    border-color: var(--lagos-green);
-    color: var(--lagos-navy);
-}
-
-/* Location button with Lagos green */
-.location-btn {
-    background: var(--lagos-green);
-    color: white;
-    border: 2px solid var(--lagos-yellow);
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-top: 10px;
-    transition: all 0.3s ease;
-}
-
-.location-btn:hover {
-    background: var(--lagos-yellow);
-    border-color: var(--lagos-green);
-    color: var(--lagos-navy);
-    transform: translateY(-1px);
-}
-
-/* Dashboard stat cards with Lagos colors */
-.stat-card {
-    color: white;
-    padding: 25px;
-    border-radius: 15px;
-    text-align: center;
-    position: relative;
-    border: 3px solid var(--lagos-white);
-}
-
-.stat-card:nth-child(1) {
-    background: var(--lagos-red);
-}
-
-.stat-card:nth-child(2) {
-    background: var(--lagos-green);
-}
-
-.stat-card:nth-child(3) {
-    background: var(--lagos-yellow);
-    color: var(--lagos-navy);
-}
-
-.stat-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--lagos-blue);
-}
-
-
-
-/* Sidebar with Lagos State styling */
-.sidebar {
-    background: var(--lagos-navy);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 20px;
-    color: white;
-    position: relative;
-    border-left: 6px solid var(--lagos-red);
-}
-
-.sidebar::after {
-    content: '';
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 20px;
-    height: 20px;
-    background: var(--lagos-yellow);
-    border-radius: 50%;
-}
-
-/* Navigation items */
-.nav-item {
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-left: 4px solid transparent;
-}
-
-.nav-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-left-color: var(--lagos-yellow);
-    transform: translateX(5px);
-}
-
-.nav-item.active {
-    background: var(--lagos-red);
-    color: white;
-    font-weight: 600;
-    border-left-color: var(--lagos-yellow);
-}
-
-/* Form focus colors */
-.form-control:focus {
-    outline: none;
-    border-color: var(--lagos-blue);
-    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.2);
-}
-
-/* Auth container with Lagos branding */
-.auth-container {
-    background: var(--lagos-white);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 40px;
-    max-width: 400px;
-    margin: 50px auto;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    border: 4px solid var(--lagos-blue);
-    position: relative;
-}
-
-.auth-container::before {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    width: 20px;
-    height: calc(100% + 8px);
-    background: var(--lagos-red);
-    border-radius: 16px 0 0 16px;
-}
-
-.auth-container::after {
-    content: '';
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 30px;
-    height: 30px;
-    background: var(--lagos-yellow);
-    border-radius: 50%;
-}
-
-/* Credentials info box */
-.credentials-info {
-    background: var(--lagos-light-gray);
-    border: 2px solid var(--lagos-green);
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    position: relative;
-}
-
-.credentials-info::before {
-    content: '🏛️';
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 18px;
-}
-
-/* File upload area */
-.file-upload:hover {
-    border-color: var(--lagos-blue);
-    background: rgba(30, 64, 175, 0.05);
-}
-
-.file-upload.dragover {
-    border-color: var(--lagos-red);
-    background: rgba(220, 38, 38, 0.1);
-}
-
-/* Sync status indicators */
-.sync-status.synced {
     background: var(--lagos-green);
     color: white;
     border: 1px solid var(--lagos-navy);
@@ -1510,58 +1159,47 @@ function saveAudit(event) {
     };
 // Always try server first
 
-
 // Main submission logic
+// Save locally first (for offline capability)
+audit.synced = false;  // Mark as not synced initially
+auditData.push(audit);
+saveData();  // Save to localStorage
+updateDashboard();  // Update UI immediately
+
+// Try to sync to server if online
 if (isOnline) {
     syncToServer(audit).then(() => {
-        console.log('Dashboard should be updated now');
-        console.log('auditData length after sync:', auditData.length);
-        console.log('Total audits element text:', document.getElementById('totalAudits').textContent);
+        console.log('Sync completed successfully');
     }).catch(error => {
         console.error('Sync failed:', error);
     });
-
-} else {
-    // Handle offline - save locally and mark for sync
-    audit.synced = false;
-    audit.pendingSync = true;
-    auditData.push(audit);
-    saveData(); // Save to localStorage for offline
-    updateDashboard();
-    
-    console.log('Saved offline - will sync when online');
 }
-
 // Function to sync pending audits when back online
 async function syncPendingAudits() {
-    const pendingAudits = auditData.filter(audit => audit.pendingSync);
+    const pendingAudits = auditData.filter(audit => !audit.synced);
+    console.log(`Syncing ${pendingAudits.length} pending audits`);
     
     for (const audit of pendingAudits) {
         try {
             await syncToServer(audit);
-            // Remove pending flag after successful sync
-            audit.pendingSync = false;
         } catch (error) {
-            console.error('Failed to sync audit:', audit.id);
+            console.error('Failed to sync audit:', audit.id, error);
         }
     }
 }
+
+// Call this when connection is restored
+window.addEventListener('online', syncPendingAudits);
+}
     
     alert('Audit saved successfully!');
-    
-    // Replace the form reset section in saveAudit function with: // Reset form 
+    // Reset form 
     event.target.reset(); uploadedFiles = []; document.getElementById('uploadedFiles').innerHTML = ''; // Reset dropdowns properly 
     document.getElementById('localGov').value = ''; document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>'; document.getElementById('schoolName').disabled = true; updateDashboard();
 
 
 }
 
-
-
-
-
-
-// Add this new function to sync individual audit to server
 // Updated syncToServer function
 async function syncToServer(audit) {
     try {
@@ -1574,11 +1212,18 @@ async function syncToServer(audit) {
         });
         
         if (response.ok) {
-            // Wait for data to reload before updating dashboard
-            await reloadAllData();
+            // Mark as synced in local storage
+            const index = auditData.findIndex(a => a.id === audit.id);
+            if (index !== -1) {
+                auditData[index].synced = true;
+                saveData();  // Save updated sync status
+                updateDashboard();  // Update sync indicators
+            }
+            console.log('Audit synced to server successfully');
         }
     } catch (error) {
-        console.error('Error saving audit:', error);
+        console.error('Error syncing to server:', error);
+        throw error;  // Re-throw for .catch() handler
     }
 }
 
