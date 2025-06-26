@@ -468,6 +468,15 @@
                                 </tr>
                             </tbody>
                         </table>
+
+                        <!-- Bulk Upload CSV -->
+<div style="margin-bottom:20px;">
+    <label for="csvUpload" style="font-weight:600;color:var(--lagos-navy);margin-right:10px;">Bulk Upload Audits (CSV):</label>
+    <input type="file" id="csvUpload" accept=".csv" style="display:inline-block;width:auto;" onchange="handleCSVUpload(event)">
+    <button class="btn btn-secondary" style="width:auto;padding:8px 16px;margin-left:10px;" onclick="triggerCSVInput()">Upload CSV</button>
+    <span id="csvUploadMsg" style="margin-left:15px;font-size:14px;color:var(--lagos-red);"></span>
+</div>
+
                     </div>
 
                     <!-- Audit Form Section -->
@@ -1129,6 +1138,87 @@ function deleteRecord(auditId) {
     saveData();
     updateDashboard();
     loadRecords();
+}
+
+// Bulk CSV upload functions
+function triggerCSVInput() {
+    document.getElementById('csvUpload').click();
+}
+
+function handleCSVUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (!file.name.endsWith('.csv')) {
+        document.getElementById('csvUploadMsg').textContent = 'Please select a valid CSV file.';
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const text = e.target.result;
+        const result = parseCSV(text);
+        if (result.error) {
+            document.getElementById('csvUploadMsg').textContent = result.error;
+            return;
+        }
+        let added = 0;
+        result.data.forEach(row => {
+            // Basic validation: require schoolName and localGov
+            if (!row['School Name'] || !row['Local Government']) return;
+            const audit = {
+                id: Date.now() + Math.floor(Math.random()*100000),
+                schoolName: row['School Name'],
+                localGov: row['Local Government'],
+                schoolAddress: row['School Address'] || '',
+                latitude: parseFloat(row['Latitude']) || null,
+                longitude: parseFloat(row['Longitude']) || null,
+                principalName: row['Principal'] || '',
+                totalTeachers: parseInt(row['Teachers']) || 0,
+                totalStudents: parseInt(row['Students']) || 0,
+                facilityCondition: row['Facility Condition'] || '',
+                additionalNotes: row['Additional Notes'] || '',
+                photos: [],
+                auditor: currentUser,
+                timestamp: row['Date'] ? new Date(row['Date']).toISOString() : new Date().toISOString(),
+                synced: false
+            };
+            auditData.push(audit);
+            added++;
+        });
+        saveData();
+        updateDashboard();
+        loadRecords();
+        document.getElementById('csvUploadMsg').style.color = 'var(--lagos-green)';
+        document.getElementById('csvUploadMsg').textContent = `Successfully uploaded ${added} records.`;
+        setTimeout(()=>{document.getElementById('csvUploadMsg').textContent='';}, 4000);
+    };
+    reader.readAsText(file);
+}
+
+function parseCSV(text) {
+    // Simple CSV parser (handles commas, quoted fields, newlines)
+    const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+    if (lines.length < 2) return { error: 'CSV must have a header and at least one row.' };
+    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+    const data = [];
+    for (let i = 1; i < lines.length; i++) {
+        const row = {};
+        let inQuotes = false, field = '', col = 0, chars = lines[i].split('');
+        for (let j = 0; j < chars.length; j++) {
+            const c = chars[j];
+            if (c === '"') {
+                if (inQuotes && chars[j+1] === '"') { field += '"'; j++; }
+                else inQuotes = !inQuotes;
+            } else if (c === ',' && !inQuotes) {
+                row[headers[col++]] = field;
+                field = '';
+            } else {
+                field += c;
+            }
+        }
+        row[headers[col]] = field;
+        data.push(row);
+    }
+    return { data };
 }
     </script>
 </body>
