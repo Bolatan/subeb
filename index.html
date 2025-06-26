@@ -1628,19 +1628,20 @@ async function reloadAllData() {
         }
         // Dashboard updates
         function updateDashboard() {
-            const totalAudits = auditData.length;
-            const pendingSync = auditData.filter(audit => !audit.synced).length;
-            const today = new Date().toDateString();
-            const completedToday = auditData.filter(audit => 
-                new Date(audit.timestamp).toDateString() === today
-            ).length;
-
-            document.getElementById('totalAudits').textContent = totalAudits;
-            document.getElementById('pendingSync').textContent = pendingSync;
-            document.getElementById('completedToday').textContent = completedToday;
-
-            updateRecentAuditsTable();
-        }
+    const totalAudits = auditData.length;
+    const pendingSync = auditData.filter(audit => !audit.synced).length;
+    const today = new Date().toDateString();
+    const completedToday = auditData.filter(audit => 
+        new Date(audit.timestamp).toDateString() === today
+    ).length;
+    
+    console.log('updateDashboard called - totalAudits:', totalAudits);
+    
+    document.getElementById('totalAudits').textContent = totalAudits;
+    document.getElementById('pendingSync').textContent = pendingSync;
+    document.getElementById('completedToday').textContent = completedToday;
+    updateRecentAuditsTable();
+}
 
         function updateRecentAuditsTable() {
             const tableBody = document.getElementById('recentAuditsTable');
