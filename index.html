@@ -1514,8 +1514,13 @@ function saveAudit(event) {
 // Main submission logic
 if (isOnline) {
     syncToServer(audit).then(() => {
-        console.log('Sync complete, dashboard updated');
+        console.log('Dashboard should be updated now');
+        console.log('auditData length after sync:', auditData.length);
+        console.log('Total audits element text:', document.getElementById('totalAudits').textContent);
+    }).catch(error => {
+        console.error('Sync failed:', error);
     });
+}
 } else {
     // Handle offline - save locally and mark for sync
     audit.synced = false;
