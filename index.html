@@ -1097,15 +1097,15 @@ async function loadFromServer() {
             if (newServerData.length > 0) {
                 auditData = [...auditData, ...newServerData];
                 saveData();
-                updateDashboard();
-                console.log(`Loaded ${newServerData.length} records from server`);
             }
+            // Always update dashboard after loading from server
+            updateDashboard();
+            console.log(`Loaded ${newServerData.length} records from server`);
         }
     } catch (error) {
         console.error('Error loading from server:', error);
     }
 }
-
 
 
 
