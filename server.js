@@ -1,3 +1,41 @@
+// At the top of your server file
+const fs = require('fs');
+const path = require('path');
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+const AUDITS_FILE = path.join(__dirname, 'audits.json');
+
+// Helper functions
+function loadAudits() {
+  if (fs.existsSync(AUDITS_FILE)) {
+    return JSON.parse(fs.readFileSync(AUDITS_FILE, 'utf8'));
+  }
+  return [];
+}
+
+function saveAudits(audits) {
+  fs.writeFileSync(AUDITS_FILE, JSON.stringify(audits, null, 2));
+}
+
+// GET audits
+app.get('/api/audits', (req, res) => {
+  const audits = loadAudits();
+  res.json(audits);
+});
+
+// POST audit
+app.post('/api/audits', (req, res) => {
+  const audits = loadAudits();
+  audits.push(req.body);
+  saveAudits(audits);
+  res.json({ success: true });
+});
+
+// ...your other server code...
+
+app.listen(3001, () => console.log('Server running on port 3001'));
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
