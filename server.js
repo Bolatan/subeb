@@ -97,8 +97,20 @@ app.post('/api/audits', async (req, res) => {
         return photo;
       });
     }
-    // Filter to ensure each photo is an object with at least a 'name' property
-    photos = photos.filter(p => p && typeof p === 'object' && p.name);
+    // Filter to ensure each photo is an object with at least a 'name' property and convert any strings
+    photos = (Array.isArray(photos) ? photos : []).map(photo => {
+      if (typeof photo === 'string') {
+        return { name: photo, data: '', type: '' };
+      }
+      if (typeof photo === 'object' && photo !== null) {
+        return {
+          name: photo.name || '',
+          data: photo.data || '',
+          type: photo.type || ''
+        };
+      }
+      return null;
+    }).filter(p => p && typeof p.name === 'string' && p.name);
     audit.photos = photos;
     // Ensure numeric fields are numbers
     audit.totalTeachers = Number(audit.totalTeachers) || 0;
@@ -163,8 +175,20 @@ app.post('/api/sync', async (req, res) => {
           return photo;
         });
       }
-      // Filter to ensure each photo is an object with at least a 'name' property
-      photos = photos.filter(p => p && typeof p === 'object' && p.name);
+      // Filter to ensure each photo is an object with at least a 'name' property and convert any strings
+      photos = (Array.isArray(photos) ? photos : []).map(photo => {
+        if (typeof photo === 'string') {
+          return { name: photo, data: '', type: '' };
+        }
+        if (typeof photo === 'object' && photo !== null) {
+          return {
+            name: photo.name || '',
+            data: photo.data || '',
+            type: photo.type || ''
+          };
+        }
+        return null;
+      }).filter(p => p && typeof p.name === 'string' && p.name);
       audit.photos = photos;
       // Ensure numeric fields are numbers
       audit.totalTeachers = Number(audit.totalTeachers) || 0;
