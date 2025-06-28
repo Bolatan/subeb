@@ -65,23 +65,28 @@ app.post('/api/audits', async (req, res) => {
     // Robustly handle photos field
     if (!Array.isArray(audit.photos)) {
       if (typeof audit.photos === 'string' && audit.photos.trim() !== '') {
-        // Try to parse as JSON array
-        try {
-          const parsed = JSON.parse(audit.photos);
-          if (Array.isArray(parsed)) {
-            audit.photos = parsed.map(photo => {
-              if (typeof photo === 'string') {
-                return { name: photo, data: '', type: '' };
-              }
-              return photo;
-            });
-          } else {
-            // Fallback: treat as semicolon-separated string
-            audit.photos = audit.photos.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+        let str = audit.photos.trim();
+        // Try to parse as JSON array, fixing single quotes if needed
+        if (str.startsWith('[') && str.endsWith(']')) {
+          try {
+            // Replace single quotes with double quotes for JSON.parse
+            let fixed = str.replace(/'/g, '"');
+            const parsed = JSON.parse(fixed);
+            if (Array.isArray(parsed)) {
+              audit.photos = parsed.map(photo => {
+                if (typeof photo === 'string') {
+                  return { name: photo, data: '', type: '' };
+                }
+                return photo;
+              });
+            } else {
+              audit.photos = str.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+            }
+          } catch {
+            audit.photos = str.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
           }
-        } catch {
-          // Not JSON, treat as semicolon-separated string
-          audit.photos = audit.photos.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+        } else {
+          audit.photos = str.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
         }
       } else {
         audit.photos = [];
