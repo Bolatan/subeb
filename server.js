@@ -62,10 +62,27 @@ app.post('/api/audits', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Missing or invalid id (must be a unique number)' });
     }
     audit.id = Number(audit.id);
-    // Ensure photos is always an array of objects
+    // Robustly handle photos field
     if (!Array.isArray(audit.photos)) {
       if (typeof audit.photos === 'string' && audit.photos.trim() !== '') {
-        audit.photos = audit.photos.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+        // Try to parse as JSON array
+        try {
+          const parsed = JSON.parse(audit.photos);
+          if (Array.isArray(parsed)) {
+            audit.photos = parsed.map(photo => {
+              if (typeof photo === 'string') {
+                return { name: photo, data: '', type: '' };
+              }
+              return photo;
+            });
+          } else {
+            // Fallback: treat as semicolon-separated string
+            audit.photos = audit.photos.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+          }
+        } catch {
+          // Not JSON, treat as semicolon-separated string
+          audit.photos = audit.photos.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+        }
       } else {
         audit.photos = [];
       }
@@ -102,11 +119,25 @@ app.post('/api/sync', async (req, res) => {
     const newAudits = audits.filter(a => !existingIds.has(Number(a.id))).map(audit => {
       // Ensure id is a number
       audit.id = Number(audit.id);
-      // Ensure photos is always an array of objects
+      // Robustly handle photos field
       let photos = audit.photos;
       if (!Array.isArray(photos)) {
         if (typeof photos === 'string' && photos.trim() !== '') {
-          photos = photos.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+          try {
+            const parsed = JSON.parse(photos);
+            if (Array.isArray(parsed)) {
+              photos = parsed.map(photo => {
+                if (typeof photo === 'string') {
+                  return { name: photo, data: '', type: '' };
+                }
+                return photo;
+              });
+            } else {
+              photos = photos.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+            }
+          } catch {
+            photos = photos.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+          }
         } else {
           photos = [];
         }
