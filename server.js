@@ -1,131 +1,93 @@
-// At the top of your server file
-const fs = require('fs');
-const path = require('path');
+const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
-app.use(express.json());
-
-const AUDITS_FILE = path.join(__dirname, 'audits.json');
-
-// Helper functions
-function loadAudits() {
-  if (fs.existsSync(AUDITS_FILE)) {
-    return JSON.parse(fs.readFileSync(AUDITS_FILE, 'utf8'));
-  }
-  return [];
-}
-
-function saveAudits(audits) {
-  fs.writeFileSync(AUDITS_FILE, JSON.stringify(audits, null, 2));
-}
-
-// GET audits
-app.get('/api/audits', (req, res) => {
-  const audits = loadAudits();
-  res.json(audits);
-});
-
-// POST audit
-app.post('/api/audits', (req, res) => {
-  const audits = loadAudits();
-  const newAudit = {
-    ...req.body,
-    synced: true // Always mark as synced on the server
-  };
-  audits.push(newAudit);
-  saveAudits(audits);
-  res.json({ success: true });
-});
-
-// ...your other server code...
-
-app.listen(3001, () => console.log('Server running on port 3001'));
-
-
-// Middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.static('.'));
 
-// Serve the HTML file
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB connected!'))
+.catch(err => console.error('MongoDB connection error:', err));
 
-// API endpoint to save audit data
-// POST bulk sync audits
-app.post('/api/sync', (req, res) => {
+// Audit Schema
+const auditSchema = new mongoose.Schema({
+  id: { type: Number, required: true, unique: true },
+  schoolName: String,
+  localGov: String,
+  schoolAddress: String,
+  latitude: Number,
+  longitude: Number,
+  principalName: String,
+  totalTeachers: Number,
+  totalStudents: Number,
+  facilityCondition: String,
+  additionalNotes: String,
+  photos: [
+    {
+      name: String,
+      data: String,
+      type: String
+    }
+  ],
+  auditor: String,
+  timestamp: String,
+  synced: Boolean
+}, { versionKey: false });
+
+const Audit = mongoose.model('Audit', auditSchema);
+
+// GET audits
+app.get('/api/audits', async (req, res) => {
   try {
-    const { audits } = req.body;
-    let existingAudits = loadAudits();
-    const existingIds = existingAudits.map(a => a.id);
-    // Always mark as synced on the server
-    const newAudits = audits
-      .filter(a => !existingIds.includes(a.id))
-      .map(a => ({ ...a, synced: true }));
-    const allAudits = [...existingAudits, ...newAudits];
-    saveAudits(allAudits);
-    res.json({ 
-      success: true, 
-      message: `Synced ${newAudits.length} new audits`,
-      totalAudits: allAudits.length 
-    });
+    const audits = await Audit.find({});
+    res.json(audits);
   } catch (error) {
-    console.error('Error syncing data:', error);
-    res.status(500).json({ success: false, message: 'Error syncing data' });
+    console.error('Error fetching audits:', error);
+    res.status(500).json({ success: false, message: 'Error fetching audits' });
   }
 });
 
-// API endpoint to get all audits
-app.get('/api/audits', (req, res) => {
-    try {
-        if (fs.existsSync('audits.json')) {
-            const data = fs.readFileSync('audits.json', 'utf8');
-            const audits = JSON.parse(data);
-            res.json(audits);
-        } else {
-            res.json([]);
-        }
-    } catch (error) {
-        console.error('Error reading audits:', error);
-        res.status(500).json({ success: false, message: 'Error reading audits' });
-    }
+// POST audit
+app.post('/api/audits', async (req, res) => {
+  try {
+    const newAudit = new Audit({ ...req.body, synced: true });
+    await newAudit.save();
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error saving audit:', error);
+    res.status(500).json({ success: false, message: 'Error saving audit' });
+  }
 });
 
-// API endpoint for bulk sync
-app.post('/api/sync', (req, res) => {
-    try {
-        const { audits } = req.body;
-        
-        // Read existing data
-        let existingAudits = [];
-        if (fs.existsSync('audits.json')) {
-            const data = fs.readFileSync('audits.json', 'utf8');
-            existingAudits = JSON.parse(data);
-        }
-        
-        // Merge audits (avoid duplicates by ID)
-        const existingIds = existingAudits.map(a => a.id);
-        const newAudits = audits.filter(a => !existingIds.includes(a.id));
-        
-        const allAudits = [...existingAudits, ...newAudits];
-        
-        // Save to file
-        fs.writeFileSync('audits.json', JSON.stringify(allAudits, null, 2));
-        
-        res.json({ 
-            success: true, 
-            message: `Synced ${newAudits.length} new audits`,
-            totalAudits: allAudits.length 
-        });
-    } catch (error) {
-        console.error('Error syncing data:', error);
-        res.status(500).json({ success: false, message: 'Error syncing data' });
-    }
+// POST bulk sync audits
+app.post('/api/sync', async (req, res) => {
+  try {
+    const { audits } = req.body;
+    if (!Array.isArray(audits)) return res.status(400).json({ success: false, message: 'Invalid audits array' });
+    const existing = await Audit.find({}, 'id');
+    const existingIds = new Set(existing.map(a => a.id));
+    const newAudits = audits.filter(a => !existingIds.has(a.id)).map(a => ({ ...a, synced: true }));
+    if (newAudits.length > 0) await Audit.insertMany(newAudits);
+    const totalAudits = await Audit.countDocuments();
+    res.json({ success: true, message: `Synced ${newAudits.length} new audits`, totalAudits });
+  } catch (error) {
+    console.error('Error syncing audits:', error);
+    res.status(500).json({ success: false, message: 'Error syncing audits' });
+  }
+});
+
+// Serve the HTML file
+const path = require('path');
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
 
 // Create package.json setup instructions
