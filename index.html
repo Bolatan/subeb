@@ -202,7 +202,7 @@
             border-left: 6px solid var(--lagos-red);
         }
         .sidebar::after {
-            content: '';
+           
             position: absolute;
             top: 20px;
             right: 20px;
@@ -372,18 +372,54 @@
         .hidden {
             display: none !important;
         }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 16px;
+            z-index: 1002;
+        }
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 4px;
+            margin: 4px 0;
+            background: var(--lagos-white);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
         @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
+            .hamburger {
+                display: flex;
             }
             .sidebar {
                 display: none;
             }
-            .form-row {
-                grid-template-columns: 1fr;
+            .mobile-sidebar {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 220px;
+                height: 100vh;
+                background: var(--lagos-navy);
+                color: var(--lagos-white);
+                padding: 40px 20px 20px 20px;
+                z-index: 1001;
+                border-right: 6px solid var(--lagos-red);
+                box-shadow: 2px 0 16px rgba(0,0,0,0.15);
+                transition: transform 0.3s;
             }
-            .container {
-                padding: 10px;
+            .mobile-sidebar.hidden {
+                display: none;
+            }
+            .main-content {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -418,6 +454,9 @@
                     <img src="subeb.jpg" alt="Lagos State Logo">
                     Personnel & Facility Audit
                 </div>
+                <button class="hamburger" onclick="toggleMobileSidebar()" aria-label="Open navigation">
+                    <span></span><span></span><span></span>
+                </button>
                 <div class="status">
                     <div id="connectionStatus" class="status-dot"></div>
                     <span id="connectionText">Online</span>
@@ -592,6 +631,15 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Add this mobile sidebar -->
+            <div class="mobile-sidebar hidden" id="mobileSidebar">
+                <div class="nav-item" onclick="showSection('dashboard');toggleMobileSidebar();">📊 Dashboard</div>
+                <div class="nav-item" onclick="showSection('audit');toggleMobileSidebar();">📝 New Audit</div>
+                <div class="nav-item" onclick="showSection('records');toggleMobileSidebar();">📋 Records</div>
+                <div class="nav-item" onclick="showSection('sync');toggleMobileSidebar();">🔄 Sync Data</div>
+                <button class="btn btn-secondary" style="margin-top:20px;" onclick="logout();toggleMobileSidebar();">Logout</button>
             </div>
         </div>
     </div>
