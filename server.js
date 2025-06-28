@@ -25,13 +25,16 @@ const auditSchema = new mongoose.Schema({
   totalStudents: Number,
   facilityCondition: String,
   additionalNotes: String,
-  photos: [
-    {
-      name: String,
-      data: String,
-      type: String
+  photos: {
+    type: [String],
+    default: [],
+    validate: {
+      validator: function(v) {
+        return Array.isArray(v) && v.every(item => typeof item === 'string');
+      },
+      message: 'Photos must be an array of strings'
     }
-  ],
+  },
   auditor: String,
   timestamp: String,
   synced: Boolean
@@ -97,6 +100,15 @@ app.post('/api/audits', async (req, res) => {
         return photo;
       });
     }
+    // If photos is a string that should be an array
+    if (typeof photos === 'string') {
+      try {
+        photos = JSON.parse(photos);
+      } catch (e) {
+        console.error('Failed to parse photos JSON:', photos);
+        photos = [];
+      }
+    }
     // Example validation for photos array
     if (Array.isArray(photos) && photos.every(photo => typeof photo === 'string')) {
       // Proceed with sync (already handled by normalization below)
@@ -114,7 +126,8 @@ app.post('/api/audits', async (req, res) => {
       return false;
     });
     // Now robustly convert all to objects
-    photos = photos.map(photo => {
+    audit.photos = photos;
+    audit.photos = audit.photos.map(photo => {
       if (typeof photo === 'string') {
         return { name: photo, data: '', type: '' };
       }
@@ -127,7 +140,6 @@ app.post('/api/audits', async (req, res) => {
       }
       return null;
     }).filter(p => p && typeof p.name === 'string' && p.name);
-    audit.photos = photos;
     // Ensure numeric fields are numbers
     audit.totalTeachers = Number(audit.totalTeachers) || 0;
     audit.totalStudents = Number(audit.totalStudents) || 0;
@@ -191,6 +203,15 @@ app.post('/api/sync', async (req, res) => {
           return photo;
         });
       }
+      // If photos is a string that should be an array
+      if (typeof photos === 'string') {
+        try {
+          photos = JSON.parse(photos);
+        } catch (e) {
+          console.error('Failed to parse photos JSON:', photos);
+          photos = [];
+        }
+      }
       // Example validation for photos array
       if (Array.isArray(photos) && photos.every(photo => typeof photo === 'string')) {
         // Proceed with sync (already handled by normalization below)
@@ -208,7 +229,8 @@ app.post('/api/sync', async (req, res) => {
         return false;
       });
       // Now robustly convert all to objects
-      photos = photos.map(photo => {
+      audit.photos = photos;
+      audit.photos = audit.photos.map(photo => {
         if (typeof photo === 'string') {
           return { name: photo, data: '', type: '' };
         }
@@ -221,7 +243,6 @@ app.post('/api/sync', async (req, res) => {
         }
         return null;
       }).filter(p => p && typeof p.name === 'string' && p.name);
-      audit.photos = photos;
       // Ensure numeric fields are numbers
       audit.totalTeachers = Number(audit.totalTeachers) || 0;
       audit.totalStudents = Number(audit.totalStudents) || 0;
