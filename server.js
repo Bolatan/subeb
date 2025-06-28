@@ -125,25 +125,33 @@ app.post('/api/sync', async (req, res) => {
     const newAudits = audits.filter(a => !existingIds.has(Number(a.id))).map(audit => {
       // Ensure id is a number
       audit.id = Number(audit.id);
-      // Robustly handle photos field
+      // Robustly handle photos field (guarantee array of objects)
       let photos = audit.photos;
       if (!Array.isArray(photos)) {
         if (typeof photos === 'string' && photos.trim() !== '') {
-          try {
-            const parsed = JSON.parse(photos);
-            if (Array.isArray(parsed)) {
-              photos = parsed.map(photo => {
-                if (typeof photo === 'string') {
-                  return { name: photo, data: '', type: '' };
-                }
-                return photo;
-              });
-            } else {
-              photos = photos.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+          let str = photos.trim();
+          if (str.startsWith('[') && str.endsWith(']')) {
+            try {
+              let fixed = str.replace(/'/g, '"');
+              const parsed = JSON.parse(fixed);
+              if (Array.isArray(parsed)) {
+                photos = parsed.map(photo => {
+                  if (typeof photo === 'string') {
+                    return { name: photo, data: '', type: '' };
+                  }
+                  return photo;
+                });
+              } else {
+                photos = str.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+              }
+            } catch {
+              photos = str.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
             }
-          } catch {
-            photos = photos.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+          } else {
+            photos = str.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
           }
+        } else if (typeof photos === 'object' && photos !== null) {
+          photos = [photos];
         } else {
           photos = [];
         }
@@ -155,6 +163,9 @@ app.post('/api/sync', async (req, res) => {
           return photo;
         });
       }
+      // Filter to ensure each photo is an object with at least a 'name' property
+      photos = photos.filter(p => p && typeof p === 'object' && p.name);
+      audit.photos = photos;
       // Ensure numeric fields are numbers
       audit.totalTeachers = Number(audit.totalTeachers) || 0;
       audit.totalStudents = Number(audit.totalStudents) || 0;
