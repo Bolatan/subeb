@@ -53,7 +53,25 @@ app.get('/api/audits', async (req, res) => {
 // POST audit
 app.post('/api/audits', async (req, res) => {
   try {
-    const newAudit = new Audit({ ...req.body, synced: true });
+    let audit = req.body;
+    // Ensure photos is always an array of objects
+    if (!Array.isArray(audit.photos)) {
+      if (typeof audit.photos === 'string' && audit.photos.trim() !== '') {
+        // If it's a string (e.g. from CSV), convert to array of objects with name only
+        audit.photos = audit.photos.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+      } else {
+        audit.photos = [];
+      }
+    } else {
+      // If array, ensure each item is an object
+      audit.photos = audit.photos.map(photo => {
+        if (typeof photo === 'string') {
+          return { name: photo, data: '', type: '' };
+        }
+        return photo;
+      });
+    }
+    const newAudit = new Audit({ ...audit, synced: true });
     await newAudit.save();
     res.json({ success: true });
   } catch (error) {
@@ -69,7 +87,25 @@ app.post('/api/sync', async (req, res) => {
     if (!Array.isArray(audits)) return res.status(400).json({ success: false, message: 'Invalid audits array' });
     const existing = await Audit.find({}, 'id');
     const existingIds = new Set(existing.map(a => a.id));
-    const newAudits = audits.filter(a => !existingIds.has(a.id)).map(a => ({ ...a, synced: true }));
+    // Ensure photos is always an array of objects for each audit
+    const newAudits = audits.filter(a => !existingIds.has(a.id)).map(audit => {
+      let photos = audit.photos;
+      if (!Array.isArray(photos)) {
+        if (typeof photos === 'string' && photos.trim() !== '') {
+          photos = photos.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+        } else {
+          photos = [];
+        }
+      } else {
+        photos = photos.map(photo => {
+          if (typeof photo === 'string') {
+            return { name: photo, data: '', type: '' };
+          }
+          return photo;
+        });
+      }
+      return { ...audit, photos, synced: true };
+    });
     if (newAudits.length > 0) await Audit.insertMany(newAudits);
     const totalAudits = await Audit.countDocuments();
     res.json({ success: true, message: `Synced ${newAudits.length} new audits`, totalAudits });
