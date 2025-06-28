@@ -25,16 +25,13 @@ const auditSchema = new mongoose.Schema({
   totalStudents: Number,
   facilityCondition: String,
   additionalNotes: String,
-  photos: {
-    type: [
-      {
-        name: String,
-        data: String,
-        type: String
-      }
-    ],
-    default: []
-  },
+  photos: [
+    {
+      name: String,
+      data: String,
+      type: String
+    }
+  ],
   auditor: String,
   timestamp: String,
   synced: Boolean
