@@ -888,11 +888,11 @@ function saveAudit(event) {
         alert('You can only upload up to 5 photos.');
         return;
     }
-
     const form = document.getElementById('auditForm');
     const editId = form.getAttribute('data-edit-id');
     let audit;
-
+    // Convert uploadedFiles to array of strings (filenames)
+    const photoNames = uploadedFiles.map(f => f.name);
     if (editId) {
         // Edit mode: update existing audit
         const idx = auditData.findIndex(a => a.id == editId);
@@ -908,7 +908,7 @@ function saveAudit(event) {
         audit.totalStudents = parseInt(document.getElementById('totalStudents').value) || 0;
         audit.facilityCondition = document.getElementById('facilityCondition').value;
         audit.additionalNotes = document.getElementById('additionalNotes').value;
-        audit.photos = [...uploadedFiles];
+        audit.photos = [...photoNames];
         audit.synced = false; // Mark as not synced after edit
         audit.timestamp = new Date().toISOString();
     } else {
@@ -925,7 +925,7 @@ function saveAudit(event) {
             totalStudents: parseInt(document.getElementById('totalStudents').value) || 0,
             facilityCondition: document.getElementById('facilityCondition').value,
             additionalNotes: document.getElementById('additionalNotes').value,
-            photos: [...uploadedFiles],
+            photos: [...photoNames],
             auditor: currentUser,
             timestamp: new Date().toISOString(),
             synced: false
@@ -955,12 +955,14 @@ function saveAudit(event) {
 // Updated syncToServer function
 async function syncToServer(audit) {
     try {
+        // Ensure photos is array of strings
+        const auditToSend = { ...audit, photos: Array.isArray(audit.photos) ? audit.photos.map(f => typeof f === 'string' ? f : f.name) : [] };
         const response = await fetch('/api/audits', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(audit)
+            body: JSON.stringify(auditToSend)
         });
         
         if (response.ok) {
@@ -1314,7 +1316,7 @@ function handleCSVUpload(event) {
                 totalStudents: parseInt(row['Students']) || 0,
                 facilityCondition: row['Facility Condition'] || '',
                 additionalNotes: row['Additional Notes'] || '',
-                photos: [],
+                photos: Array.isArray(row['Photos']) ? row['Photos'].map(f => typeof f === 'string' ? f : (f && f.name ? f.name : '')) : [],
                 auditor: currentUser,
                 timestamp: row['Date'] ? new Date(row['Date']).toISOString() : new Date().toISOString(),
                 synced: false

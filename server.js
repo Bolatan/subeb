@@ -53,6 +53,24 @@ app.get('/api/audits', async (req, res) => {
   }
 });
 
+// Before validation/saving
+const fixPhotosField = (photosValue) => {
+  if (!photosValue) return [];
+  if (typeof photosValue === 'string') {
+    try {
+      // Remove problematic characters and parse
+      const cleaned = photosValue
+        .replace(/\n/g, '') // Remove newlines
+        .replace(/'/g, '"'); // Replace single quotes with double quotes
+      return JSON.parse(cleaned);
+    } catch (e) {
+      console.error('Failed to parse photos:', photosValue);
+      return [];
+    }
+  }
+  return Array.isArray(photosValue) ? photosValue : [];
+};
+
 // POST audit
 app.post('/api/audits', async (req, res) => {
   try {
@@ -145,6 +163,8 @@ app.post('/api/audits', async (req, res) => {
     audit.totalStudents = Number(audit.totalStudents) || 0;
     audit.latitude = audit.latitude !== undefined && audit.latitude !== null && audit.latitude !== '' ? Number(audit.latitude) : null;
     audit.longitude = audit.longitude !== undefined && audit.longitude !== null && audit.longitude !== '' ? Number(audit.longitude) : null;
+    // Apply the fix
+    audit.photos = fixPhotosField(audit.photos);
     const newAudit = new Audit({ ...audit, synced: true });
     await newAudit.save();
     res.json({ success: true });
@@ -248,7 +268,9 @@ app.post('/api/sync', async (req, res) => {
       audit.totalStudents = Number(audit.totalStudents) || 0;
       audit.latitude = audit.latitude !== undefined && audit.latitude !== null && audit.latitude !== '' ? Number(audit.latitude) : null;
       audit.longitude = audit.longitude !== undefined && audit.longitude !== null && audit.longitude !== '' ? Number(audit.longitude) : null;
-      return { ...audit, photos, synced: true };
+      // Apply the fix to photos before validation/saving
+      audit.photos = fixPhotosField(audit.photos);
+      return { ...audit, photos: fixPhotosField(audit.photos), synced: true };
     });
     if (newAudits.length > 0) await Audit.insertMany(newAudits);
     const totalAudits = await Audit.countDocuments();
