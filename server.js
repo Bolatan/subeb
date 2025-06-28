@@ -97,8 +97,24 @@ app.post('/api/audits', async (req, res) => {
         return photo;
       });
     }
-    // Filter to ensure each photo is an object with at least a 'name' property and convert any strings
-    photos = (Array.isArray(photos) ? photos : []).map(photo => {
+    // Example validation for photos array
+    if (Array.isArray(photos) && photos.every(photo => typeof photo === 'string')) {
+      // Proceed with sync (already handled by normalization below)
+    } else if (!Array.isArray(photos) || !photos.every(photo => typeof photo === 'string' || (typeof photo === 'object' && photo !== null && typeof photo.name === 'string'))) {
+      // Handle invalid data
+      console.error('Invalid photos format:', photos);
+      photos = [];
+    }
+    // Clean the data before validation
+    photos = (Array.isArray(photos) ? photos : []).map(photo =>
+      typeof photo === 'string' ? photo.trim() : photo
+    ).filter(photo => {
+      if (typeof photo === 'string') return photo.length > 0;
+      if (typeof photo === 'object' && photo !== null) return !!photo.name;
+      return false;
+    });
+    // Now robustly convert all to objects
+    photos = photos.map(photo => {
       if (typeof photo === 'string') {
         return { name: photo, data: '', type: '' };
       }
@@ -175,8 +191,24 @@ app.post('/api/sync', async (req, res) => {
           return photo;
         });
       }
-      // Filter to ensure each photo is an object with at least a 'name' property and convert any strings
-      photos = (Array.isArray(photos) ? photos : []).map(photo => {
+      // Example validation for photos array
+      if (Array.isArray(photos) && photos.every(photo => typeof photo === 'string')) {
+        // Proceed with sync (already handled by normalization below)
+      } else if (!Array.isArray(photos) || !photos.every(photo => typeof photo === 'string' || (typeof photo === 'object' && photo !== null && typeof photo.name === 'string'))) {
+        // Handle invalid data
+        console.error('Invalid photos format:', photos);
+        photos = [];
+      }
+      // Clean the data before validation
+      photos = (Array.isArray(photos) ? photos : []).map(photo =>
+        typeof photo === 'string' ? photo.trim() : photo
+      ).filter(photo => {
+        if (typeof photo === 'string') return photo.length > 0;
+        if (typeof photo === 'object' && photo !== null) return !!photo.name;
+        return false;
+      });
+      // Now robustly convert all to objects
+      photos = photos.map(photo => {
         if (typeof photo === 'string') {
           return { name: photo, data: '', type: '' };
         }
