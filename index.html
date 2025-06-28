@@ -707,7 +707,7 @@ function loadSession() {
         document.getElementById('authScreen').classList.add('hidden');
         document.getElementById('mainApp').classList.remove('hidden');
         console.log('Login successful');
-        
+        loadFromServer(); 
     } else {
         alert('Invalid credentials!\n\nValid login credentials:\n• admin / password123\n• auditor / audit2024');
         console.log('Login failed');
@@ -1084,23 +1084,15 @@ async function reloadAllData() {
 
 async function loadFromServer() {
     if (!isOnline) return;
-    
     try {
         const response = await fetch('/api/audits');
         if (response.ok) {
             const serverData = await response.json();
-            
-            // Merge server data with local data
-            const localIds = auditData.map(a => a.id);
-            const newServerData = serverData.filter(a => !localIds.includes(a.id));
-            
-            if (newServerData.length > 0) {
-                auditData = [...auditData, ...newServerData];
-                saveData();
-            }
-            // Always update dashboard after loading from server
+            // Replace local data completely with server data
+            auditData = serverData;
+            saveData();
             updateDashboard();
-            console.log(`Loaded ${newServerData.length} records from server`);
+            console.log(`Loaded ${auditData.length} records from server`);
         }
     } catch (error) {
         console.error('Error loading from server:', error);
