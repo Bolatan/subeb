@@ -28,7 +28,11 @@ app.get('/api/audits', (req, res) => {
 // POST audit
 app.post('/api/audits', (req, res) => {
   const audits = loadAudits();
-  audits.push(req.body);
+  const newAudit = {
+    ...req.body,
+    synced: true // Always mark as synced on the server
+  };
+  audits.push(newAudit);
   saveAudits(audits);
   res.json({ success: true });
 });
@@ -48,33 +52,27 @@ app.get('/', (req, res) => {
 });
 
 // API endpoint to save audit data
-app.post('/api/audits', (req, res) => {
-    try {
-        const auditData = req.body;
-        
-        // Read existing data
-        let audits = [];
-        if (fs.existsSync('audits.json')) {
-            const data = fs.readFileSync('audits.json', 'utf8');
-            audits = JSON.parse(data);
-        }
-        
-        // Add new audit
-        audits.push({
-            ...auditData,
-            id: Date.now(),
-            timestamp: new Date().toISOString(),
-            synced: true
-        });
-        
-        // Save to file
-        fs.writeFileSync('audits.json', JSON.stringify(audits, null, 2));
-        
-        res.json({ success: true, message: 'Audit saved successfully' });
-    } catch (error) {
-        console.error('Error saving audit:', error);
-        res.status(500).json({ success: false, message: 'Error saving audit' });
-    }
+// POST bulk sync audits
+app.post('/api/sync', (req, res) => {
+  try {
+    const { audits } = req.body;
+    let existingAudits = loadAudits();
+    const existingIds = existingAudits.map(a => a.id);
+    // Always mark as synced on the server
+    const newAudits = audits
+      .filter(a => !existingIds.includes(a.id))
+      .map(a => ({ ...a, synced: true }));
+    const allAudits = [...existingAudits, ...newAudits];
+    saveAudits(allAudits);
+    res.json({ 
+      success: true, 
+      message: `Synced ${newAudits.length} new audits`,
+      totalAudits: allAudits.length 
+    });
+  } catch (error) {
+    console.error('Error syncing data:', error);
+    res.status(500).json({ success: false, message: 'Error syncing data' });
+  }
 });
 
 // API endpoint to get all audits
