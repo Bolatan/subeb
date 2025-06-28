@@ -59,43 +59,47 @@ app.post('/api/audits', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Missing or invalid id (must be a unique number)' });
     }
     audit.id = Number(audit.id);
-    // Robustly handle photos field
-    if (!Array.isArray(audit.photos)) {
-      if (typeof audit.photos === 'string' && audit.photos.trim() !== '') {
-        let str = audit.photos.trim();
-        // Try to parse as JSON array, fixing single quotes if needed
+    // Robustly handle photos field (guarantee array of objects)
+    let photos = audit.photos;
+    if (!Array.isArray(photos)) {
+      if (typeof photos === 'string' && photos.trim() !== '') {
+        let str = photos.trim();
         if (str.startsWith('[') && str.endsWith(']')) {
           try {
-            // Replace single quotes with double quotes for JSON.parse
             let fixed = str.replace(/'/g, '"');
             const parsed = JSON.parse(fixed);
             if (Array.isArray(parsed)) {
-              audit.photos = parsed.map(photo => {
+              photos = parsed.map(photo => {
                 if (typeof photo === 'string') {
                   return { name: photo, data: '', type: '' };
                 }
                 return photo;
               });
             } else {
-              audit.photos = str.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+              photos = str.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
             }
           } catch {
-            audit.photos = str.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+            photos = str.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
           }
         } else {
-          audit.photos = str.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
+          photos = str.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
         }
+      } else if (typeof photos === 'object' && photos !== null) {
+        photos = [photos];
       } else {
-        audit.photos = [];
+        photos = [];
       }
     } else {
-      audit.photos = audit.photos.map(photo => {
+      photos = photos.map(photo => {
         if (typeof photo === 'string') {
           return { name: photo, data: '', type: '' };
         }
         return photo;
       });
     }
+    // Filter to ensure each photo is an object with at least a 'name' property
+    photos = photos.filter(p => p && typeof p === 'object' && p.name);
+    audit.photos = photos;
     // Ensure numeric fields are numbers
     audit.totalTeachers = Number(audit.totalTeachers) || 0;
     audit.totalStudents = Number(audit.totalStudents) || 0;
