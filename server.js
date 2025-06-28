@@ -42,6 +42,15 @@ const auditSchema = new mongoose.Schema({
 
 const Audit = mongoose.model('Audit', auditSchema);
 
+// Image Schema for storing images in MongoDB
+const imageSchema = new mongoose.Schema({
+  filename: { type: String, required: true, unique: true },
+  data: { type: Buffer, required: true },
+  type: { type: String, required: true }
+}, { versionKey: false });
+
+const Image = mongoose.model('Image', imageSchema);
+
 // GET audits
 app.get('/api/audits', async (req, res) => {
   try {
@@ -299,6 +308,42 @@ app.post('/api/sync', async (req, res) => {
   } catch (error) {
     console.error('Error syncing audits:', error);
     res.status(500).json({ success: false, message: 'Error syncing audits', error: error.message });
+  }
+});
+
+// Endpoint to serve image by filename from MongoDB
+app.get('/api/photo/:filename', async (req, res) => {
+  try {
+    const { filename } = req.params;
+    const image = await Image.findOne({ filename });
+    if (!image) return res.status(404).send('Image not found');
+    res.set('Content-Type', image.type);
+    res.send(image.data);
+  } catch (error) {
+    console.error('Error fetching image:', error);
+    res.status(500).send('Error fetching image');
+  }
+});
+
+// Endpoint to upload image to MongoDB (expects { filename, data (base64), type })
+app.post('/api/photo', async (req, res) => {
+  try {
+    const { filename, data, type } = req.body;
+    if (!filename || !data || !type) {
+      return res.status(400).json({ success: false, message: 'Missing filename, data, or type' });
+    }
+    // Convert base64 to Buffer
+    const buffer = Buffer.from(data, data.startsWith('data:') ? data.split(',')[1] : data, 'base64');
+    // Upsert image
+    await Image.findOneAndUpdate(
+      { filename },
+      { filename, data: buffer, type },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error saving image:', error);
+    res.status(500).json({ success: false, message: 'Error saving image', error: error.message });
   }
 });
 
