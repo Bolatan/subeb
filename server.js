@@ -54,16 +54,19 @@ app.get('/api/audits', async (req, res) => {
 app.post('/api/audits', async (req, res) => {
   try {
     let audit = req.body;
+    // Ensure id is present, a number, and unique
+    if (!audit.id || isNaN(Number(audit.id))) {
+      return res.status(400).json({ success: false, message: 'Missing or invalid id (must be a unique number)' });
+    }
+    audit.id = Number(audit.id);
     // Ensure photos is always an array of objects
     if (!Array.isArray(audit.photos)) {
       if (typeof audit.photos === 'string' && audit.photos.trim() !== '') {
-        // If it's a string (e.g. from CSV), convert to array of objects with name only
         audit.photos = audit.photos.split(';').map(name => ({ name: name.trim(), data: '', type: '' }));
       } else {
         audit.photos = [];
       }
     } else {
-      // If array, ensure each item is an object
       audit.photos = audit.photos.map(photo => {
         if (typeof photo === 'string') {
           return { name: photo, data: '', type: '' };
@@ -71,12 +74,17 @@ app.post('/api/audits', async (req, res) => {
         return photo;
       });
     }
+    // Ensure numeric fields are numbers
+    audit.totalTeachers = Number(audit.totalTeachers) || 0;
+    audit.totalStudents = Number(audit.totalStudents) || 0;
+    audit.latitude = audit.latitude !== undefined && audit.latitude !== null && audit.latitude !== '' ? Number(audit.latitude) : null;
+    audit.longitude = audit.longitude !== undefined && audit.longitude !== null && audit.longitude !== '' ? Number(audit.longitude) : null;
     const newAudit = new Audit({ ...audit, synced: true });
     await newAudit.save();
     res.json({ success: true });
   } catch (error) {
     console.error('Error saving audit:', error);
-    res.status(500).json({ success: false, message: 'Error saving audit' });
+    res.status(500).json({ success: false, message: 'Error saving audit', error: error.message });
   }
 });
 
@@ -88,7 +96,10 @@ app.post('/api/sync', async (req, res) => {
     const existing = await Audit.find({}, 'id');
     const existingIds = new Set(existing.map(a => a.id));
     // Ensure photos is always an array of objects for each audit
-    const newAudits = audits.filter(a => !existingIds.has(a.id)).map(audit => {
+    const newAudits = audits.filter(a => !existingIds.has(Number(a.id))).map(audit => {
+      // Ensure id is a number
+      audit.id = Number(audit.id);
+      // Ensure photos is always an array of objects
       let photos = audit.photos;
       if (!Array.isArray(photos)) {
         if (typeof photos === 'string' && photos.trim() !== '') {
@@ -104,6 +115,11 @@ app.post('/api/sync', async (req, res) => {
           return photo;
         });
       }
+      // Ensure numeric fields are numbers
+      audit.totalTeachers = Number(audit.totalTeachers) || 0;
+      audit.totalStudents = Number(audit.totalStudents) || 0;
+      audit.latitude = audit.latitude !== undefined && audit.latitude !== null && audit.latitude !== '' ? Number(audit.latitude) : null;
+      audit.longitude = audit.longitude !== undefined && audit.longitude !== null && audit.longitude !== '' ? Number(audit.longitude) : null;
       return { ...audit, photos, synced: true };
     });
     if (newAudits.length > 0) await Audit.insertMany(newAudits);
@@ -111,7 +127,7 @@ app.post('/api/sync', async (req, res) => {
     res.json({ success: true, message: `Synced ${newAudits.length} new audits`, totalAudits });
   } catch (error) {
     console.error('Error syncing audits:', error);
-    res.status(500).json({ success: false, message: 'Error syncing audits' });
+    res.status(500).json({ success: false, message: 'Error syncing audits', error: error.message });
   }
 });
 
