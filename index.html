@@ -528,7 +528,7 @@
                     <!-- Audit Form Section -->
                     <div id="auditSection" class="section hidden">
                         <h2>New Personnel & Facility Audit</h2>
-                        <form class="audit-form" onsubmit="saveAudit(event)">
+                        <form id="auditForm" class="audit-form" onsubmit="saveAudit(event)">
                             <div class="form-row"> <div class="form-group"> <label for="localGov">Local Government *</label> <select id="localGov" class="form-control" required onchange="loadSchools()"> <option value="">Select Local Government</option> </select> </div> <div class="form-group"> <label for="schoolName">Primary School *</label> <select id="schoolName" class="form-control" required disabled> <option value="">Select LGA first</option> </select> </div> </div>
 
                             <div class="form-row full">
@@ -888,63 +888,68 @@ function saveAudit(event) {
         alert('You can only upload up to 5 photos.');
         return;
     }
-    const audit = {
-        id: Date.now(),
-        schoolName: document.getElementById('schoolName').value,
-        localGov: document.getElementById('localGov').value,
-        schoolAddress: document.getElementById('schoolAddress').value,
-        latitude: parseFloat(document.getElementById('latitude').value) || null,
-        longitude: parseFloat(document.getElementById('longitude').value) || null,
-        principalName: document.getElementById('principalName').value,
-        totalTeachers: parseInt(document.getElementById('totalTeachers').value) || 0,
-        totalStudents: parseInt(document.getElementById('totalStudents').value) || 0,
-        facilityCondition: document.getElementById('facilityCondition').value,
-        additionalNotes: document.getElementById('additionalNotes').value,
-        photos: [...uploadedFiles],
-        auditor: currentUser,
-        timestamp: new Date().toISOString(),
-        synced: false // Initially not synced
-    };
-// Always try server first
 
-// Main submission logic
-// Save locally first (for offline capability)
-audit.synced = false;  // Mark as not synced initially
-auditData.push(audit);
-saveData();  // Save to localStorage
-updateDashboard();  // Update UI immediately
+    const form = document.getElementById('auditForm');
+    const editId = form.getAttribute('data-edit-id');
+    let audit;
 
-// Try to sync to server if online
-if (isOnline) {
-    syncToServer(audit).then(() => {
-        console.log('Sync completed successfully');
-    }).catch(error => {
-        console.error('Sync failed:', error);
-    });
-}
-// Function to sync pending audits when back online
-async function syncPendingAudits() {
-    const pendingAudits = auditData.filter(audit => !audit.synced);
-    console.log(`Syncing ${pendingAudits.length} pending audits`);
-    
-    for (const audit of pendingAudits) {
-        try {
-            await syncToServer(audit);
-        } catch (error) {
-            console.error('Failed to sync audit:', audit.id, error);
-        }
+    if (editId) {
+        // Edit mode: update existing audit
+        const idx = auditData.findIndex(a => a.id == editId);
+        if (idx === -1) return alert('Audit not found.');
+        audit = auditData[idx];
+        audit.schoolName = document.getElementById('schoolName').value;
+        audit.localGov = document.getElementById('localGov').value;
+        audit.schoolAddress = document.getElementById('schoolAddress').value;
+        audit.latitude = parseFloat(document.getElementById('latitude').value) || null;
+        audit.longitude = parseFloat(document.getElementById('longitude').value) || null;
+        audit.principalName = document.getElementById('principalName').value;
+        audit.totalTeachers = parseInt(document.getElementById('totalTeachers').value) || 0;
+        audit.totalStudents = parseInt(document.getElementById('totalStudents').value) || 0;
+        audit.facilityCondition = document.getElementById('facilityCondition').value;
+        audit.additionalNotes = document.getElementById('additionalNotes').value;
+        audit.photos = [...uploadedFiles];
+        audit.synced = false; // Mark as not synced after edit
+        audit.timestamp = new Date().toISOString();
+    } else {
+        // New audit
+        audit = {
+            id: Date.now(),
+            schoolName: document.getElementById('schoolName').value,
+            localGov: document.getElementById('localGov').value,
+            schoolAddress: document.getElementById('schoolAddress').value,
+            latitude: parseFloat(document.getElementById('latitude').value) || null,
+            longitude: parseFloat(document.getElementById('longitude').value) || null,
+            principalName: document.getElementById('principalName').value,
+            totalTeachers: parseInt(document.getElementById('totalTeachers').value) || 0,
+            totalStudents: parseInt(document.getElementById('totalStudents').value) || 0,
+            facilityCondition: document.getElementById('facilityCondition').value,
+            additionalNotes: document.getElementById('additionalNotes').value,
+            photos: [...uploadedFiles],
+            auditor: currentUser,
+            timestamp: new Date().toISOString(),
+            synced: false
+        };
+        auditData.push(audit);
     }
-}
 
-// Call this when connection is restored
-window.addEventListener('online', syncPendingAudits);
-    
+    saveData();
+    updateDashboard();
+    loadRecords();
+
+    // Reset edit mode
+    form.removeAttribute('data-edit-id');
+
     alert('Audit saved successfully!');
-    // Reset form 
-    event.target.reset(); uploadedFiles = []; document.getElementById('uploadedFiles').innerHTML = ''; // Reset dropdowns properly 
-    document.getElementById('localGov').value = ''; document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>'; document.getElementById('schoolName').disabled = true; updateDashboard();
-
-
+    // Reset form
+    event.target.reset();
+    uploadedFiles = [];
+    document.getElementById('uploadedFiles').innerHTML = '';
+    document.getElementById('localGov').value = '';
+    document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>';
+    document.getElementById('schoolName').disabled = true;
+    updateDashboard();
+    document.querySelector('#auditForm button[type="submit"]').textContent = "💾 Save Audit";
 }
 
 // Updated syncToServer function
@@ -1052,25 +1057,61 @@ async function reloadAllData() {
             }
         }
 
-        function loadRecords() {
-            const tableBody = document.getElementById('recordsTable');
-            if (auditData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#6b7280;">No records found</td></tr>';
-            } else {
-                tableBody.innerHTML = auditData.map((audit, idx) => `
-                    <tr>
-                        <td>${audit.schoolName}</td>
-                        <td>${audit.localGov}</td>
-                        <td>${new Date(audit.timestamp).toLocaleDateString()}</td>
-                        <td>${audit.principalName || '-'}</td>
-                        <td>${audit.totalTeachers}</td>
-                        <td>${audit.totalStudents}</td>
-                        <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
-                        <td><button class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="deleteRecord(${audit.id})">Delete</button></td>
-                    </tr>
-                `).join('');
-            }
-        }
+       function loadRecords() {
+    const tableBody = document.getElementById('recordsTable');
+    if (auditData.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#6b7280;">No records found</td></tr>';
+    } else {
+        tableBody.innerHTML = auditData.map((audit, idx) => `
+            <tr>
+                <td>${audit.schoolName}</td>
+                <td>${audit.localGov}</td>
+                <td>${new Date(audit.timestamp).toLocaleDateString()}</td>
+                <td>${audit.principalName || '-'}</td>
+                <td>${audit.totalTeachers}</td>
+                <td>${audit.totalStudents}</td>
+                <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
+                <td>
+                    <button class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="editRecord(${audit.id})">Edit</button>
+                    <button class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="deleteRecord(${audit.id})">Delete</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+}
+
+
+
+function editRecord(auditId) {
+    const audit = auditData.find(a => a.id === auditId);
+    if (!audit) return alert('Audit not found.');
+
+    // Show the audit form section
+    showSection('audit');
+
+    // Fill the form fields
+    document.getElementById('localGov').value = audit.localGov;
+    loadSchools();
+    document.getElementById('schoolName').value = audit.schoolName;
+    document.getElementById('schoolAddress').value = audit.schoolAddress;
+    document.getElementById('latitude').value = audit.latitude || '';
+    document.getElementById('longitude').value = audit.longitude || '';
+    document.getElementById('principalName').value = audit.principalName || '';
+    document.getElementById('totalTeachers').value = audit.totalTeachers || '';
+    document.getElementById('totalStudents').value = audit.totalStudents || '';
+    document.getElementById('facilityCondition').value = audit.facilityCondition || '';
+    document.getElementById('additionalNotes').value = audit.additionalNotes || '';
+
+    // Load photos
+    uploadedFiles = audit.photos ? [...audit.photos] : [];
+    updateFileDisplay();
+
+    // Store the id of the audit being edited
+    document.getElementById('auditForm').setAttribute('data-edit-id', auditId);
+document.querySelector('#auditForm button[type="submit"]').textContent = "Update Audit";
+}
+
+
 
         function updateSyncSection() {
             const pendingCount = auditData.filter(audit => !audit.synced).length;
