@@ -36,10 +36,7 @@ app.post('/api/audits', (req, res) => {
 // ...your other server code...
 
 app.listen(3001, () => console.log('Server running on port 3001'));
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const app = express();
+
 
 // Middleware
 app.use(express.json({ limit: '50mb' }));
