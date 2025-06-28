@@ -71,6 +71,25 @@ const fixPhotosField = (photosValue) => {
   return Array.isArray(photosValue) ? photosValue : [];
 };
 
+// Utility to process photos as array of strings (filenames only)
+const processPhotos = (photosData) => {
+  if (!photosData) return [];
+  // If it's a stringified array, parse it first
+  if (typeof photosData === 'string') {
+    try {
+      photosData = JSON.parse(photosData);
+    } catch (e) {
+      return [];
+    }
+  }
+  // Extract just the name property from each photo object
+  return Array.isArray(photosData)
+    ? photosData.map(photo =>
+        typeof photo === 'object' && photo.name ? photo.name : String(photo)
+      )
+    : [];
+};
+
 // POST audit
 app.post('/api/audits', async (req, res) => {
   try {
@@ -165,6 +184,7 @@ app.post('/api/audits', async (req, res) => {
     audit.longitude = audit.longitude !== undefined && audit.longitude !== null && audit.longitude !== '' ? Number(audit.longitude) : null;
     // Apply the fix
     audit.photos = fixPhotosField(audit.photos);
+    audit.photos = processPhotos(audit.photos);
     const newAudit = new Audit({ ...audit, synced: true });
     await newAudit.save();
     res.json({ success: true });
@@ -270,7 +290,8 @@ app.post('/api/sync', async (req, res) => {
       audit.longitude = audit.longitude !== undefined && audit.longitude !== null && audit.longitude !== '' ? Number(audit.longitude) : null;
       // Apply the fix to photos before validation/saving
       audit.photos = fixPhotosField(audit.photos);
-      return { ...audit, photos: fixPhotosField(audit.photos), synced: true };
+      audit.photos = processPhotos(audit.photos);
+      return { ...audit, photos: processPhotos(audit.photos), synced: true };
     });
     if (newAudits.length > 0) await Audit.insertMany(newAudits);
     const totalAudits = await Audit.countDocuments();
