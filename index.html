@@ -767,7 +767,7 @@ function logout() {
 
 
 // Resize image to max width/height before saving as base64
-function resizeImage(file, maxSize = 800, quality = 0.7) {
+function resizeImage(file, maxSize = 400, quality = 0.4) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = function(e) {
