@@ -421,6 +421,13 @@
             .main-content {
                 grid-template-columns: 1fr;
             }
+
+            /* Hide the header logout button on mobile */
+@media (max-width: 768px) {
+    .status .btn.btn-secondary {
+        display: none !important;
+    }
+}
         }
     </style>
 </head>
@@ -734,8 +741,9 @@ function logout() {
             navItems.forEach(item => item.classList.remove('active'));
             event.target.classList.add('active');
             
-            if (sectionName === 'records') loadRecords();
-            if (sectionName === 'sync') updateSyncSection();
+            if (sectionName === 'dashboard') updateDashboard(); // <-- Add this line
+    if (sectionName === 'records') loadRecords();
+    if (sectionName === 'sync') updateSyncSection();
         }
 
         // Get current location
@@ -784,6 +792,13 @@ function logout() {
             }
             updateFileDisplay();
         }
+        // Add this anywhere in your <script> tag
+function toggleMobileSidebar() {
+    const sidebar = document.getElementById('mobileSidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('hidden');
+    }
+}
         function displayFile(name, dataUrl) {
             const container = document.getElementById('uploadedFiles');
             const fileDiv = document.createElement('div');
