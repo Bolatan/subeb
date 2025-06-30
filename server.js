@@ -332,8 +332,13 @@ app.post('/api/photo', async (req, res) => {
     if (!filename || !data || !type) {
       return res.status(400).json({ success: false, message: 'Missing filename, data, or type' });
     }
-    // Convert base64 to Buffer
-    const buffer = Buffer.from(data, data.startsWith('data:') ? data.split(',')[1] : data, 'base64');
+    // Convert base64 to Buffer (robust: always extract after comma, remove whitespace/newlines)
+    let base64Data = data;
+    if (base64Data.startsWith('data:')) {
+      base64Data = base64Data.split(',')[1];
+    }
+    base64Data = base64Data.replace(/\s/g, ''); // Remove whitespace/newlines
+    const buffer = Buffer.from(base64Data, 'base64');
     // Upsert image
     await Image.findOneAndUpdate(
       { filename },
