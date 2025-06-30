@@ -884,7 +884,7 @@ function toggleMobileSidebar() {
 
         // Save audit
        // Replace the existing saveAudit function with this enhanced version
-function saveAudit(event) {
+async function saveAudit(event) {
     event.preventDefault();
     if (uploadedFiles.length > 5) {
         alert('You can only upload up to 5 photos.');
@@ -893,8 +893,19 @@ function saveAudit(event) {
     const form = document.getElementById('auditForm');
     const editId = form.getAttribute('data-edit-id');
     let audit;
-    // Convert uploadedFiles to array of strings (filenames)
-    const photoNames = uploadedFiles.map(f => f.name);
+    // Upload images to backend first
+    const photoNames = [];
+    for (const file of uploadedFiles) {
+        if (file.data && file.name) {
+            // Upload to backend if not already uploaded
+            await fetch('/api/photo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: file.name, data: file.data, type: file.type || 'image/jpeg' })
+            });
+            photoNames.push(file.name);
+        }
+    }
     if (editId) {
         // Edit mode: update existing audit
         const idx = auditData.findIndex(a => a.id == editId);
