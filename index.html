@@ -845,9 +845,11 @@ function toggleMobileSidebar() {
             const container = document.getElementById('uploadedFiles');
             const fileDiv = document.createElement('div');
             fileDiv.className = 'file-preview';
+            // Add a download button for the image
             fileDiv.innerHTML = `
                 <img src="${dataUrl}" alt="${name}">
                 <button class="file-remove" onclick="removeFile('${name}')">×</button>
+                <a href="${dataUrl}" download="${name}" class="file-download" title="Download"><span style="font-size:18px;position:absolute;bottom:5px;right:5px;background:rgba(30,64,175,0.8);color:#fff;padding:2px 8px;border-radius:6px;">⬇️</span></a>
             `;
             container.appendChild(fileDiv);
         }
