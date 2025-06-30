@@ -1341,19 +1341,20 @@ function handleCSVUpload(event) {
             if (!row['School Name'] || !row['Local Government']) return;
             const audit = {
                 id: Date.now() + Math.floor(Math.random()*100000),
-                schoolName: row['School Name'],
-                localGov: row['Local Government'],
+                schoolName: row['School Name'] || '',
+                localGov: row['Local Government'] || '',
                 schoolAddress: row['School Address'] || '',
-                latitude: parseFloat(row['Latitude']) || null,
-                longitude: parseFloat(row['Longitude']) || null,
+                latitude: row['Latitude'] ? parseFloat(row['Latitude']) : '',
+                longitude: row['Longitude'] ? parseFloat(row['Longitude']) : '',
                 principalName: row['Principal'] || '',
-                totalTeachers: parseInt(row['Teachers']) || 0,
-                totalStudents: parseInt(row['Students']) || 0,
+                totalTeachers: row['Teachers'] ? parseInt(row['Teachers']) : '',
+                totalStudents: row['Students'] ? parseInt(row['Students']) : '',
                 facilityCondition: row['Facility Condition'] || '',
                 additionalNotes: row['Additional Notes'] || '',
-                auditor: currentUser,
+                auditor: currentUser || '',
                 timestamp: new Date().toISOString(),
-                synced: false
+                synced: false,
+                photos: []
             };
             auditData.push(audit);
             added++;
