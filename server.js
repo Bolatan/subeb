@@ -338,6 +338,7 @@ app.post('/api/photo', async (req, res) => {
       base64Data = base64Data.split(',')[1];
     }
     base64Data = base64Data.replace(/\s/g, ''); // Remove whitespace/newlines
+    // Only decode as base64, never pass encoding param from client
     const buffer = Buffer.from(base64Data, 'base64');
     // Upsert image
     await Image.findOneAndUpdate(
