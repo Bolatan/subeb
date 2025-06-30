@@ -487,7 +487,7 @@
                             <div class="stat-card">
                                 <div class="stat-number" id="totalAudits">0</div>
                                 <div class="stat-label">Total Audits</div>
-                            </div
+                            </div>
                             <div class="stat-card">
                                 <div class="stat-number" id="pendingSync">0</div>
                                 <div class="stat-label">Pending Sync</div>
@@ -1074,7 +1074,7 @@ async function reloadAllData() {
                 <td>${audit.totalStudents}</td>
                 <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
                 <td>
-                    <button class="btn btn-secondary
+                    <button class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="(async () => { await editRecord(${audit.id}); })()">Edit</button>
                     <button class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="deleteRecord(${audit.id})">Delete</button>
                 </td>
             </tr>
@@ -1104,16 +1104,38 @@ function editRecord(auditId) {
     document.getElementById('facilityCondition').value = audit.facilityCondition || '';
     document.getElementById('additionalNotes').value = audit.additionalNotes || '';
 
-    // Load photos
-    uploadedFiles = audit.photos ? [...audit.photos] : [];
+    // Load photos from backend
+    uploadedFiles = audit.photos && audit.photos.length
+        ? await fetchImageDataForFilenames(audit.photos)
+        : [];
     updateFileDisplay();
 
     // Store the id of the audit being edited
     document.getElementById('auditForm').setAttribute('data-edit-id', auditId);
-document.querySelector('#auditForm button[type="submit"]').textContent = "Update Audit";
+    document.querySelector('#auditForm button[type="submit"]').textContent = "Update Audit";
 }
 
-
+// Helper: fetch image data from backend for each filename
+async function fetchImageDataForFilenames(filenames) {
+    const files = [];
+    for (const name of filenames) {
+        try {
+            const res = await fetch(`/api/photo/${encodeURIComponent(name)}`);
+            if (!res.ok) throw new Error('Not found');
+            const blob = await res.blob();
+            const dataUrl = await new Promise(resolve => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(blob);
+            });
+            files.push({ name, data: dataUrl, type: blob.type });
+        } catch (e) {
+            // If not found, just push with empty data
+            files.push({ name, data: '', type: '' });
+        }
+    }
+    return files;
+}
 
         function updateSyncSection() {
             const pendingCount = auditData.filter(audit => !audit.synced).length;
