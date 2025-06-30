@@ -1084,7 +1084,7 @@ async function reloadAllData() {
 
 
 
-function editRecord(auditId) {
+async function editRecord(auditId) {
     const audit = auditData.find(a => a.id === auditId);
     if (!audit) return alert('Audit not found.');
 
