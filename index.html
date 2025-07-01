@@ -1005,7 +1005,7 @@ async function syncToServer(audit) {
         
         if (response.ok) {
             // Mark as synced in local storage
-            const index = auditData.findIndex(a => a.id === audit.id);
+            const index = auditData.findIndex(audit => audit.id === audit.id);
             if (index !== -1) {
                 auditData[index].synced = true;
                 saveData();  // Save updated sync status
@@ -1384,8 +1384,9 @@ function handleCSVUpload(event) {
         Object.keys(csvLgaSchools).forEach(lga => {
             csvLgaSchools[lga] = Array.from(csvLgaSchools[lga]).sort();
         });
-        // Replace global lagosStateData with imported data
-        window.lagosStateData = csvLgaSchools;
+        // Overwrite global lagosStateData with only imported data
+        for (const key in lagosStateData) delete lagosStateData[key];
+        Object.assign(lagosStateData, csvLgaSchools);
         // Update dropdowns
         loadLocalGovernments();
         document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>';
