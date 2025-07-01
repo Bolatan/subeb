@@ -1156,10 +1156,12 @@ async function reloadAllData() {
 
        function loadRecords() {
     const tableBody = document.getElementById('recordsTable');
-    if (auditData.length === 0) {
+    if (!Array.isArray(auditData) || auditData.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:#6b7280;">No records found</td></tr>';
     } else {
         // Pagination logic
+        const totalPages = Math.ceil(auditData.length / recordsPerPage);
+        if (recordsPage > totalPages) recordsPage = totalPages > 0 ? totalPages : 1;
         const startIdx = (recordsPage - 1) * recordsPerPage;
         const endIdx = startIdx + recordsPerPage;
         const pageData = auditData.slice(startIdx, endIdx);
@@ -1181,6 +1183,10 @@ async function reloadAllData() {
         `).join('');
     }
     renderPaginationControls();
+}
+
+function renderRecordsTable() {
+    loadRecords();
 }
 
 function renderPaginationControls() {
