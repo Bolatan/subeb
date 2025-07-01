@@ -604,9 +604,14 @@
                     <div id="recordsSection" class="section hidden">
                         <h2>Audit Records</h2>
                         <button class="btn" style="width:auto;margin-bottom:20px;" onclick="exportToCSV()">⬇️ Export to CSV</button>
+                        <div style="margin-bottom:10px;">
+                            <button class="btn btn-secondary" style="width:auto;padding:8px 16px;" onclick="bulkEditRecords()">🛠️ Bulk Edit</button>
+                            <button class="btn btn-secondary" style="width:auto;padding:8px 16px;margin-left:10px;" onclick="bulkDeleteRecords()">🗑️ Bulk Delete</button>
+                        </div>
                         <table class="data-table">
                             <thead>
                                 <tr>
+                                    <th><input type="checkbox" id="selectAllCheckbox"></th>
                                     <th>School Name</th>
                                     <th>Local Government</th>
                                     <th>Date</th>
@@ -619,10 +624,11 @@
                             </thead>
                             <tbody id="recordsTable">
                                 <tr>
-                                    <td colspan="8" style="text-align:center;padding:40px;color:#6b7280;">No records found</td>
+                                    <td colspan="9" style="text-align:center;padding:40px;color:#6b7280;">No records found</td>
                                 </tr>
                             </tbody>
                         </table>
+                        <div id="paginationControls" style="margin-top:10px;text-align:center;"></div>
                     </div>
 
                     <!-- Sync Section -->
@@ -1071,12 +1077,10 @@ async function reloadAllData() {
     const completedToday = auditData.filter(audit => 
         new Date(audit.timestamp).toDateString() === today
     ).length;
-    
-    console.log('updateDashboard called - totalAudits:', totalAudits);
-    
-    document.getElementById('totalAudits').textContent = totalAudits;
-    document.getElementById('pendingSync').textContent = pendingSync;
-    document.getElementById('completedToday').textContent = completedToday;
+    // Update stats everywhere (desktop & mobile)
+    document.querySelectorAll('#totalAudits').forEach(el => el.textContent = totalAudits);
+    document.querySelectorAll('#pendingSync').forEach(el => el.textContent = pendingSync);
+    document.querySelectorAll('#completedToday').forEach(el => el.textContent = completedToday);
     updateRecentAuditsTable();
 }
 
@@ -1100,10 +1104,11 @@ async function reloadAllData() {
        function loadRecords() {
     const tableBody = document.getElementById('recordsTable');
     if (auditData.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#6b7280;">No records found</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:#6b7280;">No records found</td></tr>';
     } else {
         tableBody.innerHTML = auditData.map((audit, idx) => `
             <tr>
+                <td><input type="checkbox" class="record-checkbox" data-id="${audit.id}"></td>
                 <td>${audit.schoolName}</td>
                 <td>${audit.localGov}</td>
                 <td>${new Date(audit.timestamp).toLocaleDateString()}</td>
@@ -1118,312 +1123,72 @@ async function reloadAllData() {
             </tr>
         `).join('');
     }
+    renderPaginationControls();
 }
 
-
-
-async function editRecord(auditId) {
-    const audit = auditData.find(a => a.id === auditId);
-    if (!audit) return alert('Audit not found.');
-
-    // Show the audit form section
-    showSection('audit');
-
-    // Fill the form fields
-    document.getElementById('localGov').value = audit.localGov;
-    loadSchools();
-    document.getElementById('schoolName').value = audit.schoolName;
-    document.getElementById('schoolAddress').value = audit.schoolAddress;
-    document.getElementById('latitude').value = audit.latitude || '';
-    document.getElementById('longitude').value = audit.longitude || '';
-    document.getElementById('principalName').value = audit.principalName || '';
-    document.getElementById('totalTeachers').value = audit.totalTeachers || '';
-    document.getElementById('totalStudents').value = audit.totalStudents || '';
-    document.getElementById('facilityCondition').value = audit.facilityCondition || '';
-    document.getElementById('additionalNotes').value = audit.additionalNotes || '';
-
-    // Load photos from backend
-    uploadedFiles = audit.photos && audit.photos.length
-        ? await fetchImageDataForFilenames(audit.photos)
-        : [];
-    updateFileDisplay();
-
-    // Store the id of the audit being edited
-    document.getElementById('auditForm').setAttribute('data-edit-id', auditId);
-    document.querySelector('#auditForm button[type="submit"]').textContent = "Update Audit";
+function renderPaginationControls() {
+    const totalPages = Math.ceil(auditData.length / recordsPerPage);
+    let html = '';
+    if (totalPages > 1) {
+        html += `<div style="margin:10px 0;text-align:center;">
+            <button class="btn btn-secondary" onclick="gotoPage(1)" ${recordsPage === 1 ? 'disabled' : ''}>First</button>
+            <button class="btn btn-secondary" onclick="gotoPage(${recordsPage-1})" ${recordsPage === 1 ? 'disabled' : ''}>Prev</button>
+            <span style="margin:0 10px;">Page ${recordsPage} of ${totalPages}</span>
+            <button class="btn btn-secondary" onclick="gotoPage(${recordsPage+1})" ${recordsPage === totalPages ? 'disabled' : ''}>Next</button>
+            <button class="btn btn-secondary" onclick="gotoPage(${totalPages})" ${recordsPage === totalPages ? 'disabled' : ''}>Last</button>
+        </div>`;
+    }
+    document.getElementById('paginationControls').innerHTML = html;
 }
 
-// Helper: fetch image data from backend for each filename
-async function fetchImageDataForFilenames(filenames) {
-    const files = [];
-    for (const name of filenames) {
-        try {
-            const res = await fetch(`/api/photo/${encodeURIComponent(name)}`);
-            if (!res.ok) throw new Error('Not found');
-            const blob = await res.blob();
-            const dataUrl = await new Promise(resolve => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.readAsDataURL(blob);
-            });
-            files.push({ name, data: dataUrl, type: blob.type });
-        } catch (e) {
-            // If not found, just push with empty data
-            files.push({ name, data: '', type: '' });
-        }
-    }
-    return files;
+function gotoPage(page) {
+    const totalPages = Math.ceil(auditData.length / recordsPerPage);
+    if (page < 1 || page > totalPages) return;
+    recordsPage = page;
+    renderRecordsTable();
 }
 
-        function updateSyncSection() {
-            const pendingCount = auditData.filter(audit => !audit.synced).length;
-            document.getElementById('pendingSyncCount').textContent = pendingCount;
-        }
-
-        async function syncData() {
-    const unsyncedRecords = auditData.filter(audit => !audit.synced);
-    
-    if (unsyncedRecords.length === 0) {
-        document.getElementById('syncLog').innerHTML = '<p style="color:#10b981;">✅ All records are already synced!</p>';
-        return;
-    }
-
-    if (!isOnline) {
-        document.getElementById('syncLog').innerHTML = '<p style="color:#ef4444;">❌ Cannot sync: No internet connection</p>';
-        return;
-    }
-
-    // Show syncing message
-    document.getElementById('syncLog').innerHTML = '<p style="color:#0ea5e9;">🔄 Syncing ' + unsyncedRecords.length + ' records...</p>';
-    
-    try {
-        const response = await fetch('/api/sync', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ audits: unsyncedRecords })
-        });
-        
-        if (response.ok) {
-            const result = await response.json();
-            
-            // Mark all records as synced
-            auditData.forEach(audit => {
-                if (!audit.synced) audit.synced = true;
-            });
-            
-            saveData();
-            updateDashboard();
-            updateSyncSection();
-            
-            document.getElementById('syncLog').innerHTML = `<p style="color:#10b981;">✅ ${result.message}</p>`;
-        } else {
-            throw new Error('Sync failed');
-        }
-    } catch (error) {
-        console.error('Error syncing data:', error);
-        document.getElementById('syncLog').innerHTML = '<p style="color:#ef4444;">❌ Sync failed. Please try again.</p>';
-    }
-}
-
-async function loadFromServer() {
-    if (!isOnline) return;
-    try {
-        const response = await fetch('/api/audits');
-        if (response.ok) {
-            const serverData = await response.json();
-            // Replace local data completely with server data
-            auditData = serverData;
-            saveData();
-            updateDashboard();
-            console.log(`Loaded ${auditData.length} records from server`);
-        }
-    } catch (error) {
-        console.error('Error loading from server:', error);
-    }
-}
-
-
-
-
-
-
-
-        function updateConnectionStatus() {
-            const statusDot = document.getElementById('connectionStatus');
-            const statusText = document.getElementById('connectionText');
-            
-            if (isOnline) {
-                statusDot.classList.remove('offline');
-                statusText.textContent = 'Online';
-            } else {
-                statusDot.classList.add('offline');
-                statusText.textContent = 'Offline';
-            }
-        }
-
-        // Online/offline detection
-        window.addEventListener('online', function() {
-            isOnline = true;
-            updateConnectionStatus();
-        });
-
-        window.addEventListener('offline', function() {
-            isOnline = false;
-            updateConnectionStatus();
-        });
-
-        // Allow Enter key to submit login
-        document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !document.getElementById('authScreen').classList.contains('hidden')) {
-                login();
-            }
-        });
-
-        function exportToCSV() {
-    if (!auditData.length) {
-        alert('No records to export.');
-        return;
-    }
-    const header = [
-        'School Name',
-        'Local Government',
-        'Date',
-        'Principal',
-        'Teachers',
-        'Students',
-        'Facility Condition',
-        'Additional Notes',
-        'Latitude',
-        'Longitude',
-        'Auditor',
-        'Sync Status',
-        'Photos'
-    ];
-    const rows = auditData.map(audit => [
-        audit.schoolName,
-        audit.localGov,
-        new Date(audit.timestamp).toLocaleString(),
-        audit.principalName || '',
-        audit.totalTeachers,
-        audit.totalStudents,
-        audit.facilityCondition || '',
-        audit.additionalNotes ? audit.additionalNotes.replace(/\n/g, ' ') : '',
-        audit.latitude || '',
-        audit.longitude || '',
-        audit.auditor || '',
-        audit.synced ? 'Synced' : 'Pending',
-        (audit.photos && audit.photos.length) ? audit.photos.map(p => p.name).join('; ') : ''
-    ]);
-    let csvContent = '';
-    csvContent += header.join(',') + '\r\n';
-    rows.forEach(row => {
-        csvContent += row.map(field => '"' + String(field).replace(/"/g, '""') + '"').join(',') + '\r\n';
-    });
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'audit_records.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-}
-
-function deleteRecord(auditId) {
-    if (!confirm('Are you sure you want to delete this record?')) return;
-    auditData = auditData.filter(audit => audit.id !== auditId);
+// Bulk delete
+function bulkDeleteRecords() {
+    const checked = Array.from(document.querySelectorAll('.record-checkbox:checked'));
+    if (checked.length === 0) return alert('No records selected.');
+    if (!confirm(`Delete ${checked.length} selected records?`)) return;
+    const idsToDelete = checked.map(cb => Number(cb.getAttribute('data-id')));
+    auditData = auditData.filter(audit => !idsToDelete.includes(audit.id));
     saveData();
     updateDashboard();
-    loadRecords();
+    renderRecordsTable();
 }
 
-// Bulk CSV upload functions
-function triggerCSVInput() {
-    document.getElementById('csvUpload').click();
-}
-
-function handleCSVUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    if (!file.name.endsWith('.csv')) {
-        document.getElementById('csvUploadMsg').textContent = 'Please select a valid CSV file.';
-        return;
-    }
-    const reader = new FileReader();
-    reader.onload = async function(e) {
-        const text = e.target.result;
-        const result = parseCSV(text);
-        if (result.error) {
-            document.getElementById('csvUploadMsg').textContent = result.error;
-            return;
+// Bulk edit (for demo: just mark as synced)
+function bulkEditRecords() {
+    const checked = Array.from(document.querySelectorAll('.record-checkbox:checked'));
+    if (checked.length === 0) return alert('No records selected.');
+    auditData.forEach(audit => {
+        if (checked.some(cb => Number(cb.getAttribute('data-id')) === audit.id)) {
+            audit.synced = true;
         }
-        // Build new LGA->Schools mapping from CSV
-        const csvLgaSchools = {};
-        result.data.forEach(row => {
-            // Flexible header matching
-            const getAny = (...keys) => {
-                for (const k of keys) {
-                    for (const header of Object.keys(row)) {
-                        if (header.replace(/\s|_/g, '').toLowerCase() === k.replace(/\s|_/g, '').toLowerCase()) {
-                            return (row[header] !== undefined && row[header] !== null) ? String(row[header]).trim() : '';
-                        }
-                    }
-                }
-                return '';
-            };
-            const lga = getAny('Local Government');
-            const school = getAny('School Name');
-            if (!lga || !school) return;
-            if (!csvLgaSchools[lga]) csvLgaSchools[lga] = new Set();
-            csvLgaSchools[lga].add(school);
-        });
-        // Convert sets to sorted arrays
-        Object.keys(csvLgaSchools).forEach(lga => {
-            csvLgaSchools[lga] = Array.from(csvLgaSchools[lga]).sort();
-        });
-        // Overwrite global lagosStateData with only imported data
-        for (const key in lagosStateData) delete lagosStateData[key];
-        Object.assign(lagosStateData, csvLgaSchools);
-        // Update dropdowns
-        loadLocalGovernments();
-        document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>';
-        document.getElementById('schoolName').disabled = true;
-        document.getElementById('csvUploadMsg').style.color = 'var(--lagos-green)';
-        document.getElementById('csvUploadMsg').textContent = `Imported ${Object.keys(csvLgaSchools).length} LGAs from CSV.`;
-        setTimeout(()=>{document.getElementById('csvUploadMsg').textContent='';}, 4000);
-    };
-    reader.readAsText(file);
+    });
+    saveData();
+    updateDashboard();
+    renderRecordsTable();
 }
 
-function parseCSV(text) {
-    // Simple CSV parser (handles commas, quoted fields, newlines)
-    const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
-    if (lines.length < 2) return { error: 'CSV must have a header and at least one row.' };
-    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-    const data = [];
-    for (let i = 1; i < lines.length; i++) {
-        const row = {};
-        let inQuotes = false, field = '', col = 0, chars = lines[i].split('');
-        for (let j = 0; j < chars.length; j++) {
-            const c = chars[j];
-            if (c === '"') {
-                if (inQuotes && chars[j+1] === '"') { field += '"'; j++; }
-                else inQuotes = !inQuotes;
-            } else if (c === ',' && !inQuotes) {
-                row[headers[col++]] = field;
-                field = '';
-            } else {
-                field += c;
-            }
-        }
-        row[headers[col]] = field;
-        data.push(row);
-    }
-    return { data };
+// --- MOBILE DASHBOARD STATS FIX ---
+function updateDashboard() {
+    const totalAudits = auditData.length;
+    const pendingSync = auditData.filter(audit => !audit.synced).length;
+    const today = new Date().toDateString();
+    const completedToday = auditData.filter(audit => 
+        new Date(audit.timestamp).toDateString() === today
+    ).length;
+    // Update stats everywhere (desktop & mobile)
+    document.querySelectorAll('#totalAudits').forEach(el => el.textContent = totalAudits);
+    document.querySelectorAll('#pendingSync').forEach(el => el.textContent = pendingSync);
+    document.querySelectorAll('#completedToday').forEach(el => el.textContent = completedToday);
+    updateRecentAuditsTable();
 }
+// ...existing code...
     </script>
 </body>
 </html>
