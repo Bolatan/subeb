@@ -1174,42 +1174,42 @@ async function reloadAllData() {
         if (recordsPage > totalPages) recordsPage = totalPages > 0 ? totalPages : 1;
         const startIdx = (recordsPage - 1) * recordsPerPage;
         const endIdx = startIdx + recordsPerPage;
-        const pageData = auditData.slice(startIdx, endIdx);
-        tableBody.innerHTML = pageData.map((audit, idx) => `
-            <tr>
-                <td><input type="checkbox" class="record-checkbox" data-id="${audit.id}"></td>
-                <td>${audit.schoolName}</td>
-                <td>${audit.localGov}</td>
-                <td>${new Date(audit.timestamp).toLocaleDateString()}</td>
-                <td>${audit.principalName || '-'}</td>
-                <td>${audit.totalTeachers}</td>
-                <td>${audit.totalStudents}</td>
-                <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
-                <td>
-                    <button class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="editRecord(${audit.id})">Edit</button>
-                    <button class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="deleteRecord(${audit.id})">Delete</button>
-                </td>
-            </tr>
-        `).join('');
-    }
-    renderPaginationControls();
-}
-
-function renderRecordsTable() {
-    loadRecords();
-}
-
-function renderPaginationControls() {
-    const totalPages = Math.ceil(auditData.length / recordsPerPage);
-    let html = '';
-    if (totalPages > 1) {
-        html += `<div style="margin:10px 0;text-align:center;">
-            <button class="btn btn-secondary" onclick="gotoPage(1)" ${recordsPage === 1 ? 'disabled' : ''}>First</button>
-            <button class="btn btn-secondary" onclick="gotoPage(${recordsPage-1})" ${recordsPage === 1 ? 'disabled' : ''}>Prev</button>
-            <span style="margin:0 10px;">Page ${recordsPage} of ${totalPages}</span>
-            <button class="btn btn-secondary" onclick="gotoPage(${recordsPage+1})" ${recordsPage === totalPages ? 'disabled' : ''}>Next</button>
-            <button class="btn btn-secondary" onclick="gotoPage(${totalPages})" ${recordsPage === totalPages ? 'disabled' : ''}>Last</button>
-        </div>`;
+    document.querySelectorAll('#pendingSync').forEach(el => el.textContent = pendingSync);
+    document.querySelectorAll('#completedToday').forEach(el => el.textContent = completedToday);ML = pageData.map((audit, idx) => `
+    updateRecentAuditsTable();
+}   <td><input type="checkbox" class="record-checkbox" data-id="${audit.id}"></td>
+       <td>${audit.schoolName}</td>
+        function updateRecentAuditsTable() {                <td>${audit.localGov}</td>
+            const tableBody = document.getElementById('recentAuditsTable');audit.timestamp).toLocaleDateString()}</td>
+            if (auditData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:40px;color:#6b7280;">No audits completed yet</td></tr>';
+            } else {
+                const recentAudits = auditData.slice(-5).reverse();   <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
+                tableBody.innerHTML = recentAudits.map(audit => `
+                    <tr>class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="editRecord(${audit.id})">Edit</button>
+                        <td>${audit.schoolName}</td>ry" style="padding:4px 10px;font-size:13px;" onclick="deleteRecord(${audit.id})">Delete</button>
+                        <td>${audit.localGov}</td>   </td>
+                        <td>${new Date(audit.timestamp).toLocaleDateString()}</td>
+                        <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
+                    </tr>
+                `).join('');enderPaginationControls();
+            }
+        }
+derRecordsTable() {
+       function loadRecords() {
+    const tableBody = document.getElementById('recordsTable');
+    // Defensive: reload from localStorage if auditData is empty
+    if ((!Array.isArray(auditData) || auditData.length === 0)) {
+        try { / recordsPerPage);
+            const savedData = localStorage.getItem('auditAppData');
+            if (savedData) {
+                auditData = JSON.parse(savedData);`<div style="margin:10px 0;text-align:center;">
+            }abled' : ''}>First</button>
+        } catch (e) {" onclick="gotoPage(${recordsPage-1})" ${recordsPage === 1 ? 'disabled' : ''}>Prev</button>
+            auditData = [];age ${recordsPage} of ${totalPages}</span>
+        }age+1})" ${recordsPage === totalPages ? 'disabled' : ''}>Next</button>
+    }"gotoPage(${totalPages})" ${recordsPage === totalPages ? 'disabled' : ''}>Last</button>
+    if (!Array.isArray(auditData) || auditData.length === 0) {
     }
     document.getElementById('paginationControls').innerHTML = html;
 }
