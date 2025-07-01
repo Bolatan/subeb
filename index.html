@@ -913,6 +913,59 @@ function loadSchools() {
 }
 
 
+// --- CSV IMPORT: Replace LGAs and Schools in Form Dropdowns ---
+function handleCSVUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (!file.name.endsWith('.csv')) {
+        document.getElementById('csvUploadMsg').textContent = 'Please select a valid CSV file.';
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+        const text = e.target.result;
+        const result = parseCSV(text);
+        if (result.error) {
+            document.getElementById('csvUploadMsg').textContent = result.error;
+            return;
+        }
+        // Build new LGA->Schools mapping from CSV
+        const csvLgaSchools = {};
+        result.data.forEach(row => {
+            // Flexible header matching
+            const getAny = (...keys) => {
+                for (const k of keys) {
+                    for (const header of Object.keys(row)) {
+                        if (header.replace(/\s|_/g, '').toLowerCase() === k.replace(/\s|_/g, '').toLowerCase()) {
+                            return (row[header] !== undefined && row[header] !== null) ? String(row[header]).trim() : '';
+                        }
+                    }
+                }
+                return '';
+            };
+            const lga = getAny('Local Government');
+            const school = getAny('School Name');
+            if (!lga || !school) return;
+            if (!csvLgaSchools[lga]) csvLgaSchools[lga] = new Set();
+            csvLgaSchools[lga].add(school);
+        });
+        // Convert sets to sorted arrays
+        Object.keys(csvLgaSchools).forEach(lga => {
+            csvLgaSchools[lga] = Array.from(csvLgaSchools[lga]).sort();
+        });
+        // Overwrite global lagosStateData with only imported data
+        for (const key in lagosStateData) delete lagosStateData[key];
+        Object.assign(lagosStateData, csvLgaSchools);
+        // Update dropdowns
+        loadLocalGovernments();
+        document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>';
+        document.getElementById('schoolName').disabled = true;
+        document.getElementById('csvUploadMsg').style.color = 'var(--lagos-green)';
+        document.getElementById('csvUploadMsg').textContent = `Imported ${Object.keys(csvLgaSchools).length} LGAs from CSV.`;
+        setTimeout(()=>{document.getElementById('csvUploadMsg').textContent='';}, 4000);
+    };
+    reader.readAsText(file);
+}
         // Save audit
        // Replace the existing saveAudit function with this enhanced version
 async function saveAudit(event) {
