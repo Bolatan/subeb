@@ -911,7 +911,7 @@ function loadSchools() {
 }
 
 
-// --- CSV IMPORT: Replace LGAs and Schools in Form Dropdowns ---
+// --- CSV IMPORT: Replace LGAs and Schools in Form Dropdowns and Import Records ---
 function handleCSVUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -929,7 +929,8 @@ function handleCSVUpload(event) {
         }
         // Build new LGA->Schools mapping from CSV
         const csvLgaSchools = {};
-        result.data.forEach(row => {
+        const newRecords = [];
+        result.data.forEach((row, idx) => {
             // Flexible header matching
             const getAny = (...keys) => {
                 for (const k of keys) {
@@ -946,6 +947,25 @@ function handleCSVUpload(event) {
             if (!lga || !school) return;
             if (!csvLgaSchools[lga]) csvLgaSchools[lga] = new Set();
             csvLgaSchools[lga].add(school);
+            // Build audit record object
+            const audit = {
+                id: Date.now() + idx, // unique id
+                schoolName: school,
+                localGov: lga,
+                schoolAddress: getAny('School Address', 'Address'),
+                latitude: parseFloat(getAny('Latitude')) || null,
+                longitude: parseFloat(getAny('Longitude')) || null,
+                principalName: getAny('Principal Name', 'Principal'),
+                totalTeachers: parseInt(getAny('Total Teachers', 'Teachers')) || 0,
+                totalStudents: parseInt(getAny('Total Students', 'Students')) || 0,
+                facilityCondition: getAny('Facility Condition', 'Condition'),
+                additionalNotes: getAny('Additional Notes', 'Notes'),
+                photos: [],
+                auditor: currentUser || '',
+                timestamp: new Date().toISOString(),
+                synced: false
+            };
+            newRecords.push(audit);
         });
         // Convert sets to sorted arrays
         const newLgaSchools = {};
@@ -959,11 +979,51 @@ function handleCSVUpload(event) {
         loadLocalGovernments();
         document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>';
         document.getElementById('schoolName').disabled = true;
+        // Import records into auditData
+        auditData = auditData.concat(newRecords);
+        saveData();
+        updateDashboard();
+        loadRecords();
         document.getElementById('csvUploadMsg').style.color = 'var(--lagos-green)';
-        document.getElementById('csvUploadMsg').textContent = `Imported ${Object.keys(newLgaSchools).length} LGAs from CSV.`;
+        document.getElementById('csvUploadMsg').textContent = `Imported ${Object.keys(newLgaSchools).length} LGAs and ${newRecords.length} records from CSV.`;
         setTimeout(()=>{document.getElementById('csvUploadMsg').textContent='';}, 4000);
     };
     reader.readAsText(file);
+}
+
+// --- CSV PARSER: Flexible, robust, supports quoted fields ---
+function parseCSV(text) {
+    // Split lines, handle CRLF and trim
+    const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+    if (lines.length < 2) return { error: 'CSV must have a header and at least one data row.' };
+    // Parse header
+    const headerLine = lines[0];
+    const headers = [];
+    let col = '', inQuotes = false;
+    for (let i = 0; i < headerLine.length; i++) {
+        const char = headerLine[i];
+        if (char === '"') inQuotes = !inQuotes;
+        else if (char === ',' && !inQuotes) { headers.push(col.trim()); col = ''; }
+        else col += char;
+    }
+    headers.push(col.trim());
+    // Parse rows
+    const data = [];
+    for (let l = 1; l < lines.length; l++) {
+        const row = {};
+        let val = '', inQuotes = false, colIdx = 0;
+        const line = lines[l];
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            if (char === '"') inQuotes = !inQuotes;
+            else if (char === ',' && !inQuotes) { row[headers[colIdx++]] = val.replace(/^"|"$/g, '').trim(); val = ''; }
+            else val += char;
+        }
+        row[headers[colIdx]] = val.replace(/^"|"$/g, '').trim();
+        // Only add row if at least one field is non-empty
+        if (Object.values(row).some(v => v && v.length > 0)) data.push(row);
+    }
+    return { data };
 }
         // Save audit
        // Replace the existing saveAudit function with this enhanced version
@@ -1174,42 +1234,37 @@ async function reloadAllData() {
         if (recordsPage > totalPages) recordsPage = totalPages > 0 ? totalPages : 1;
         const startIdx = (recordsPage - 1) * recordsPerPage;
         const endIdx = startIdx + recordsPerPage;
-    document.querySelectorAll('#pendingSync').forEach(el => el.textContent = pendingSync);
-    document.querySelectorAll('#completedToday').forEach(el => el.textContent = completedToday);ML = pageData.map((audit, idx) => `
-    updateRecentAuditsTable();
-}   <td><input type="checkbox" class="record-checkbox" data-id="${audit.id}"></td>
-       <td>${audit.schoolName}</td>
-        function updateRecentAuditsTable() {                <td>${audit.localGov}</td>
-            const tableBody = document.getElementById('recentAuditsTable');audit.timestamp).toLocaleDateString()}</td>
-            if (auditData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:40px;color:#6b7280;">No audits completed yet</td></tr>';
-            } else {
-                const recentAudits = auditData.slice(-5).reverse();   <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
-                tableBody.innerHTML = recentAudits.map(audit => `
-                    <tr>class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="editRecord(${audit.id})">Edit</button>
-                        <td>${audit.schoolName}</td>ry" style="padding:4px 10px;font-size:13px;" onclick="deleteRecord(${audit.id})">Delete</button>
-                        <td>${audit.localGov}</td>   </td>
-                        <td>${new Date(audit.timestamp).toLocaleDateString()}</td>
-                        <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
-                    </tr>
-                `).join('');enderPaginationControls();
-            }
-        }
-derRecordsTable() {
-       function loadRecords() {
-    const tableBody = document.getElementById('recordsTable');
-    // Defensive: reload from localStorage if auditData is empty
-    if ((!Array.isArray(auditData) || auditData.length === 0)) {
-        try { / recordsPerPage);
-            const savedData = localStorage.getItem('auditAppData');
-            if (savedData) {
-                auditData = JSON.parse(savedData);`<div style="margin:10px 0;text-align:center;">
-            }abled' : ''}>First</button>
-        } catch (e) {" onclick="gotoPage(${recordsPage-1})" ${recordsPage === 1 ? 'disabled' : ''}>Prev</button>
-            auditData = [];age ${recordsPage} of ${totalPages}</span>
-        }age+1})" ${recordsPage === totalPages ? 'disabled' : ''}>Next</button>
-    }"gotoPage(${totalPages})" ${recordsPage === totalPages ? 'disabled' : ''}>Last</button>
-    if (!Array.isArray(auditData) || auditData.length === 0) {
+        const pageData = auditData.slice(startIdx, endIdx);
+        tableBody.innerHTML = pageData.map(audit => `
+            <tr>
+                <td><input type="checkbox" class="record-checkbox" data-id="${audit.id}"></td>
+                <td>${audit.schoolName}</td>
+                <td>${audit.localGov}</td>
+                <td>${new Date(audit.timestamp).toLocaleDateString()}</td>
+                <td>${audit.principalName || ''}</td>
+                <td>${audit.totalTeachers != null ? audit.totalTeachers : ''}</td>
+                <td>${audit.totalStudents != null ? audit.totalStudents : ''}</td>
+                <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
+                <td>
+                    <button class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="editRecord(${audit.id})">Edit</button>
+                    <button class="btn btn-danger" style="padding:4px 10px;font-size:13px;" onclick="deleteRecord(${audit.id})">Delete</button>
+                </td>
+            </tr>
+        `).join('');
+        renderPaginationControls();
+    }
+}
+
+// Pagination controls rendering
+function renderPaginationControls() {
+    const totalPages = Math.ceil(auditData.length / recordsPerPage);
+    let html = '';
+    if (totalPages > 1) {
+        html += `<button class="btn" style="padding:4px 10px;font-size:13px;" onclick="gotoPage(1)">First</button>`;
+        html += `<button class="btn" style="padding:4px 10px;font-size:13px;" onclick="gotoPage(${recordsPage-1})" ${recordsPage === 1 ? 'disabled' : ''}>Prev</button>`;
+        html += `<span style="padding:4px 10px;font-size:13px;">Page ${recordsPage} of ${totalPages}</span>`;
+        html += `<button class="btn" style="padding:4px 10px;font-size:13px;" onclick="gotoPage(${recordsPage+1})" ${recordsPage === totalPages ? 'disabled' : ''}>Next</button>`;
+        html += `<button class="btn" style="padding:4px 10px;font-size:13px;" onclick="gotoPage(${totalPages})" ${recordsPage === totalPages ? 'disabled' : ''}>Last</button>`;
     }
     document.getElementById('paginationControls').innerHTML = html;
 }
