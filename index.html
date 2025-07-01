@@ -948,18 +948,19 @@ function handleCSVUpload(event) {
             csvLgaSchools[lga].add(school);
         });
         // Convert sets to sorted arrays
+        const newLgaSchools = {};
         Object.keys(csvLgaSchools).forEach(lga => {
-            csvLgaSchools[lga] = Array.from(csvLgaSchools[lga]).sort();
+            newLgaSchools[lga] = Array.from(csvLgaSchools[lga]).sort();
         });
-        // Overwrite global lagosStateData with only imported data
-        for (const key in lagosStateData) delete lagosStateData[key];
-        Object.assign(lagosStateData, csvLgaSchools);
+        // Overwrite global lagosStateData with only imported data (remove all previous keys)
+        Object.keys(lagosStateData).forEach(key => { delete lagosStateData[key]; });
+        Object.assign(lagosStateData, newLgaSchools);
         // Update dropdowns
         loadLocalGovernments();
         document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>';
         document.getElementById('schoolName').disabled = true;
         document.getElementById('csvUploadMsg').style.color = 'var(--lagos-green)';
-        document.getElementById('csvUploadMsg').textContent = `Imported ${Object.keys(csvLgaSchools).length} LGAs from CSV.`;
+        document.getElementById('csvUploadMsg').textContent = `Imported ${Object.keys(newLgaSchools).length} LGAs from CSV.`;
         setTimeout(()=>{document.getElementById('csvUploadMsg').textContent='';}, 4000);
     };
     reader.readAsText(file);
