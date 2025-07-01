@@ -1273,7 +1273,7 @@ function gotoPage(page) {
     const totalPages = Math.ceil(auditData.length / recordsPerPage);
     if (page < 1 || page > totalPages) return;
     recordsPage = page;
-    renderRecordsTable();
+    loadRecords();
 }
 
 // Bulk delete
@@ -1285,7 +1285,7 @@ function bulkDeleteRecords() {
     auditData = auditData.filter(audit => !idsToDelete.includes(audit.id));
     saveData();
     updateDashboard();
-    renderRecordsTable();
+    loadRecords();
 }
 
 // Bulk edit (for demo: just mark as synced)
@@ -1299,7 +1299,7 @@ function bulkEditRecords() {
     });
     saveData();
     updateDashboard();
-    renderRecordsTable();
+    loadRecords();
 }
 
 // --- MOBILE DASHBOARD STATS FIX ---
