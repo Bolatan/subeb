@@ -671,13 +671,11 @@ const lagosStateData = { "Agege": [ "Agege Primary School I", "Agege Primary Sch
         // Replace the existing window.onload function
 window.onload = function() {
     console.log('App initialized');
-    loadData();
-    loadSession(); // Add this line
+    loadSession();
     loadLocalGovernments();
     updateDashboard();
     updateConnectionStatus();
-    loadFromServer(); // Add this line
-
+    loadFromServer(); // Always load from server on start
 };
 
 
@@ -747,8 +745,8 @@ function logout() {
             navItems.forEach(item => item.classList.remove('active'));
             event.target.classList.add('active');
             
-            if (sectionName === 'dashboard') updateDashboard(); // <-- Add this line
-    if (sectionName === 'records') loadRecords();
+            if (sectionName === 'dashboard') updateDashboard();
+    if (sectionName === 'records') loadFromServer(); // Always reload from server for records
     if (sectionName === 'sync') updateSyncSection();
         }
 
@@ -1156,6 +1154,17 @@ async function reloadAllData() {
 
        function loadRecords() {
     const tableBody = document.getElementById('recordsTable');
+    // Defensive: reload from localStorage if auditData is empty
+    if ((!Array.isArray(auditData) || auditData.length === 0)) {
+        try {
+            const savedData = localStorage.getItem('auditAppData');
+            if (savedData) {
+                auditData = JSON.parse(savedData);
+            }
+        } catch (e) {
+            auditData = [];
+        }
+    }
     if (!Array.isArray(auditData) || auditData.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:#6b7280;">No records found</td></tr>';
     } else {
