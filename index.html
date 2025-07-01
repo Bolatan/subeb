@@ -941,8 +941,8 @@ function handleCSVUpload(event) {
                 }
                 return '';
             };
-            const lga = getAny('Local Government');
-            const school = getAny('School Name');
+            const lga = getAny('Local Government', 'LGA');
+            const school = getAny('School Name', 'School');
             if (!lga || !school) return;
             if (!csvLgaSchools[lga]) csvLgaSchools[lga] = new Set();
             csvLgaSchools[lga].add(school);
