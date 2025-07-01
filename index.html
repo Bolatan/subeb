@@ -1159,7 +1159,11 @@ async function reloadAllData() {
     if (auditData.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:#6b7280;">No records found</td></tr>';
     } else {
-        tableBody.innerHTML = auditData.map((audit, idx) => `
+        // Pagination logic
+        const startIdx = (recordsPage - 1) * recordsPerPage;
+        const endIdx = startIdx + recordsPerPage;
+        const pageData = auditData.slice(startIdx, endIdx);
+        tableBody.innerHTML = pageData.map((audit, idx) => `
             <tr>
                 <td><input type="checkbox" class="record-checkbox" data-id="${audit.id}"></td>
                 <td>${audit.schoolName}</td>
@@ -1170,7 +1174,7 @@ async function reloadAllData() {
                 <td>${audit.totalStudents}</td>
                 <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
                 <td>
-                    <button class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="(async () => { await editRecord(${audit.id}); })()">Edit</button>
+                    <button class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="editRecord(${audit.id})">Edit</button>
                     <button class="btn btn-secondary" style="padding:4px 10px;font-size:13px;" onclick="deleteRecord(${audit.id})">Delete</button>
                 </td>
             </tr>
@@ -1241,7 +1245,6 @@ function updateDashboard() {
     document.querySelectorAll('#completedToday').forEach(el => el.textContent = completedToday);
     updateRecentAuditsTable();
 }
-// ...existing code...
     </script>
 </body>
 </html>
