@@ -874,12 +874,37 @@ function toggleMobileSidebar() {
         }
 
  // Load Local Government Areas into dropdown 
- function loadLocalGovernments() { const localGovDropdown = document.getElementById('localGov'); const lgas = Object.keys(lagosStateData).sort(); // Clear existing options except the first one 
- localGovDropdown.innerHTML = '<option value="">Select Local Government</option>'; // Add LGA options 
- lgas.forEach(lga => { const option = document.createElement('option'); option.value = lga; option.textContent = lga; localGovDropdown.appendChild(option); }); } // Load schools based on selected LGA 
- function loadSchools() { const localGov = document.getElementById('localGov').value; const schoolDropdown = document.getElementById('schoolName'); // Clear existing schools 
- schoolDropdown.innerHTML = '<option value="">Select Primary School</option>'; if (!localGov) { schoolDropdown.disabled = true; schoolDropdown.innerHTML = '<option value="">Select LGA first</option>'; return; } // Enable school dropdown and populate with schools 
- schoolDropdown.disabled = false; const schools = lagosStateData[localGov] || []; schools.forEach(school => { const option = document.createElement('option'); option.value = school; option.textContent = school; schoolDropdown.appendChild(option); }); }
+ function loadLocalGovernments() {
+    const localGovDropdown = document.getElementById('localGov');
+    const lgas = Object.keys(lagosStateData).sort();
+    localGovDropdown.innerHTML = '<option value="">Select Local Government</option>';
+    lgas.forEach(lga => {
+        const option = document.createElement('option');
+        option.value = lga;
+        option.textContent = lga;
+        localGovDropdown.appendChild(option);
+    });
+}
+
+// Load schools based on selected LGA 
+function loadSchools() {
+    const localGov = document.getElementById('localGov').value;
+    const schoolDropdown = document.getElementById('schoolName');
+    schoolDropdown.innerHTML = '<option value="">Select Primary School</option>';
+    if (!localGov) {
+        schoolDropdown.disabled = true;
+        schoolDropdown.innerHTML = '<option value="">Select LGA first</option>';
+        return;
+    }
+    schoolDropdown.disabled = false;
+    const schools = lagosStateData[localGov] || [];
+    schools.forEach(school => {
+        const option = document.createElement('option');
+        option.value = school;
+        option.textContent = school;
+        schoolDropdown.appendChild(option);
+    });
+}
 
 
         // Save audit
@@ -1335,9 +1360,10 @@ function handleCSVUpload(event) {
             document.getElementById('csvUploadMsg').textContent = result.error;
             return;
         }
-        let added = 0;
+        // Build new LGA->Schools mapping from CSV
+        const csvLgaSchools = {};
         result.data.forEach(row => {
-            // Flexible header matching: ignore case, spaces, underscores
+            // Flexible header matching
             const getAny = (...keys) => {
                 for (const k of keys) {
                     for (const header of Object.keys(row)) {
@@ -1348,44 +1374,24 @@ function handleCSVUpload(event) {
                 }
                 return '';
             };
-            if (!getAny('School Name') || !getAny('Local Government')) return;
-            // Helper to parse float, return null if invalid
-            const parseNumOrNull = v => {
-                const n = parseFloat(v);
-                return isNaN(n) ? null : n;
-            };
-            // Helper to parse int, return 0 if invalid
-            const parseIntOrZero = v => {
-                const n = parseInt(v);
-                return isNaN(n) ? 0 : n;
-            };
-            const audit = {
-                id: Date.now() + Math.floor(Math.random()*100000),
-                schoolName: getAny('School Name'),
-                localGov: getAny('Local Government'),
-                schoolAddress: getAny('School Address'),
-                latitude: parseNumOrNull(getAny('Latitude')),
-                longitude: parseNumOrNull(getAny('Longitude')),
-                principalName: getAny('Principal'),
-                totalTeachers: parseIntOrZero(getAny('Teachers')),
-                totalStudents: parseIntOrZero(getAny('Students')),
-                facilityCondition: getAny('Facility Condition'),
-                additionalNotes: getAny('Additional Notes'),
-                auditor: currentUser || '',
-                timestamp: new Date().toISOString(),
-                synced: false,
-                photos: []
-            };
-            auditData.push(audit);
-            added++;
+            const lga = getAny('Local Government');
+            const school = getAny('School Name');
+            if (!lga || !school) return;
+            if (!csvLgaSchools[lga]) csvLgaSchools[lga] = new Set();
+            csvLgaSchools[lga].add(school);
         });
-        saveData();
-        updateDashboard();
-        loadRecords();
+        // Convert sets to sorted arrays
+        Object.keys(csvLgaSchools).forEach(lga => {
+            csvLgaSchools[lga] = Array.from(csvLgaSchools[lga]).sort();
+        });
+        // Replace global lagosStateData with imported data
+        window.lagosStateData = csvLgaSchools;
+        // Update dropdowns
+        loadLocalGovernments();
+        document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>';
+        document.getElementById('schoolName').disabled = true;
         document.getElementById('csvUploadMsg').style.color = 'var(--lagos-green)';
-        document.getElementById('csvUploadMsg').textContent = `Successfully uploaded ${added} records. Syncing...`;
-        // Automatically trigger sync after upload
-        await syncData();
+        document.getElementById('csvUploadMsg').textContent = `Imported ${Object.keys(csvLgaSchools).length} LGAs from CSV.`;
         setTimeout(()=>{document.getElementById('csvUploadMsg').textContent='';}, 4000);
     };
     reader.readAsText(file);
