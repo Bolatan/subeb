@@ -361,6 +361,46 @@ app.post('/api/photo', async (req, res) => {
   }
 });
 
+// PATCH: Add update and delete endpoints for audits
+// PUT /api/audits/:id - Update audit by id
+app.put('/api/audits/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (!id) return res.status(400).json({ success: false, message: 'Invalid id' });
+    const update = req.body;
+    // Only allow updating fields that exist in schema
+    const allowedFields = [
+      'schoolName','localGov','schoolAddress','latitude','longitude','principalName','totalTeachers','totalStudents','facilityCondition','additionalNotes','photos','auditor','timestamp','synced'
+    ];
+    const updateData = {};
+    allowedFields.forEach(f => { if (update[f] !== undefined) updateData[f] = update[f]; });
+    // Normalize photos
+    if (updateData.photos) {
+      updateData.photos = Array.isArray(updateData.photos) ? updateData.photos.map(p => typeof p === 'string' ? p : p.name).filter(Boolean) : [];
+    }
+    const result = await Audit.findOneAndUpdate({ id }, updateData, { new: true });
+    if (!result) return res.status(404).json({ success: false, message: 'Audit not found' });
+    res.json({ success: true, audit: result });
+  } catch (error) {
+    console.error('Error updating audit:', error);
+    res.status(500).json({ success: false, message: 'Error updating audit', error: error.message });
+  }
+});
+
+// DELETE /api/audits/:id - Delete audit by id
+app.delete('/api/audits/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (!id) return res.status(400).json({ success: false, message: 'Invalid id' });
+    const result = await Audit.findOneAndDelete({ id });
+    if (!result) return res.status(404).json({ success: false, message: 'Audit not found' });
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting audit:', error);
+    res.status(500).json({ success: false, message: 'Error deleting audit', error: error.message });
+  }
+});
+
 // POST /api/lgas - Replace all LGA/School mappings
 app.post('/api/lgas', async (req, res) => {
   try {
