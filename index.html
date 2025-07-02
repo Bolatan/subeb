@@ -973,7 +973,6 @@ function handleCSVUpload(event) {
         // Build new LGA->Schools mapping from CSV (only use School Name and Local Government fields)
         const csvLgaSchools = {};
         result.data.forEach((row) => {
-            // Flexible header matching
             const getAny = (...keys) => {
                 for (const k of keys) {
                     for (const header of Object.keys(row)) {
@@ -1004,12 +1003,12 @@ function handleCSVUpload(event) {
         } catch (e) {
             console.error('Error saving lagosStateData to localStorage:', e);
         }
-        // --- Insert: POST lagosStateData to backend for MongoDB persistence ---
+        // --- PATCH: POST lagosStateData as { lagosStateData } to backend for MongoDB persistence ---
         try {
             await fetch('/api/lgas', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(lagosStateData)
+                body: JSON.stringify({ lagosStateData })
             });
             console.log('LGA/school mapping saved to backend.');
         } catch (err) {
@@ -1073,7 +1072,26 @@ function parseCSV(text) {
     }
     return { data };
 }
-        // Save audit
+
+// --- PATCH: Fix loadData to actually set auditData from localStorage ---
+function loadData() {
+    try {
+        const savedData = localStorage.getItem('auditAppData');
+        if (savedData) {
+            auditData = JSON.parse(savedData);
+            console.log('Data loaded:', auditData.length + ' records');
+        } else {
+            auditData = [];
+            console.log('No saved data found, starting fresh');
+        }
+    } catch (e) {
+        console.error('Error loading data:', e);
+        auditData = [];
+        alert('Error loading saved data. Starting with empty records.');
+    }
+}
+
+// Save audit
        // Replace the existing saveAudit function with this enhanced version
 async function saveAudit(event) {
     event.preventDefault();
@@ -1160,51 +1178,93 @@ async function saveAudit(event) {
     document.querySelector('#auditForm button[type="submit"]').textContent = "💾 Save Audit";
 }
 
-// --- PATCH: Only add mobile stats and delete button ONCE ---
-function ensureMobileStats() {
-    if (document.getElementById('mobileStatsCards')) return;
-    const dashboardSection = document.getElementById('dashboardSection');
-    const statsDiv = document.createElement('div');
-    statsDiv.id = 'mobileStatsCards';
-    statsDiv.className = 'dashboard-grid';
-    statsDiv.innerHTML = `
-        <div class="stat-card"><div style="font-size:32px;">📝</div><div style="font-size:18px;">Total Audits</div><div id="totalAudits">0</div></div>
-        <div class="stat-card"><div style="font-size:32px;">⏳</div><div style="font-size:18px;">Pending Sync</div><div id="pendingSync">0</div></div>
-        <div class="stat-card"><div style="font-size:32px;">✅</div><div style="font-size:18px;">Completed Today</div><div id="completedToday">0</div></div>
-    `;
-    dashboardSection.insertBefore(statsDiv, dashboardSection.children[1]);
-}
-
-function addDeleteAllAuditsButton() {
-    const dashboardSection = document.getElementById('dashboardSection');
-    if (!document.getElementById('deleteAllAuditsBtn')) {
-        const btn = document.createElement('button');
-        btn.id = 'deleteAllAuditsBtn';
-        btn.className = 'btn btn-secondary';
-        btn.style = 'width:auto;padding:8px 16px;margin-bottom:20px;margin-left:10px;';
-        btn.textContent = '🗑️ Delete All Audits';
-        btn.onclick = function() {
-            if (confirm('Are you sure you want to delete ALL audits? This cannot be undone.')) {
-                auditData = [];
-                saveData();
-                updateDashboard();
-                loadRecords();
-            }
-        };
-        dashboardSection.insertBefore(btn, dashboardSection.querySelector('h3'));
+// --- PATCH: Ensure lagosStateData is POSTed as { lagosStateData } for backend persistence ---
+function handleCSVUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (!file.name.endsWith('.csv')) {
+        document.getElementById('csvUploadMsg').textContent = 'Please select a valid CSV file.';
+        return;
     }
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+        const text = e.target.result;
+        const result = parseCSV(text);
+        if (result.error) {
+            document.getElementById('csvUploadMsg').textContent = result.error;
+            return;
+        }
+        // Build new LGA->Schools mapping from CSV (only use School Name and Local Government fields)
+        const csvLgaSchools = {};
+        result.data.forEach((row) => {
+            const getAny = (...keys) => {
+                for (const k of keys) {
+                    for (const header of Object.keys(row)) {
+                        if (header.replace(/\s|_/g, '').toLowerCase() === k.replace(/\s|_/g, '').toLowerCase()) {
+                            return (row[header] !== undefined && row[header] !== null) ? String(row[header]).trim() : '';
+                        }
+                    }
+                }
+                return '';
+            };
+            const lga = getAny('Local Government', 'LGA');
+            const school = getAny('School Name', 'School');
+            if (!lga || !school) return;
+            if (!csvLgaSchools[lga]) csvLgaSchools[lga] = new Set();
+            csvLgaSchools[lga].add(school);
+        });
+        // Convert sets to sorted arrays
+        const newLgaSchools = {};
+        Object.keys(csvLgaSchools).forEach(lga => {
+            newLgaSchools[lga] = Array.from(csvLgaSchools[lga]).sort();
+        });
+        // Overwrite global lagosStateData with only imported data (remove all previous keys)
+        Object.keys(lagosStateData).forEach(key => { delete lagosStateData[key]; });
+        Object.assign(lagosStateData, newLgaSchools);
+        // Persist lagosStateData to localStorage
+        try {
+            localStorage.setItem('lagosStateData', JSON.stringify(lagosStateData));
+        } catch (e) {
+            console.error('Error saving lagosStateData to localStorage:', e);
+        }
+        // --- PATCH: POST lagosStateData as { lagosStateData } to backend for MongoDB persistence ---
+        try {
+            await fetch('/api/lgas', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ lagosStateData })
+            });
+            console.log('LGA/school mapping saved to backend.');
+        } catch (err) {
+            console.error('Failed to save LGA/school mapping to backend:', err);
+        }
+        // Update dropdowns to only show imported LGAs and schools
+        loadLocalGovernments();
+        document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>';
+        document.getElementById('schoolName').disabled = true;
+        // Do NOT import records or update dashboard/records table
+        document.getElementById('csvUploadMsg').style.color = 'var(--lagos-green)';
+        document.getElementById('csvUploadMsg').textContent = `Imported ${Object.keys(newLgaSchools).length} LGAs from CSV. Use the form to add new audits.`;
+        setTimeout(()=>{document.getElementById('csvUploadMsg').textContent='';}, 4000);
+    };
+    reader.readAsText(file);
 }
 
-// --- PATCH: updateDashboard only patches ONCE ---
-(function patchUpdateDashboard() {
-    if (!window._dashboardPatched) {
-        const origUpdateDashboard = updateDashboard;
-        updateDashboard = function() {
-            ensureMobileStats && ensureMobileStats();
-            origUpdateDashboard();
-            addDeleteAllAuditsButton && addDeleteAllAuditsButton();
-        };
-        window._dashboardPatched = true;
+// --- PATCH: On app load, fetch lagosStateData from backend and persist to localStorage ---
+(async function fetchLagosStateDataFromBackend() {
+    try {
+        const response = await fetch('/api/lgas');
+        if (response.ok) {
+            const result = await response.json();
+            if (result.success && result.lagosStateData && Object.keys(result.lagosStateData).length > 0) {
+                lagosStateData = result.lagosStateData;
+                localStorage.setItem('lagosStateData', JSON.stringify(lagosStateData));
+                loadLocalGovernments && loadLocalGovernments();
+                console.log('Loaded lagosStateData from backend.');
+            }
+        }
+    } catch (e) {
+        console.warn('Could not fetch lagosStateData from backend:', e);
     }
 })();
 
