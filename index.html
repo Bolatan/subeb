@@ -898,9 +898,12 @@ function toggleMobileSidebar() {
         option.textContent = lga;
         localGovDropdown.appendChild(option);
     });
+    // Reset school dropdown
+    const schoolDropdown = document.getElementById('schoolName');
+    schoolDropdown.innerHTML = '<option value="">Select LGA first</option>';
+    schoolDropdown.disabled = true;
 }
 
-// Load schools based on selected LGA 
 function loadSchools() {
     const localGov = document.getElementById('localGov').value;
     const schoolDropdown = document.getElementById('schoolName');
@@ -1129,6 +1132,34 @@ async function saveAudit(event) {
     updateDashboard();
     document.querySelector('#auditForm button[type="submit"]').textContent = "💾 Save Audit";
 }
+
+// Add Delete All Audits button to dashboard
+function addDeleteAllAuditsButton() {
+    const dashboardSection = document.getElementById('dashboardSection');
+    if (!document.getElementById('deleteAllAuditsBtn')) {
+        const btn = document.createElement('button');
+        btn.id = 'deleteAllAuditsBtn';
+        btn.className = 'btn btn-secondary';
+        btn.style = 'width:auto;padding:8px 16px;margin-bottom:20px;margin-left:10px;';
+        btn.textContent = '🗑️ Delete All Audits';
+        btn.onclick = function() {
+            if (confirm('Are you sure you want to delete ALL audits? This cannot be undone.')) {
+                auditData = [];
+                saveData();
+                updateDashboard();
+                loadRecords();
+            }
+        };
+        dashboardSection.insertBefore(btn, dashboardSection.querySelector('h3'));
+    }
+}
+
+// Call this after dashboard loads
+const origUpdateDashboard = updateDashboard;
+updateDashboard = function() {
+    origUpdateDashboard();
+    addDeleteAllAuditsButton();
+};
 
 // Updated syncToServer function
 async function syncToServer(audit) {
