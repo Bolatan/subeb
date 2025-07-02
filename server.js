@@ -51,6 +51,14 @@ const imageSchema = new mongoose.Schema({
 
 const Image = mongoose.model('Image', imageSchema);
 
+// --- LGA/School Mapping Schema and Endpoints ---
+const lgaSchoolSchema = new mongoose.Schema({
+  localGov: { type: String, required: true },
+  schools: [{ type: String, required: true }]
+}, { versionKey: false });
+
+const LgaSchool = mongoose.model('LgaSchool', lgaSchoolSchema);
+
 // GET audits
 app.get('/api/audits', async (req, res) => {
   try {
@@ -350,6 +358,41 @@ app.post('/api/photo', async (req, res) => {
   } catch (error) {
     console.error('Error saving image:', error);
     res.status(500).json({ success: false, message: 'Error saving image', error: error.message });
+  }
+});
+
+// POST /api/lgas - Replace all LGA/School mappings
+app.post('/api/lgas', async (req, res) => {
+  try {
+    const { lagosStateData } = req.body;
+    if (!lagosStateData || typeof lagosStateData !== 'object') {
+      return res.status(400).json({ success: false, message: 'Missing or invalid lagosStateData' });
+    }
+    // Remove all previous mappings
+    await LgaSchool.deleteMany({});
+    // Insert new mappings
+    const docs = Object.entries(lagosStateData).map(([localGov, schools]) => ({ localGov, schools }));
+    await LgaSchool.insertMany(docs);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error saving LGA/School mapping:', error);
+    res.status(500).json({ success: false, message: 'Error saving LGA/School mapping', error: error.message });
+  }
+});
+
+// GET /api/lgas - Retrieve all LGA/School mappings
+app.get('/api/lgas', async (req, res) => {
+  try {
+    const mappings = await LgaSchool.find({});
+    // Convert to { LGA: [schools] } format
+    const result = {};
+    mappings.forEach(doc => {
+      result[doc.localGov] = doc.schools;
+    });
+    res.json({ success: true, lagosStateData: result });
+  } catch (error) {
+    console.error('Error fetching LGA/School mapping:', error);
+    res.status(500).json({ success: false, message: 'Error fetching LGA/School mapping', error: error.message });
   }
 });
 
