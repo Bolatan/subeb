@@ -927,7 +927,7 @@ function handleCSVUpload(event) {
             document.getElementById('csvUploadMsg').textContent = result.error;
             return;
         }
-        // Build new LGA->Schools mapping from CSV
+        // Build new LGA->Schools mapping from CSV (only use School Name and Local Government fields)
         const csvLgaSchools = {};
         const newRecords = [];
         result.data.forEach((row, idx) => {
@@ -975,25 +975,25 @@ function handleCSVUpload(event) {
         // Overwrite global lagosStateData with only imported data (remove all previous keys)
         Object.keys(lagosStateData).forEach(key => { delete lagosStateData[key]; });
         Object.assign(lagosStateData, newLgaSchools);
-        // Update dropdowns
+        // Update dropdowns to only show imported LGAs and schools
         loadLocalGovernments();
         document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>';
         document.getElementById('schoolName').disabled = true;
-        // Import records into auditData
-        auditData = auditData.concat(newRecords);
+        // Remove all previous audits and import only new records
+        auditData = newRecords;
         saveData();
         updateDashboard();
         loadRecords();
         document.getElementById('csvUploadMsg').style.color = 'var(--lagos-green)';
-        document.getElementById('csvUploadMsg').textContent = `Imported ${Object.keys(newLgaSchools).length} LGAs and ${newRecords.length} records from CSV.`;
+        document.getElementById('csvUploadMsg').textContent = `Imported ${Object.keys(newLgaSchools).length} LGAs and ${newRecords.length} records from CSV. All previous audits deleted.`;
         setTimeout(()=>{document.getElementById('csvUploadMsg').textContent='';}, 4000);
     };
     reader.readAsText(file);
 }
 
-// --- CSV PARSER: Flexible, robust, supports quoted fields ---
-function parseCSV(text) {
-    // Split lines, handle CRLF and trim
+// Update loadLocalGovernments to only use lagosStateData (no old LGAs)
+function loadLocalGovernments() {
+    const localGovDropdown = document.getElementById('localGov
     const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
     if (lines.length < 2) return { error: 'CSV must have a header and at least one data row.' };
     // Parse header
