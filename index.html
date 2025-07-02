@@ -1304,33 +1304,41 @@ async function deleteRecord(id) {
     updateDashboard && updateDashboard();
 }
 
-// --- PATCH: Always update dashboard stats from auditData (backend + local) ---
-function updateDashboard() {
-    // Ensure auditData is loaded
-    if (!Array.isArray(auditData)) auditData = [];
-    // Total audits
-    document.getElementById('totalAudits').textContent = auditData.length;
-    // Pending sync
-    const pending = auditData.filter(a => !a.synced).length;
-    document.getElementById('pendingSync').textContent = pending;
-    // Completed today
-    const today = new Date().toISOString().slice(0, 10);
-    const completedToday = auditData.filter(audit => audit.timestamp && audit.timestamp.slice(0, 10) === today).length;
-    document.getElementById('completedToday').textContent = completedToday;
-    // Recent audits table
-    const recentTable = document.getElementById('recentAuditsTable');
-    if (recentTable) {
-        const sorted = [...auditData].sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
-        const rows = sorted.slice(0, 5).map(audit => `
-            <tr>
-                <td>${audit.schoolName || ''}</td>
-                <td>${audit.localGov || ''}</td>
-                <td>${audit.timestamp ? new Date(audit.timestamp).toLocaleString() : ''}</td>
-                <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
-            </tr>
-        `).join('');
-        recentTable.innerHTML = rows || '<tr><td colspan="4" style="text-align:center;padding:40px;color:#6b7280;">No audits completed yet</td></tr>';
+// --- PATCH: Bulk delete and bulk edit for records page ---
+function getSelectedRecordIds() {
+    const checkboxes = document.querySelectorAll('#recordsTable input[type="checkbox"]:checked');
+    return Array.from(checkboxes).map(cb => cb.getAttribute('data-id'));
+}
+
+async function bulkDeleteRecords() {
+    const ids = getSelectedRecordIds();
+    if (ids.length === 0) {
+        alert('Select at least one record to delete.');
+        return;
     }
+    if (!confirm(`Are you sure you want to delete ${ids.length} selected record(s)?`)) return;
+    for (const id of ids) {
+        await fetch(`/api/audits/${id}`, { method: 'DELETE' });
+        const idx = auditData.findIndex(a => a.id == id);
+        if (idx !== -1) auditData.splice(idx, 1);
+    }
+    saveData();
+    loadRecords();
+    if (typeof updateDashboard === 'function') updateDashboard();
+}
+
+function bulkEditRecords() {
+    const ids = getSelectedRecordIds();
+    if (ids.length === 0) {
+        alert('Select at least one record to edit.');
+        return;
+    }
+    if (ids.length > 1) {
+        alert('Bulk edit only supports editing one record at a time. Please select only one record.');
+        return;
+    }
+    // Trigger edit for the first selected record
+    editRecord(ids[0]);
 }
     </script>
 </body>
