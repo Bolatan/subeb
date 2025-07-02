@@ -692,6 +692,21 @@ let lagosStateData = { "Agege": [ "Agege Primary School I", "Agege Primary Schoo
     }
 })();
 
+// --- PATCH: Only call addDeleteAllAuditsButton ONCE, and only on dashboard ---
+(function patchUpdateDashboard() {
+    if (!window._dashboardPatched) {
+        const origUpdateDashboard = updateDashboard;
+        updateDashboard = function() {
+            ensureMobileStats && ensureMobileStats();
+            origUpdateDashboard();
+            if (document.getElementById('dashboardSection') && !document.getElementById('deleteAllAuditsBtn')) {
+                addDeleteAllAuditsButton && addDeleteAllAuditsButton();
+            }
+        };
+        window._dashboardPatched = true;
+    }
+})();
+
 // Global variables
         let currentUser = null;
         let auditData = [];
@@ -1091,11 +1106,15 @@ async function saveAudit(event) {
     const photoNames = [];
     for (const file of uploadedFiles) {
         if (file.data && file.name) {
-            // Upload to backend if not already uploaded
+            // Always strip base64 header if present
+            let base64Data = file.data;
+            if (base64Data.startsWith('data:')) {
+                base64Data = base64Data.split(',')[1];
+            }
             await fetch('/api/photo', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ filename: file.name, data: file.data, type: file.type || 'image/jpeg' })
+                body: JSON.stringify({ filename: file.name, data: base64Data, type: file.type || 'image/jpeg' })
             });
             photoNames.push(file.name);
         }
@@ -1205,18 +1224,19 @@ async function syncToServer(audit) {
         });
         
         if (response.ok) {
-            // Mark as synced in local storage
-            const index = auditData.findIndex(audit => audit.id === audit.id);
+            // Mark as synced in local storage (find by id)
+            const index = auditData.findIndex(a => a.id === audit.id);
             if (index !== -1) {
                 auditData[index].synced = true;
-                saveData();  // Save updated sync status
-                updateDashboard();  // Update sync indicators
+                saveData();
+                updateDashboard();
+                updateSyncSection && updateSyncSection();
             }
             console.log('Audit synced to server successfully');
         }
     } catch (error) {
         console.error('Error syncing to server:', error);
-        throw error;  // Re-throw for .catch() handler
+        throw error;
     }
 }
 
