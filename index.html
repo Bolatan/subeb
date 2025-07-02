@@ -1303,6 +1303,35 @@ async function deleteRecord(id) {
     loadRecords();
     updateDashboard && updateDashboard();
 }
+
+// --- PATCH: Always update dashboard stats from auditData (backend + local) ---
+function updateDashboard() {
+    // Ensure auditData is loaded
+    if (!Array.isArray(auditData)) auditData = [];
+    // Total audits
+    document.getElementById('totalAudits').textContent = auditData.length;
+    // Pending sync
+    const pending = auditData.filter(a => !a.synced).length;
+    document.getElementById('pendingSync').textContent = pending;
+    // Completed today
+    const today = new Date().toISOString().slice(0, 10);
+    const completedToday = auditData.filter(audit => audit.timestamp && audit.timestamp.slice(0, 10) === today).length;
+    document.getElementById('completedToday').textContent = completedToday;
+    // Recent audits table
+    const recentTable = document.getElementById('recentAuditsTable');
+    if (recentTable) {
+        const sorted = [...auditData].sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
+        const rows = sorted.slice(0, 5).map(audit => `
+            <tr>
+                <td>${audit.schoolName || ''}</td>
+                <td>${audit.localGov || ''}</td>
+                <td>${audit.timestamp ? new Date(audit.timestamp).toLocaleString() : ''}</td>
+                <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
+            </tr>
+        `).join('');
+        recentTable.innerHTML = rows || '<tr><td colspan="4" style="text-align:center;padding:40px;color:#6b7280;">No audits completed yet</td></tr>';
+    }
+}
     </script>
 </body>
 </html>
