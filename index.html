@@ -692,21 +692,6 @@ let lagosStateData = { "Agege": [ "Agege Primary School I", "Agege Primary Schoo
     }
 })();
 
-// --- PATCH: Only call addDeleteAllAuditsButton ONCE, and only on dashboard ---
-(function patchUpdateDashboard() {
-    if (!window._dashboardPatched) {
-        const origUpdateDashboard = updateDashboard;
-        updateDashboard = function() {
-            ensureMobileStats && ensureMobileStats();
-            origUpdateDashboard();
-            if (document.getElementById('dashboardSection') && !document.getElementById('deleteAllAuditsBtn')) {
-                addDeleteAllAuditsButton && addDeleteAllAuditsButton();
-            }
-        };
-        window._dashboardPatched = true;
-    }
-})();
-
 // Global variables
         let currentUser = null;
         let auditData = [];
@@ -1106,7 +1091,170 @@ async function saveAudit(event) {
     const photoNames = [];
     for (const file of uploadedFiles) {
         if (file.data && file.name) {
-            // Always strip base64 header if present
+            let base64Data = file.data;
+            if (base64Data.startsWith('data:')) {
+                base64Data = base64Data.split(',')[1];
+            }
+            await fetch('/api/photo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: file.name, data: base64Data, type: file.type || 'image/jpeg' })
+            });
+            photoNames.push(file.name);
+        }
+    }
+    if (editId) {
+        // Edit mode: update existing audit
+        const idx = auditData.findIndex(a => a.id == editId);
+        if (idx === -1) return alert('Audit not found.');
+        audit = auditData[idx];
+        audit.schoolName = document.getElementById('schoolName').value;
+        audit.localGov = document.getElementById('localGov').value;
+        audit.schoolAddress = document.getElementById('schoolAddress').value;
+        audit.latitude = parseFloat(document.getElementById('latitude').value) || null;
+        audit.longitude = parseFloat(document.getElementById('longitude').value) || null;
+        audit.principalName = document.getElementById('principalName').value;
+        audit.totalTeachers = parseInt(document.getElementById('totalTeachers').value) || 0;
+        audit.totalStudents = parseInt(document.getElementById('totalStudents').value) || 0;
+        audit.facilityCondition = document.getElementById('facilityCondition').value;
+        audit.additionalNotes = document.getElementById('additionalNotes').value;
+        audit.photos = [...photoNames];
+        audit.synced = false; // Mark as not synced after edit
+        audit.timestamp = new Date().toISOString();
+    } else {
+        // New audit
+        audit = {
+            id: Date.now(),
+            schoolName: document.getElementById('schoolName').value,
+            localGov: document.getElementById('localGov').value,
+            schoolAddress: document.getElementById('schoolAddress').value,
+            latitude: parseFloat(document.getElementById('latitude').value) || null,
+            longitude: parseFloat(document.getElementById('longitude').value) || null,
+            principalName: document.getElementById('principalName').value,
+            totalTeachers: parseInt(document.getElementById('totalTeachers').value) || 0,
+            totalStudents: parseInt(document.getElementById('totalStudents').value) || 0,
+            facilityCondition: document.getElementById('facilityCondition').value,
+            additionalNotes: document.getElementById('additionalNotes').value,
+            photos: [...photoNames],
+            auditor: currentUser,
+            timestamp: new Date().toISOString(),
+            synced: false
+        };
+        auditData.push(audit);
+    }
+
+    saveData();
+    updateDashboard();
+    loadRecords();
+
+    // Reset edit mode
+    form.removeAttribute('data-edit-id');
+
+    alert('Audit saved successfully!');
+    // Reset form
+    event.target.reset();
+    uploadedFiles = [];
+    document.getElementById('uploadedFiles').innerHTML = '';
+    document.getElementById('localGov').value = '';
+    document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>';
+    document.getElementById('schoolName').disabled = true;
+    updateDashboard();
+    document.querySelector('#auditForm button[type="submit"]').textContent = "💾 Save Audit";
+}
+
+// --- PATCH: Only add mobile stats and delete button ONCE ---
+function ensureMobileStats() {
+    if (document.getElementById('mobileStatsCards')) return;
+    const dashboardSection = document.getElementById('dashboardSection');
+    const statsDiv = document.createElement('div');
+    statsDiv.id = 'mobileStatsCards';
+    statsDiv.className = 'dashboard-grid';
+    statsDiv.innerHTML = `
+        <div class="stat-card"><div style="font-size:32px;">📝</div><div style="font-size:18px;">Total Audits</div><div id="totalAudits">0</div></div>
+        <div class="stat-card"><div style="font-size:32px;">⏳</div><div style="font-size:18px;">Pending Sync</div><div id="pendingSync">0</div></div>
+        <div class="stat-card"><div style="font-size:32px;">✅</div><div style="font-size:18px;">Completed Today</div><div id="completedToday">0</div></div>
+    `;
+    dashboardSection.insertBefore(statsDiv, dashboardSection.children[1]);
+}
+
+function addDeleteAllAuditsButton() {
+    const dashboardSection = document.getElementById('dashboardSection');
+    if (!document.getElementById('deleteAllAuditsBtn')) {
+        const btn = document.createElement('button');
+        btn.id = 'deleteAllAuditsBtn';
+        btn.className = 'btn btn-secondary';
+        btn.style = 'width:auto;padding:8px 16px;margin-bottom:20px;margin-left:10px;';
+        btn.textContent = '🗑️ Delete All Audits';
+        btn.onclick = function() {
+            if (confirm('Are you sure you want to delete ALL audits? This cannot be undone.')) {
+                auditData = [];
+                saveData();
+                updateDashboard();
+                loadRecords();
+            }
+        };
+        dashboardSection.insertBefore(btn, dashboardSection.querySelector('h3'));
+    }
+}
+
+// --- PATCH: updateDashboard only patches ONCE ---
+(function patchUpdateDashboard() {
+    if (!window._dashboardPatched) {
+        const origUpdateDashboard = updateDashboard;
+        updateDashboard = function() {
+            ensureMobileStats && ensureMobileStats();
+            origUpdateDashboard();
+            addDeleteAllAuditsButton && addDeleteAllAuditsButton();
+        };
+        window._dashboardPatched = true;
+    }
+})();
+
+// --- PATCH: Fix syncToServer index bug ---
+async function syncToServer(audit) {
+    try {
+        // Ensure photos is array of strings
+        const auditToSend = { ...audit, photos: Array.isArray(audit.photos) ? audit.photos.map(f => typeof f === 'string' ? f : f.name) : [] };
+        const response = await fetch('/api/audits', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(auditToSend)
+        });
+        if (response.ok) {
+            // Mark as synced in local storage
+            const index = auditData.findIndex(a => a.id === audit.id);
+            if (index !== -1) {
+                auditData[index].synced = true;
+                saveData();  // Save updated sync status
+                updateDashboard();  // Update sync indicators
+            }
+            console.log('Audit synced to server successfully');
+        }
+    } catch (error) {
+        console.error('Error syncing to server:', error);
+        throw error;  // Re-throw for .catch() handler
+    }
+}
+
+// --- PATCH: Strip base64 prefix before sending image to backend ---
+async function saveAudit(event) {
+    event.preventDefault();
+    if (uploadedFiles.length > 5) {
+        alert('You can only upload up to 5 photos.');
+        return;
+    }
+    if (!confirm('Are you sure you want to save this audit?')) {
+        return;
+    }
+    const form = document.getElementById('auditForm');
+    const editId = form.getAttribute('data-edit-id');
+    let audit;
+    // Upload images to backend first
+    const photoNames = [];
+    for (const file of uploadedFiles) {
+        if (file.data && file.name) {
             let base64Data = file.data;
             if (base64Data.startsWith('data:')) {
                 base64Data = base64Data.split(',')[1];
@@ -1224,19 +1372,18 @@ async function syncToServer(audit) {
         });
         
         if (response.ok) {
-            // Mark as synced in local storage (find by id)
+            // Mark as synced in local storage
             const index = auditData.findIndex(a => a.id === audit.id);
             if (index !== -1) {
                 auditData[index].synced = true;
-                saveData();
-                updateDashboard();
-                updateSyncSection && updateSyncSection();
+                saveData();  // Save updated sync status
+                updateDashboard();  // Update sync indicators
             }
             console.log('Audit synced to server successfully');
         }
     } catch (error) {
         console.error('Error syncing to server:', error);
-        throw error;
+        throw error;  // Re-throw for .catch() handler
     }
 }
 
@@ -1414,18 +1561,17 @@ function gotoPage(page) {
 // --- MOBILE DASHBOARD STATS FIX ---
 // Add stat cards to dashboard section if not present
 function ensureMobileStats() {
+    if (document.getElementById('mobileStatsCards')) return;
     const dashboardSection = document.getElementById('dashboardSection');
-    if (!document.getElementById('mobileStatsCards')) {
-        const statsDiv = document.createElement('div');
-        statsDiv.id = 'mobileStatsCards';
-        statsDiv.className = 'dashboard-grid';
-        statsDiv.innerHTML = `
-            <div class="stat-card"><div style="font-size:32px;">📝</div><div style="font-size:18px;">Total Audits</div><div id="totalAudits">0</div></div>
-            <div class="stat-card"><div style="font-size:32px;">⏳</div><div style="font-size:18px;">Pending Sync</div><div id="pendingSync">0</div></div>
-            <div class="stat-card"><div style="font-size:32px;">✅</div><div style="font-size:18px;">Completed Today</div><div id="completedToday">0</div></div>
-        `;
-        dashboardSection.insertBefore(statsDiv, dashboardSection.children[1]);
-    }
+    const statsDiv = document.createElement('div');
+    statsDiv.id = 'mobileStatsCards';
+    statsDiv.className = 'dashboard-grid';
+    statsDiv.innerHTML = `
+        <div class="stat-card"><div style="font-size:32px;">📝</div><div style="font-size:18px;">Total Audits</div><div id="totalAudits">0</div></div>
+        <div class="stat-card"><div style="font-size:32px;">⏳</div><div style="font-size:18px;">Pending Sync</div><div id="pendingSync">0</div></div>
+        <div class="stat-card"><div style="font-size:32px;">✅</div><div style="font-size:18px;">Completed Today</div><div id="completedToday">0</div></div>
+    `;
+    dashboardSection.insertBefore(statsDiv, dashboardSection.children[1]);
 }
 
 // Patch updateDashboard to always update mobile stats
