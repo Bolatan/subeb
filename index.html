@@ -1121,6 +1121,7 @@ async function saveAudit(event) {
         audit.photos = [...photoNames];
         audit.synced = false; // Mark as not synced after edit
         audit.timestamp = new Date().toISOString();
+        auditData[idx] = audit; // Ensure auditData is updated
     } else {
         // New audit
         audit = {
@@ -1142,14 +1143,11 @@ async function saveAudit(event) {
         };
         auditData.push(audit);
     }
-
     saveData();
     updateDashboard();
     loadRecords();
-
     // Reset edit mode
     form.removeAttribute('data-edit-id');
-
     alert('Audit saved successfully!');
     // Reset form
     event.target.reset();
