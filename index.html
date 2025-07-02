@@ -1140,6 +1140,10 @@ updateDashboard = function() {
     addDeleteAllAuditsButton();
 };
 
+// Pagination variables
+let recordsPage = 1;
+const recordsPerPage = 20;
+
 // Updated syncToServer function
 async function syncToServer(audit) {
     try {
@@ -1344,6 +1348,30 @@ function updateDashboard() {
     document.querySelectorAll('#pendingSync').forEach(el => el.textContent = pendingSync);
     document.querySelectorAll('#completedToday').forEach(el => el.textContent = completedToday);
     updateRecentAuditsTable();
+}
+
+// Sync Section update
+function updateSyncSection() {
+    // Update pending sync count
+    const pendingCount = auditData.filter(a => !a.synced).length;
+    const pendingSyncCountEl = document.getElementById('pendingSyncCount');
+    if (pendingSyncCountEl) pendingSyncCountEl.textContent = pendingCount;
+    // Update sync log
+    const syncLog = document.getElementById('syncLog');
+    if (syncLog) {
+        if (auditData.length === 0) {
+            syncLog.innerHTML = '<p style="color:#6b7280;">Sync log will appear here...</p>';
+        } else {
+            const logRows = auditData.map(audit =>
+                `<div style="margin-bottom:8px;">
+                    <b>${audit.schoolName}</b> (${audit.localGov}) -
+                    <span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span>
+                    <span style="color:#64748B;font-size:12px;">${new Date(audit.timestamp).toLocaleString()}</span>
+                </div>`
+            ).join('');
+            syncLog.innerHTML = logRows;
+        }
+    }
 }
     </script>
 </body>
