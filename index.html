@@ -942,8 +942,7 @@ function handleCSVUpload(event) {
         }
         // Build new LGA->Schools mapping from CSV (only use School Name and Local Government fields)
         const csvLgaSchools = {};
-        const newRecords = [];
-        result.data.forEach((row, idx) => {
+        result.data.forEach((row) => {
             // Flexible header matching
             const getAny = (...keys) => {
                 for (const k of keys) {
@@ -960,25 +959,6 @@ function handleCSVUpload(event) {
             if (!lga || !school) return;
             if (!csvLgaSchools[lga]) csvLgaSchools[lga] = new Set();
             csvLgaSchools[lga].add(school);
-            // Build audit record object
-            const audit = {
-                id: Date.now() + idx, // unique id
-                schoolName: school,
-                localGov: lga,
-                schoolAddress: getAny('School Address', 'Address'),
-                latitude: parseFloat(getAny('Latitude')) || null,
-                longitude: parseFloat(getAny('Longitude')) || null,
-                principalName: getAny('Principal Name', 'Principal'),
-                totalTeachers: parseInt(getAny('Total Teachers', 'Teachers')) || 0,
-                totalStudents: parseInt(getAny('Total Students', 'Students')) || 0,
-                facilityCondition: getAny('Facility Condition', 'Condition'),
-                additionalNotes: getAny('Additional Notes', 'Notes'),
-                photos: [],
-                auditor: currentUser || '',
-                timestamp: new Date().toISOString(),
-                synced: false
-            };
-            newRecords.push(audit);
         });
         // Convert sets to sorted arrays
         const newLgaSchools = {};
@@ -992,13 +972,9 @@ function handleCSVUpload(event) {
         loadLocalGovernments();
         document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>';
         document.getElementById('schoolName').disabled = true;
-        // Remove all previous audits and import only new records
-        auditData = newRecords;
-        saveData();
-        updateDashboard();
-        loadRecords();
+        // Do NOT import records or update dashboard/records table
         document.getElementById('csvUploadMsg').style.color = 'var(--lagos-green)';
-        document.getElementById('csvUploadMsg').textContent = `Imported ${Object.keys(newLgaSchools).length} LGAs and ${newRecords.length} records from CSV. All previous audits deleted.`;
+        document.getElementById('csvUploadMsg').textContent = `Imported ${Object.keys(newLgaSchools).length} LGAs from CSV. Use the form to add new audits.`;
         setTimeout(()=>{document.getElementById('csvUploadMsg').textContent='';}, 4000);
     };
     reader.readAsText(file);
