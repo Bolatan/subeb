@@ -698,20 +698,20 @@ function loadSession() {
        function login() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
-    
     console.log('Login attempt:', username, password);
-    
     if ((username === 'admin' && password === 'password123') || 
         (username === 'auditor' && password === 'audit2024')) {
-        
         currentUser = username;
         // Save session to localStorage
         localStorage.setItem('auditAppCurrentUser', username);
-        
         document.getElementById('authScreen').classList.add('hidden');
         document.getElementById('mainApp').classList.remove('hidden');
         console.log('Login successful');
-        loadFromServer(); 
+        // Use loadData() instead of loadFromServer() to avoid blocking login
+        loadData();
+        loadLocalGovernments();
+        updateDashboard();
+        loadRecords();
     } else {
         alert('Invalid credentials!\n\nValid login credentials:\n• admin / password123\n• auditor / audit2024');
         console.log('Login failed');
