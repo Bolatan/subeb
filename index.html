@@ -1373,6 +1373,22 @@ function updateSyncSection() {
         }
     }
 }
+
+// Sync all pending audits when Sync Now is clicked
+async function syncData() {
+    const pending = auditData.filter(a => !a.synced);
+    if (pending.length === 0) {
+        alert('No pending records to sync.');
+        return;
+    }
+    for (let i = 0; i < pending.length; i++) {
+        await syncToServer(pending[i]);
+    }
+    alert('All pending records have been synced!');
+    updateSyncSection();
+    updateDashboard();
+    loadRecords();
+}
     </script>
 </body>
 </html>
