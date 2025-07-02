@@ -672,10 +672,19 @@ const lagosStateData = { "Agege": [ "Agege Primary School I", "Agege Primary Sch
 window.onload = function() {
     console.log('App initialized');
     loadSession();
-    loadLocalGovernments();
-    updateDashboard();
-    updateConnectionStatus();
-    loadFromServer(); // Always load from server on start
+    if (currentUser) {
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        loadData();
+        loadLocalGovernments();
+        updateDashboard();
+        loadRecords();
+        updateConnectionStatus();
+        loadFromServer(); // Only load from server if logged in
+    } else {
+        document.getElementById('authScreen').classList.remove('hidden');
+        document.getElementById('mainApp').classList.add('hidden');
+    }
 };
 
 
@@ -732,7 +741,7 @@ function logout() {
 }
 
         // Navigation
-        function showSection(sectionName) {
+        function showSection(sectionName, navElem) {
             // Hide all sections
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => section.classList.add('hidden'));
@@ -743,11 +752,12 @@ function logout() {
             // Update navigation
             const navItems = document.querySelectorAll('.nav-item');
             navItems.forEach(item => item.classList.remove('active'));
-            event.target.classList.add('active');
-            
+            if (navElem) {
+                navElem.classList.add('active');
+            }
             if (sectionName === 'dashboard') updateDashboard();
-    if (sectionName === 'records') loadFromServer(); // Always reload from server for records
-    if (sectionName === 'sync') updateSyncSection();
+    if (sectionName === 'records') loadRecords(); // Use loadRecords instead of loadFromServer
+    if (sectionName === 'sync') updateSyncSection && updateSyncSection();
         }
 
         // Get current location
@@ -993,7 +1003,19 @@ function handleCSVUpload(event) {
 
 // Update loadLocalGovernments to only use lagosStateData (no old LGAs)
 function loadLocalGovernments() {
-    const localGovDropdown = document.getElementById('localGov
+    const localGovDropdown = document.getElementById('localGov');
+    const lgas = Object.keys(lagosStateData).sort();
+    localGovDropdown.innerHTML = '<option value="">Select Local Government</option>';
+    lgas.forEach(lga => {
+        const option = document.createElement('option');
+        option.value = lga;
+        option.textContent = lga;
+        localGovDropdown.appendChild(option);
+    });
+}
+
+// CSV parsing function
+function parseCSV(text) {
     const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
     if (lines.length < 2) return { error: 'CSV must have a header and at least one data row.' };
     // Parse header
