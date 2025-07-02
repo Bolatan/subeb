@@ -734,10 +734,12 @@ function loadSession() {
 }
 
 
-       function login() {
-    const username = document.getElementById('username').value.trim();
+       // --- PATCH: Fix frontend login bug (robust trim, lowercase, and error display) ---
+function login() {
+    const username = document.getElementById('username').value.trim().toLowerCase();
     const password = document.getElementById('password').value.trim();
     console.log('Login attempt:', username, password);
+    // Accept only exact credentials (case-insensitive username)
     if ((username === 'admin' && password === 'password123') || 
         (username === 'auditor' && password === 'audit2024')) {
         currentUser = username;
@@ -746,13 +748,23 @@ function loadSession() {
         document.getElementById('authScreen').classList.add('hidden');
         document.getElementById('mainApp').classList.remove('hidden');
         console.log('Login successful');
-        // Use loadData() instead of loadFromServer() to avoid blocking login
         loadData();
         loadLocalGovernments();
         updateDashboard();
         loadRecords();
     } else {
-        alert('Invalid credentials!\n\nValid login credentials:\n• admin / password123\n• auditor / audit2024');
+        // Show error message in UI
+        let msg = document.getElementById('loginErrorMsg');
+        if (!msg) {
+            msg = document.createElement('div');
+            msg.id = 'loginErrorMsg';
+            msg.style.color = 'var(--lagos-red)';
+            msg.style.marginTop = '10px';
+            msg.style.textAlign = 'center';
+            document.getElementById('authScreen').appendChild(msg);
+        }
+        msg.textContent = 'Invalid credentials!\n\nValid login credentials:\n• admin / password123\n• auditor / audit2024';
+        setTimeout(()=>{msg.textContent='';}, 5000);
         console.log('Login failed');
     }
 }
@@ -1291,4 +1303,6 @@ async function deleteRecord(id) {
     loadRecords();
     updateDashboard && updateDashboard();
 }
-// ...existing code...
+    </script>
+</body>
+</html>
