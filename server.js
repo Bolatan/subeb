@@ -339,7 +339,9 @@ app.get('/api/photo/:filename', async (req, res) => {
 app.post('/api/photo', async (req, res) => {
   try {
     const { filename, data, type } = req.body;
+    console.log('[UPLOAD] /api/photo', { filename, type, dataLength: data ? data.length : 0 });
     if (!filename || !data || !type) {
+      console.error('[UPLOAD] Missing field:', { filename, type, dataLength: data ? data.length : 0 });
       return res.status(400).json({ success: false, message: 'Missing filename, data, or type' });
     }
     // Convert base64 to Buffer (robust: always extract after comma, remove whitespace/newlines)
@@ -349,16 +351,17 @@ app.post('/api/photo', async (req, res) => {
     }
     base64Data = base64Data.replace(/\s/g, ''); // Remove whitespace/newlines
     const buffer = Buffer.from(base64Data, 'base64');
-
+    console.log('[UPLOAD] Buffer created, size:', buffer.length);
     // Only save to MongoDB
-    await Image.findOneAndUpdate(
+    const result = await Image.findOneAndUpdate(
       { filename },
       { filename, data: buffer, type },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
+    console.log('[UPLOAD] Image saved to MongoDB:', filename);
     res.json({ success: true });
   } catch (error) {
-    console.error('Error saving image:', error);
+    console.error('[UPLOAD] Error saving image:', error);
     res.status(500).json({ success: false, message: 'Error saving image', error: error.message });
   }
 });
