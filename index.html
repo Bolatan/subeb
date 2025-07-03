@@ -1393,6 +1393,36 @@ window.updateDashboard = function() {
 };
 
 // Also call updateSyncSection after loadRecords, saveAudit, deleteRecord, bulkDeleteRecords, and after syncing audits if not already
+
+// --- PATCH: Edit record from records page ---
+function editRecord(id) {
+    const audit = auditData.find(a => a.id == id);
+    if (!audit) return alert('Audit not found.');
+    // Show audit form section
+    showSection('audit');
+    // Populate form fields
+    document.getElementById('localGov').value = audit.localGov || '';
+    loadSchools();
+    document.getElementById('schoolName').value = audit.schoolName || '';
+    document.getElementById('schoolAddress').value = audit.schoolAddress || '';
+    document.getElementById('latitude').value = audit.latitude || '';
+    document.getElementById('longitude').value = audit.longitude || '';
+    document.getElementById('principalName').value = audit.principalName || '';
+    document.getElementById('totalTeachers').value = audit.totalTeachers || '';
+    document.getElementById('totalStudents').value = audit.totalStudents || '';
+    document.getElementById('facilityCondition').value = audit.facilityCondition || '';
+    document.getElementById('additionalNotes').value = audit.additionalNotes || '';
+    // Photos: cannot reload from backend, so just clear for edit
+    uploadedFiles = [];
+    document.getElementById('uploadedFiles').innerHTML = '';
+    document.getElementById('fileInput').disabled = false;
+    document.getElementById('photoLimitMsg').style.display = 'none';
+    // Set edit mode
+    const form = document.getElementById('auditForm');
+    form.setAttribute('data-edit-id', audit.id);
+    // Update submit button text
+    document.querySelector('#auditForm button[type="submit"]').textContent = '✏️ Update Audit';
+}
     </script>
 </body>
 </html>
