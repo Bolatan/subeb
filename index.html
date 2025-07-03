@@ -619,12 +619,13 @@
                                     <th>Teachers</th>
                                     <th>Students</th>
                                     <th>Sync Status</th>
+                                    <th>Photos</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="recordsTable">
                                 <tr>
-                                    <td colspan="9" style="text-align:center;padding:40px;color:#6b7280;">No records found</td>
+                                    <td colspan="10" style="text-align:center;padding:40px;color:#6b7280;">No records found</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1124,7 +1125,7 @@ function loadRecords(page = 1, pageSize = 10) {
     const pageData = auditData.slice(start, end);
     // Render rows
     if (pageData.length === 0) {
-        table.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:#6b7280;">No records found</td></tr>';
+        table.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;color:#6b7280;">No records found</td></tr>';
     } else {
         table.innerHTML = pageData.map(audit => `
             <tr>
@@ -1136,6 +1137,13 @@ function loadRecords(page = 1, pageSize = 10) {
                 <td>${audit.totalTeachers || 0}</td>
                 <td>${audit.totalStudents || 0}</td>
                 <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
+                <td>
+                    ${(audit.photos && audit.photos.length) ? audit.photos.map(filename =>
+                        `<a href="${getImageUrl(filename)}" target="_blank" style="margin-right:4px;display:inline-block;vertical-align:middle;">
+                            <img src="${getImageUrl(filename)}" alt="Photo" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid #e5e7eb;" onerror="this.style.display='none'">
+                        </a>`
+                    ).join('') : '<span style="color:#aaa;font-size:13px;">No photo</span>'}
+                </td>
                 <td>
                     <button class="btn btn-secondary" style="width:auto;padding:4px 10px;font-size:13px;" onclick="editRecord(${audit.id})">Edit</button>
                     <button class="btn btn-secondary" style="width:auto;padding:4px 10px;font-size:13px;margin-left:4px;background:var(--lagos-red);border-color:var(--lagos-yellow);" onclick="deleteRecord(${audit.id})">Delete</button>
@@ -1164,14 +1172,6 @@ function loadRecords(page = 1, pageSize = 10) {
         };
     }
 }
-
-// --- PATCH: Backend persistence for audits ---
-// On app load, fetch audits from backend and update auditData/localStorage
-async function fetchAuditsFromBackend() {
-    try {
-        const response = await fetch('/api/audits');
-        if (response.ok) {
-            const audits = await response.json();
             if (Array.isArray(audits)) {
                 auditData = audits;
                 saveData();
