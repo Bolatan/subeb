@@ -1466,8 +1466,8 @@ async function syncData() {
 // --- PATCH: Display images in records table and audit form if available ---
 // Helper to get image URL from filename
 function getImageUrl(filename) {
-    // Assumes backend serves images at /uploads/<filename>
-    return `/uploads/${encodeURIComponent(filename)}`;
+    // Now fetches from MongoDB API endpoint
+    return `/api/photo/${encodeURIComponent(filename)}`;
 }
 // Patch loadRecords to show image icon/link if photos exist
 const origLoadRecords = window.loadRecords;

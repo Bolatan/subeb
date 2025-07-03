@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.static('.'));
@@ -333,7 +335,7 @@ app.get('/api/photo/:filename', async (req, res) => {
   }
 });
 
-// Endpoint to upload image to MongoDB (expects { filename, data (base64), type })
+// Endpoint to upload image to MongoDB only (expects { filename, data (base64), type })
 app.post('/api/photo', async (req, res) => {
   try {
     const { filename, data, type } = req.body;
@@ -346,9 +348,9 @@ app.post('/api/photo', async (req, res) => {
       base64Data = base64Data.split(',')[1];
     }
     base64Data = base64Data.replace(/\s/g, ''); // Remove whitespace/newlines
-    // Only decode as base64, never pass encoding param from client
     const buffer = Buffer.from(base64Data, 'base64');
-    // Upsert image
+
+    // Only save to MongoDB
     await Image.findOneAndUpdate(
       { filename },
       { filename, data: buffer, type },
@@ -437,7 +439,6 @@ app.get('/api/lgas', async (req, res) => {
 });
 
 // Serve the HTML file
-const path = require('path');
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
