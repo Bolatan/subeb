@@ -1423,6 +1423,76 @@ function editRecord(id) {
     // Update submit button text
     document.querySelector('#auditForm button[type="submit"]').textContent = '✏️ Update Audit';
 }
+
+// --- PATCH: Sync Now button logic ---
+async function syncData() {
+    // Find all unsynced audits
+    const unsynced = auditData.filter(a => !a.synced);
+    if (unsynced.length === 0) {
+        alert('No pending records to sync.');
+        return;
+    }
+    let success = 0, fail = 0;
+    for (const audit of unsynced) {
+        try {
+            // Mark as synced and update backend
+            audit.synced = true;
+            await fetch(`/api/audits/${audit.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(audit)
+            });
+            success++;
+        } catch (e) {
+            fail++;
+        }
+    }
+    saveData();
+    updateDashboard();
+    loadRecords();
+    updateSyncSection();
+    // Log result
+    const log = document.getElementById('syncLog');
+    if (log) {
+        const msg = document.createElement('div');
+        msg.style.margin = '10px 0';
+        msg.style.color = (fail === 0) ? 'var(--lagos-green)' : 'var(--lagos-red)';
+        msg.textContent = `Sync complete: ${success} record(s) synced${fail ? ', ' + fail + ' failed' : ''}.`;
+        log.prepend(msg);
+    }
+    alert(`Sync complete: ${success} record(s) synced${fail ? ', ' + fail + ' failed' : ''}.`);
+}
+
+// --- PATCH: Display images in records table and audit form if available ---
+// Helper to get image URL from filename
+function getImageUrl(filename) {
+    // Assumes backend serves images at /uploads/<filename>
+    return `/uploads/${encodeURIComponent(filename)}`;
+}
+// Patch loadRecords to show image icon/link if photos exist
+const origLoadRecords = window.loadRecords;
+window.loadRecords = function(page, pageSize) {
+    origLoadRecords && origLoadRecords(page, pageSize);
+    // Add image icon/link to records table if photos exist
+    const table = document.getElementById('recordsTable');
+    if (!table) return;
+    Array.from(table.rows).forEach((row, i) => {
+        if (i === 0) return; // skip header
+        const audit = auditData[(page - 1) * (pageSize || 10) + (i - 1)];
+        if (!audit || !audit.photos || !audit.photos.length) return;
+        // Add image icon/link to School Name cell
+        const cell = row.cells[1];
+        if (cell && !cell.querySelector('.img-link')) {
+            const imgLink = document.createElement('a');
+            imgLink.href = getImageUrl(audit.photos[0]);
+            imgLink.target = '_blank';
+            imgLink.className = 'img-link';
+            imgLink.title = 'View photo';
+            imgLink.innerHTML = ' <span style="font-size:18px;">📷</span>';
+            cell.appendChild(imgLink);
+        }
+    });
+};
     </script>
 </body>
 </html>
