@@ -1173,19 +1173,234 @@ function loadRecords(page = 1, pageSize = 10) {
     }
 }
 
-// --- PATCH: Display images in records table and audit form if available ---
-// Helper to get image URL from filename
-function getImageUrl(filename) {
-    // Now fetches from MongoDB API endpoint
-    return `/api/photo/${encodeURIComponent(filename)}`;
+// --- PATCH: Backend persistence for audits ---
+// On app load, fetch audits from backend and update auditData/localStorage
+async function fetchAuditsFromBackend() {
+    try {
+        const response = await fetch('/api/audits');
+        if (response.ok) {
+            const audits = await response.json();
+            if (Array.isArray(audits)) {
+                auditData = audits;
+                saveData();
+                loadRecords();
+                updateDashboard && updateDashboard();
+            }
+        }
+    } catch (e) {
+        console.warn('Could not fetch audits from backend:', e);
+    }
 }
-// Patch loadRecords to show all images as thumbnails in the Photos column
-const origLoadRecords = window.loadRecords;
-window.loadRecords = function(page, pageSize) {
-    origLoadRecords && origLoadRecords(page, pageSize);
-    // Remove any old image icon patch in School Name cell (no longer needed)
-    // No action needed, as the new logic is in the table rendering
+
+// On app load, fetch audits from backend after login/session restore
+(function patchAuditBackendLoad() {
+    const origLoadData = window.loadData;
+    window.loadData = function() {
+        origLoadData && origLoadData();
+        fetchAuditsFromBackend();
+    };
+})();
+
+// Save audit to backend on add/edit
+async function saveAudit(event) {
+    event.preventDefault();
+    if (uploadedFiles.length > 5) {
+        alert('You can only upload up to 5 photos.');
+        return;
+    }
+    if (!confirm('Are you sure you want to save this audit?')) {
+        return;
+    }
+    const form = document.getElementById('auditForm');
+    const editId = form.getAttribute('data-edit-id');
+    let audit;
+    // Upload images to backend first
+    const photoNames = [];
+    for (const file of uploadedFiles) {
+        if (file.data && file.name) {
+            let base64Data = file.data;
+            if (base64Data.startsWith('data:')) {
+                base64Data = base64Data.split(',')[1];
+            }
+            await fetch('/api/photo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: file.name, data: base64Data, type: file.type || 'image/jpeg' })
+            });
+            photoNames.push(file.name);
+        }
+    }
+    if (editId) {
+        // Edit mode: update existing audit
+        const idx = auditData.findIndex(a => a.id == editId);
+        if (idx === -1) return alert('Audit not found.');
+        audit = auditData[idx];
+        audit.schoolName = document.getElementById('schoolName').value;
+        audit.localGov = document.getElementById('localGov').value;
+        audit.schoolAddress = document.getElementById('schoolAddress').value;
+        audit.latitude = parseFloat(document.getElementById('latitude').value) || null;
+        audit.longitude = parseFloat(document.getElementById('longitude').value) || null;
+        audit.principalName = document.getElementById('principalName').value;
+        audit.totalTeachers = parseInt(document.getElementById('totalTeachers').value) || 0;
+        audit.totalStudents = parseInt(document.getElementById('totalStudents').value) || 0;
+        audit.facilityCondition = document.getElementById('facilityCondition').value;
+        audit.additionalNotes = document.getElementById('additionalNotes').value;
+        audit.photos = [...photoNames];
+        audit.synced = false;
+        audit.timestamp = new Date().toISOString();
+        auditData[idx] = audit;
+        // PATCH: Update in backend
+        await fetch(`/api/audits/${audit.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(audit)
+        });
+    } else {
+        // New audit
+        audit = {
+            id: Date.now(),
+            schoolName: document.getElementById('schoolName').value,
+            localGov: document.getElementById('localGov').value,
+            schoolAddress: document.getElementById('schoolAddress').value,
+            latitude: parseFloat(document.getElementById('latitude').value) || null,
+            longitude: parseFloat(document.getElementById('longitude').value) || null,
+            principalName: document.getElementById('principalName').value,
+            totalTeachers: parseInt(document.getElementById('totalTeachers').value) || 0,
+            totalStudents: parseInt(document.getElementById('totalStudents').value) || 0,
+            facilityCondition: document.getElementById('facilityCondition').value,
+            additionalNotes: document.getElementById('additionalNotes').value,
+            photos: [...photoNames],
+            auditor: currentUser,
+            timestamp: new Date().toISOString(),
+            synced: false
+        };
+        auditData.push(audit);
+        // PATCH: Save to backend
+        await fetch('/api/audits', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(audit)
+        });
+    }
+    saveData();
+    updateDashboard();
+    loadRecords();
+    // Reset edit mode
+    form.removeAttribute('data-edit-id');
+    alert('Audit saved successfully!');
+    // Reset form
+    event.target.reset();
+    uploadedFiles = [];
+    document.getElementById('uploadedFiles').innerHTML = '';
+    document.getElementById('localGov').value = '';
+    document.getElementById('schoolName').innerHTML = '<option value="">Select LGA first</option>';
+    document.getElementById('schoolName').disabled = true;
+    updateDashboard();
+    document.querySelector('#auditForm button[type="submit"]').textContent = "💾 Save Audit";
+}
+
+// PATCH: Delete audit from backend
+async function deleteRecord(id) {
+    if (!confirm('Are you sure you want to delete this audit?')) return;
+    const idx = auditData.findIndex(a => a.id == id);
+    if (idx === -1) return alert('Audit not found.');
+    // Remove from backend
+    await fetch(`/api/audits/${id}`, { method: 'DELETE' });
+    auditData.splice(idx, 1);
+    saveData();
+    loadRecords();
+    updateDashboard && updateDashboard();
+}
+
+// --- PATCH: Bulk delete and bulk edit for records page ---
+function getSelectedRecordIds() {
+    const checkboxes = document.querySelectorAll('#recordsTable input[type="checkbox"]:checked');
+    return Array.from(checkboxes).map(cb => cb.getAttribute('data-id'));
+}
+
+async function bulkDeleteRecords() {
+    const ids = getSelectedRecordIds();
+    if (ids.length === 0) {
+        alert('Select at least one record to delete.');
+        return;
+    }
+    if (!confirm(`Are you sure you want to delete ${ids.length} selected record(s)?`)) return;
+    for (const id of ids) {
+        await fetch(`/api/audits/${id}`, { method: 'DELETE' });
+        const idx = auditData.findIndex(a => a.id == id);
+        if (idx !== -1) auditData.splice(idx, 1);
+    }
+    saveData();
+    loadRecords();
+    if (typeof updateDashboard === 'function') updateDashboard();
+}
+
+function bulkEditRecords() {
+    const ids = getSelectedRecordIds();
+    if (ids.length === 0) {
+        alert('Select at least one record to edit.');
+        return;
+    }
+    if (ids.length > 1) {
+        alert('Bulk edit only supports editing one record at a time. Please select only one record.');
+        return;
+    }
+    // Trigger edit for the first selected record
+    editRecord(ids[0]);
+}
+
+// --- PATCH: Update dashboard stat cards and recent audits table from auditData ---
+function updateDashboard() {
+    // Defensive: ensure auditData is loaded
+    if (!Array.isArray(auditData)) auditData = [];
+    // Stat cards
+    const totalAudits = auditData.length;
+    const pendingSync = auditData.filter(a => !a.synced).length;
+    // Completed today: audits with timestamp from today
+    const today = new Date();
+    const completedToday = auditData.filter(audit => {
+        if (!audit.timestamp) return false;
+        const d = new Date(audit.timestamp);
+        return d.getFullYear() === today.getFullYear() &&
+               d.getMonth() === today.getMonth() &&
+               d.getDate() === today.getDate();
+    }).length;
+    document.getElementById('totalAudits').textContent = totalAudits;
+    document.getElementById('pendingSync').textContent = pendingSync;
+    document.getElementById('completedToday').textContent = completedToday;
+    // Recent audits table (latest 5, most recent first)
+    const recent = [...auditData].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 5);
+    const table = document.getElementById('recentAuditsTable');
+    if (!table) return;
+    if (recent.length === 0) {
+        table.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:40px;color:#6b7280;">No audits completed yet</td></tr>';
+    } else {
+        table.innerHTML = recent.map(audit => `
+            <tr>
+                <td>${audit.schoolName || ''}</td>
+                <td>${audit.localGov || ''}</td>
+                <td>${audit.timestamp ? new Date(audit.timestamp).toLocaleString() : ''}</td>
+                <td><span class="sync-status ${audit.synced ? 'synced' : 'pending'}">${audit.synced ? 'Synced' : 'Pending'}</span></td>
+            </tr>
+        `).join('');
+    }
+}
+
+// --- PATCH: Update Sync section pending count from auditData ---
+function updateSyncSection() {
+    if (!Array.isArray(auditData)) auditData = [];
+    const pending = auditData.filter(a => !a.synced).length;
+    const el = document.getElementById('pendingSyncCount');
+    if (el) el.textContent = pending;
+}
+// Patch updateDashboard to also update sync section
+const origUpdateDashboard = window.updateDashboard;
+window.updateDashboard = function() {
+    origUpdateDashboard && origUpdateDashboard();
+    updateSyncSection && updateSyncSection();
 };
+
+// Also call updateSyncSection after loadRecords, saveAudit, deleteRecord, bulkDeleteRecords, and after syncing audits if not already
 
 // --- PATCH: Edit record from records page ---
 function editRecord(id) {
@@ -1222,10 +1437,8 @@ function editRecord(id) {
     }
     document.getElementById('fileInput').disabled = false;
     document.getElementById('photoLimitMsg').style.display = 'none';
-    // Set edit mode
     const form = document.getElementById('auditForm');
     form.setAttribute('data-edit-id', audit.id);
-    // Update submit button text
     document.querySelector('#auditForm button[type="submit"]').textContent = '✏️ Update Audit';
 }
 
@@ -1266,6 +1479,49 @@ async function syncData() {
         log.prepend(msg);
     }
     alert(`Sync complete: ${success} record(s) synced${fail ? ', ' + fail + ' failed' : ''}.`);
+}
+
+// --- PATCH: Display images in records table and audit form if available ---
+// Helper to get image URL from filename
+function getImageUrl(filename) {
+    return `/api/photo/${encodeURIComponent(filename)}`;
+}
+// --- PATCH: Edit record from records page ---
+function editRecord(id) {
+    const audit = auditData.find(a => a.id == id);
+    if (!audit) return alert('Audit not found.');
+    showSection('audit');
+    document.getElementById('localGov').value = audit.localGov || '';
+    loadSchools();
+    document.getElementById('schoolName').value = audit.schoolName || '';
+    document.getElementById('schoolAddress').value = audit.schoolAddress || '';
+    document.getElementById('latitude').value = audit.latitude || '';
+    document.getElementById('longitude').value = audit.longitude || '';
+    document.getElementById('principalName').value = audit.principalName || '';
+    document.getElementById('totalTeachers').value = audit.totalTeachers || '';
+    document.getElementById('totalStudents').value = audit.totalStudents || '';
+    document.getElementById('facilityCondition').value = audit.facilityCondition || '';
+    document.getElementById('additionalNotes').value = audit.additionalNotes || '';
+    // Photos: preview existing images in edit mode
+    uploadedFiles = [];
+    const uploadedFilesDiv = document.getElementById('uploadedFiles');
+    uploadedFilesDiv.innerHTML = '';
+    if (audit.photos && Array.isArray(audit.photos) && audit.photos.length > 0) {
+        audit.photos.forEach(filename => {
+            const fileDiv = document.createElement('div');
+            fileDiv.className = 'file-preview';
+            fileDiv.innerHTML = `
+                <img src="${getImageUrl(filename)}" alt="${filename}" style="width:100%;height:100%;object-fit:cover;">
+                <a href="${getImageUrl(filename)}" target="_blank" class="file-download" title="View Full Image" style="position:absolute;bottom:5px;right:5px;background:rgba(30,64,175,0.8);color:#fff;padding:2px 8px;border-radius:6px;">🔍</a>
+            `;
+            uploadedFilesDiv.appendChild(fileDiv);
+        });
+    }
+    document.getElementById('fileInput').disabled = false;
+    document.getElementById('photoLimitMsg').style.display = 'none';
+    const form = document.getElementById('auditForm');
+    form.setAttribute('data-edit-id', audit.id);
+    document.querySelector('#auditForm button[type="submit"]').textContent = '✏️ Update Audit';
 }
     </script>
 </body>
