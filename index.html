@@ -1377,6 +1377,22 @@ function updateDashboard() {
         `).join('');
     }
 }
+
+// --- PATCH: Update Sync section pending count from auditData ---
+function updateSyncSection() {
+    if (!Array.isArray(auditData)) auditData = [];
+    const pending = auditData.filter(a => !a.synced).length;
+    const el = document.getElementById('pendingSyncCount');
+    if (el) el.textContent = pending;
+}
+// Patch updateDashboard to also update sync section
+const origUpdateDashboard = window.updateDashboard;
+window.updateDashboard = function() {
+    origUpdateDashboard && origUpdateDashboard();
+    updateSyncSection && updateSyncSection();
+};
+
+// Also call updateSyncSection after loadRecords, saveAudit, deleteRecord, bulkDeleteRecords, and after syncing audits if not already
     </script>
 </body>
 </html>
