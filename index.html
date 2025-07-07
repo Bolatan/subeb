@@ -534,6 +534,36 @@ select.form-control option {
         display: none !important;
     }
 }
+
+/* Styles for the survey header text */
+.lagos-header-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--lagos-blue);
+    letter-spacing: 1px;
+    text-align: left; /* Default behavior */
+}
+
+/* Responsive adjustments for the survey header */
+@media (max-width: 768px) {
+    /* .lagos-header itself is styled inline, so we target its children or override specifics if needed */
+    .lagos-header-title {
+        font-size: 1.2rem; /* Reduce font size */
+    }
+}
+
+@media (max-width: 480px) {
+    .lagos-header {
+        /* The inline style is display:flex;align-items:center;gap:16px;justify-content:center; */
+        /* We need to override these for stacking */
+        flex-direction: column !important; /* Stack logo and title vertically */
+        gap: 8px !important; /* Reduce gap for stacked layout */
+    }
+    .lagos-header-title {
+        font-size: 1.0rem; /* Further reduce font size */
+        text-align: center; /* Center text when stacked */
+    }
+}
         }
     </style>
 </head>
@@ -567,7 +597,7 @@ select.form-control option {
             <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
             <div class="lagos-header" style="display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:24px;">
   <img src="subeb.jpg" alt="Lagos State Logo" style="height:48px;width:48px;border-radius:8px;border:3px solid var(--lagos-yellow);background:var(--lagos-white);box-shadow:0 2px 8px rgba(30,64,175,0.10);">
-  <div style="font-size:1.6rem;font-weight:700;color:var(--lagos-blue);letter-spacing:1px;">Lagos State Universal Basic Education Board (LASUBEB)</div>
+  <div class="lagos-header-title">Lagos State Universal Basic Education Board (LASUBEB)</div>
 </div>
             <h2>School Infrastructure & Leadership Needs Assessment Tool (SILNAT)</h2>
             <!-- Place this block right after the <h2> in #silnatSection, before the <form id="silnatForm"...> -->
@@ -641,7 +671,7 @@ select.form-control option {
             <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
             <div class="lagos-header" style="display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:24px;">
   <img src="subeb.jpg" alt="Lagos State Logo" style="height:48px;width:48px;border-radius:8px;border:3px solid var(--lagos-yellow);background:var(--lagos-white);box-shadow:0 2px 8px rgba(30,64,175,0.10);">
-  <div style="font-size:1.6rem;font-weight:700;color:var(--lagos-blue);letter-spacing:1px;">Lagos State Universal Basic Education Board (LASUBEB)</div>
+  <div class="lagos-header-title">Lagos State Universal Basic Education Board (LASUBEB)</div>
 </div>
             <h2>Teachers Classroom Management and Teaching Survey (TCMATS)</h2>
             <!-- TODO: Add TCMATS form here -->
@@ -685,7 +715,7 @@ select.form-control option {
             <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
             <div class="lagos-header" style="display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:24px;">
   <img src="subeb.jpg" alt="Lagos State Logo" style="height:48px;width:48px;border-radius:8px;border:3px solid var(--lagos-yellow);background:var(--lagos-white);box-shadow:0 2px 8px rgba(30,64,175,0.10);">
-  <div style="font-size:1.6rem;font-weight:700;color:var(--lagos-blue);letter-spacing:1px;">Lagos State Universal Basic Education Board (LASUBEB)</div>
+  <div class="lagos-header-title">Lagos State Universal Basic Education Board (LASUBEB)</div>
 </div>
             <h2>Lesson Observation Rating Instrument (LORI)</h2>
             <!-- TODO: Add LORI form here -->
@@ -742,7 +772,7 @@ select.form-control option {
             <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
             <div class="lagos-header" style="display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:24px;">
   <img src="subeb.jpg" alt="Lagos State Logo" style="height:48px;width:48px;border-radius:8px;border:3px solid var(--lagos-yellow);background:var(--lagos-white);box-shadow:0 2px 8px rgba(30,64,175,0.10);">
-  <div style="font-size:1.6rem;font-weight:700;color:var(--lagos-blue);letter-spacing:1px;">Lagos State Universal Basic Education Board (LASUBEB)</div>
+  <div class="lagos-header-title">Lagos State Universal Basic Education Board (LASUBEB)</div>
 </div>
             <h2>Learner Voices/Opinions (VOICES)</h2>
             <!-- TODO: Add VOICES form here -->
