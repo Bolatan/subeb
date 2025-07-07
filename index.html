@@ -492,30 +492,6 @@ footer {
 }
 
 
-/* CSS for SILNAT dynamic form visibility */
-.conditional-group, .conditional-sub-group {
-    display: none; /* Hidden by default */
-}
-
-.form-section-wrapper,
-.conditional-group.visible,
-.conditional-sub-group.visible {
-    display: block; /* Or 'flex', 'grid' if the group itself is a flex/grid container */
-}
-
-/* Styling for radio button groups to appear more inline */
-.radio-inline {
-    display: inline-block;
-    margin-right: 15px;
-}
-.yes-no-group .radio-inline {
-    margin-right: 25px;
-}
-.checkbox-inline {
-    display: block; /* Or inline-block if preferred on one line */
-    margin-bottom: 5px;
-}
-
 /* Lagos State form field branding and white text */
 .section {
   background: var(--lagos-blue);
@@ -589,6 +565,10 @@ select.form-control option {
         <!-- Survey Sections (initially hidden) -->
         <div id="silnatSection" class="section hidden">
             <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
+            <div class="lagos-header" style="display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:24px;">
+  <img src="subeb.jpg" alt="Lagos State Logo" style="height:48px;width:48px;border-radius:8px;border:3px solid var(--lagos-yellow);background:var(--lagos-white);box-shadow:0 2px 8px rgba(30,64,175,0.10);">
+  <div style="font-size:1.6rem;font-weight:700;color:var(--lagos-blue);letter-spacing:1px;">Lagos State Universal Basic Education Board (LASUBEB)</div>
+</div>
             <h2>School Infrastructure & Leadership Needs Assessment Tool (SILNAT)</h2>
             <!-- Place this block right after the <h2> in #silnatSection, before the <form id="silnatForm"...> -->
 <div class="intro-card" style="background:rgb(243, 242, 240);border-left:6px solid var(--lagos-yellow);border-radius:12px;padding:22px 20px 18px 20px;margin-bottom:28px;color:var(--lagos-navy);font-size:1.08rem;line-height:1.7;">
@@ -615,13 +595,14 @@ select.form-control option {
                     </select>
                 </div>
             </div>
-            <!-- Section A: Bio Data - Conditional Part -->
+            <!-- Section A: Bio Data - Conditional Wrappers -->
             <div id="silnat_a_ht_bio_data_wrapper" class="conditional-group for-regular_school for-special_school for-home_economics_centre for-mini_resource_centre" style="display:none;">
+                <hr> <!-- Visual separator -->
                 <h4>Head Teacher Bio Data</h4>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="silnat_a_ht_name">Head Teacher/Manager Name *</label>
-                        <input type="text" id="silnat_a_ht_name" name="silnat_a_ht_name" class="form-control">
+                        <input type="text" id="silnat_a_ht_name" name="silnat_a_ht_name" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="silnat_a_ht_contact">Contact Number</label>
@@ -631,14 +612,14 @@ select.form-control option {
                 <div class="form-group">
                     <label>Gender *</label>
                     <div>
-                        <label class="radio-inline"><input type="radio" name="silnat_a_ht_gender" value="male"> Male</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_ht_gender" value="male" required> Male</label>
                         <label class="radio-inline"><input type="radio" name="silnat_a_ht_gender" value="female"> Female</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Marital Status *</label>
                     <div>
-                        <label class="radio-inline"><input type="radio" name="silnat_a_ht_marital_status" value="single"> Single</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_ht_marital_status" value="single" required> Single</label>
                         <label class="radio-inline"><input type="radio" name="silnat_a_ht_marital_status" value="married"> Married</label>
                         <label class="radio-inline"><input type="radio" name="silnat_a_ht_marital_status" value="divorced"> Divorced</label>
                         <label class="radio-inline"><input type="radio" name="silnat_a_ht_marital_status" value="separated"> Separated</label>
@@ -647,7 +628,7 @@ select.form-control option {
                 </div>
                 <div class="form-group">
                     <label for="silnat_a_ht_highest_qualification">Highest Qualification *</label>
-                    <select id="silnat_a_ht_highest_qualification" name="silnat_a_ht_highest_qualification" class="form-control">
+                    <select id="silnat_a_ht_highest_qualification" name="silnat_a_ht_highest_qualification" class="form-control" required>
                         <option value="">Select Qualification</option>
                         <option value="grade_ii">Grade II</option> <option value="nce">NCE</option> <option value="b_ed">B.Ed</option> <option value="ba_ed">BA. Ed</option> <option value="bsc_ed">B.Sc.Ed</option> <option value="hnd">HND</option> <option value="m_ed">M.Ed</option> <option value="others">Others</option>
                     </select>
@@ -658,7 +639,7 @@ select.form-control option {
                 </div>
                 <div class="form-group">
                     <label for="silnat_a_ht_years_experience">Years of Leadership Experience *</label>
-                    <select id="silnat_a_ht_years_experience" name="silnat_a_ht_years_experience" class="form-control">
+                    <select id="silnat_a_ht_years_experience" name="silnat_a_ht_years_experience" class="form-control" required>
                         <option value="">Select Years</option>
                         <option value="5_below">5 & below</option> <option value="6_10">6-10</option> <option value="11_15">11-15</option> <option value="16_20">16-20</option> <option value="21_above">21 & above</option>
                     </select>
@@ -666,11 +647,12 @@ select.form-control option {
             </div>
 
             <div id="silnat_a_es_bio_data_wrapper" class="conditional-group for-lgea_secretariat" style="display:none;">
+                 <hr> <!-- Visual separator -->
                 <h4>Education Secretary Bio Data</h4>
                 <div class="form-row">
                      <div class="form-group">
                         <label for="silnat_a_es_name">Education Secretary Name *</label>
-                        <input type="text" id="silnat_a_es_name" name="silnat_a_es_name" class="form-control">
+                        <input type="text" id="silnat_a_es_name" name="silnat_a_es_name" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="silnat_a_es_contact">Contact Number</label>
@@ -680,14 +662,14 @@ select.form-control option {
                 <div class="form-group">
                     <label>Gender *</label>
                     <div>
-                        <label class="radio-inline"><input type="radio" name="silnat_a_es_gender" value="male"> Male</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_es_gender" value="male" required> Male</label>
                         <label class="radio-inline"><input type="radio" name="silnat_a_es_gender" value="female"> Female</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Marital Status *</label>
                     <div>
-                        <label class="radio-inline"><input type="radio" name="silnat_a_es_marital_status" value="single"> Single</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_es_marital_status" value="single" required> Single</label>
                         <label class="radio-inline"><input type="radio" name="silnat_a_es_marital_status" value="married"> Married</label>
                         <label class="radio-inline"><input type="radio" name="silnat_a_es_marital_status" value="divorced"> Divorced</label>
                         <label class="radio-inline"><input type="radio" name="silnat_a_es_marital_status" value="separated"> Separated</label>
@@ -696,7 +678,7 @@ select.form-control option {
                 </div>
                 <div class="form-group">
                     <label for="silnat_a_es_highest_qualification">Highest Qualification *</label>
-                    <select id="silnat_a_es_highest_qualification" name="silnat_a_es_highest_qualification" class="form-control">
+                    <select id="silnat_a_es_highest_qualification" name="silnat_a_es_highest_qualification" class="form-control" required>
                         <option value="">Select Qualification</option>
                         <option value="grade_ii">Grade II</option> <option value="nce">NCE</option> <option value="b_ed">B.Ed</option> <option value="ba_ed">BA. Ed</option> <option value="bsc_ed">B.Sc.Ed</option> <option value="hnd">HND</option> <option value="m_ed">M.Ed</option> <option value="others">Others</option>
                     </select>
@@ -707,26 +689,28 @@ select.form-control option {
                 </div>
                 <div class="form-group">
                     <label for="silnat_a_es_years_experience">Years of Leadership Experience *</label>
-                    <select id="silnat_a_es_years_experience" name="silnat_a_es_years_experience" class="form-control">
+                    <select id="silnat_a_es_years_experience" name="silnat_a_es_years_experience" class="form-control" required>
                         <option value="">Select Years</option>
                         <option value="5_below">5 & below</option> <option value="6_10">6-10</option> <option value="11_15">11-15</option> <option value="16_20">16-20</option> <option value="21_above">21 & above</option>
                     </select>
                 </div>
             </div>
-
-            <!-- Placeholder for existing fields that will become Section B -->
+            <hr> <!-- Visual separator -->
+            <!-- The original School Name and Local Gov fields will follow, to be refactored into Section B later -->
             <div class="form-row">
                 <div class="form-group">
-                    <label for="silnat_schoolName">Name of School/Institution *</label> <!-- This label was already updated -->
+                    <label for="silnat_schoolName">Name of School/Institution *</label>
                     <input type="text" id="silnat_schoolName" name="silnat_b_institution_name_common" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="silnat_localGov">Local Government *</label> <!-- This will be part of Section B -->
+                    <label for="silnat_localGov">Local Government *</label>
                     <input type="text" id="silnat_localGov" name="silnat_b_local_gov_common" class="form-control" required>
                 </div>
             </div>
-            <!-- End of Section B placeholder -->
-
+            <!-- The original Infrastructure Condition field will follow, to be refactored into Section D later -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="silnat_infrastructure">Infrastructure Condition *</label>
             <div class="form-row">
                 <div class="form-group">
                     <label for="silnat_infrastructure">Infrastructure Condition *</label>
@@ -764,6 +748,10 @@ select.form-control option {
         </form>        </div>
         <div id="tcmatsSection" class="section hidden">
             <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
+            <div class="lagos-header" style="display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:24px;">
+  <img src="subeb.jpg" alt="Lagos State Logo" style="height:48px;width:48px;border-radius:8px;border:3px solid var(--lagos-yellow);background:var(--lagos-white);box-shadow:0 2px 8px rgba(30,64,175,0.10);">
+  <div style="font-size:1.6rem;font-weight:700;color:var(--lagos-blue);letter-spacing:1px;">Lagos State Universal Basic Education Board (LASUBEB)</div>
+</div>
             <h2>Teachers Classroom Management and Teaching Survey (TCMATS)</h2>
             <!-- TODO: Add TCMATS form here -->
             <div style="color:#888;margin-top:40px;"><form id="tcmatsForm" class="audit-form" onsubmit="submitTcmats(event)">
@@ -804,6 +792,10 @@ select.form-control option {
         </div>
         <div id="loriSection" class="section hidden">
             <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
+            <div class="lagos-header" style="display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:24px;">
+  <img src="subeb.jpg" alt="Lagos State Logo" style="height:48px;width:48px;border-radius:8px;border:3px solid var(--lagos-yellow);background:var(--lagos-white);box-shadow:0 2px 8px rgba(30,64,175,0.10);">
+  <div style="font-size:1.6rem;font-weight:700;color:var(--lagos-blue);letter-spacing:1px;">Lagos State Universal Basic Education Board (LASUBEB)</div>
+</div>
             <h2>Lesson Observation Rating Instrument (LORI)</h2>
             <!-- TODO: Add LORI form here -->
             <div style="color:#888;margin-top:40px;"><form id="loriForm" class="audit-form" onsubmit="submitLori(event)">
@@ -857,6 +849,10 @@ select.form-control option {
         </div>
         <div id="voicesSection" class="section hidden">
             <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
+            <div class="lagos-header" style="display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:24px;">
+  <img src="subeb.jpg" alt="Lagos State Logo" style="height:48px;width:48px;border-radius:8px;border:3px solid var(--lagos-yellow);background:var(--lagos-white);box-shadow:0 2px 8px rgba(30,64,175,0.10);">
+  <div style="font-size:1.6rem;font-weight:700;color:var(--lagos-blue);letter-spacing:1px;">Lagos State Universal Basic Education Board (LASUBEB)</div>
+</div>
             <h2>Learner Voices/Opinions (VOICES)</h2>
             <!-- TODO: Add VOICES form here -->
             <div style="color:#888;margin-top:40px;">
@@ -2065,153 +2061,6 @@ function editRecord(id) {
 <script>
 // --- Survey Form Submission Logic for SILNAT, TCMATS, LORI, VOICES ---
 
-// Function to handle SILNAT Institution Type change
-function handleSilnatInstitutionTypeChange() {
-    const institutionType = document.getElementById('silnat_a_institution_type').value;
-
-    // Hide all conditional groups first
-    const allConditionalGroups = document.querySelectorAll('#silnatForm .conditional-group');
-    allConditionalGroups.forEach(group => group.style.display = 'none');
-
-    // Hide all conditional sub-groups (like 'other qualification')
-    const allConditionalSubGroups = document.querySelectorAll('#silnatForm .conditional-sub-group');
-    allConditionalSubGroups.forEach(subGroup => subGroup.style.display = 'none');
-
-    // Selectors for main content wrappers that should become visible after type selection
-    // These will be expanded as the form is built.
-    const htBioWrapper = document.getElementById('silnat_a_ht_bio_data_wrapper');
-    const esBioWrapper = document.getElementById('silnat_a_es_bio_data_wrapper');
-    // const sectionBWrapper = document.getElementById('silnat_section_b_wrapper');
-    // const sectionCWrapper = document.getElementById('silnat_section_c_wrapper');
-    // const sectionDWrapper = document.getElementById('silnat_section_d_wrapper');
-    // const respondentWrapper = document.getElementById('silnat_respondent_details_wrapper');
-    // const officialUseWrapper = document.getElementById('silnat_official_use_wrapper');
-    // const fileUploadWrapper = document.getElementById('silnat_file_upload_wrapper');
-
-
-    if (!institutionType) { // No type selected, hide everything specific
-        if(htBioWrapper) htBioWrapper.style.display = 'none';
-        if(esBioWrapper) esBioWrapper.style.display = 'none';
-        // if(sectionBWrapper) sectionBWrapper.style.display = 'none';
-        // ... hide other main wrappers ...
-        return;
-    }
-
-    // Show relevant bio data wrapper
-    if (institutionType === 'regular_school' || institutionType === 'special_school' || institutionType === 'home_economics_centre' || institutionType === 'mini_resource_centre') {
-        if(htBioWrapper) htBioWrapper.style.display = 'block';
-        if(esBioWrapper) esBioWrapper.style.display = 'none'; // Ensure other is hidden
-        clearEducationSecretaryBioData();
-    } else if (institutionType === 'lgea_secretariat') {
-        if(esBioWrapper) esBioWrapper.style.display = 'block';
-        if(htBioWrapper) htBioWrapper.style.display = 'none'; // Ensure other is hidden
-        clearHeadTeacherBioData();
-    }
-
-    // Show other main section wrappers (will be uncommented/added as form grows)
-    // if(sectionBWrapper) sectionBWrapper.style.display = 'block';
-    // if(sectionCWrapper) sectionCWrapper.style.display = 'block';
-    // if(sectionDWrapper) sectionDWrapper.style.display = 'block';
-    // if(respondentWrapper) respondentWrapper.style.display = 'block';
-    // if(officialUseWrapper) officialUseWrapper.style.display = 'block';
-    // if(fileUploadWrapper) fileUploadWrapper.style.display = 'block';
-
-
-    // Handle sub-group for "Other" qualification for HT (if HT section is visible)
-    if (htBioWrapper && htBioWrapper.style.display === 'block') {
-        const htQualificationSelect = document.getElementById('silnat_a_ht_highest_qualification');
-        const htOtherQualGroup = document.getElementById('silnat_a_ht_highest_qualification_other_group');
-        const htOtherQualInput = document.getElementById('silnat_a_ht_highest_qualification_other');
-        if (htQualificationSelect && htQualificationSelect.value === 'others') {
-            if(htOtherQualGroup) htOtherQualGroup.style.display = 'block';
-        } else {
-            if(htOtherQualGroup) htOtherQualGroup.style.display = 'none';
-            if(htOtherQualInput) htOtherQualInput.value = '';
-        }
-    }
-
-    // Handle sub-group for "Other" qualification for ES (if ES section is visible)
-     if (esBioWrapper && esBioWrapper.style.display === 'block') {
-        const esQualificationSelect = document.getElementById('silnat_a_es_highest_qualification');
-        const esOtherQualGroup = document.getElementById('silnat_a_es_highest_qualification_other_group');
-        const esOtherQualInput = document.getElementById('silnat_a_es_highest_qualification_other');
-        if (esQualificationSelect && esQualificationSelect.value === 'others') {
-            if(esOtherQualGroup) esOtherQualGroup.style.display = 'block';
-        } else {
-            if(esOtherQualGroup) esOtherQualGroup.style.display = 'none';
-            if(esOtherQualInput) esOtherQualInput.value = '';
-        }
-    }
-}
-
-// Helper functions to clear data from hidden sections
-function clearHeadTeacherBioData() {
-    const fieldsToClearIds = ['silnat_a_ht_name', 'silnat_a_ht_contact', 'silnat_a_ht_highest_qualification_other'];
-    fieldsToClearIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-    });
-    document.querySelectorAll('input[name="silnat_a_ht_gender"]').forEach(rb => rb.checked = false);
-    document.querySelectorAll('input[name="silnat_a_ht_marital_status"]').forEach(rb => rb.checked = false);
-    const qualSelect = document.getElementById('silnat_a_ht_highest_qualification');
-    if (qualSelect) qualSelect.value = '';
-    const expSelect = document.getElementById('silnat_a_ht_years_experience');
-    if (expSelect) expSelect.value = '';
-    const otherGroup = document.getElementById('silnat_a_ht_highest_qualification_other_group');
-    if(otherGroup) otherGroup.style.display = 'none';
-}
-
-function clearEducationSecretaryBioData() {
-    const fieldsToClearIds = ['silnat_a_es_name', 'silnat_a_es_contact', 'silnat_a_es_highest_qualification_other'];
-    fieldsToClearIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-    });
-    document.querySelectorAll('input[name="silnat_a_es_gender"]').forEach(rb => rb.checked = false);
-    document.querySelectorAll('input[name="silnat_a_es_marital_status"]').forEach(rb => rb.checked = false);
-    const qualSelect = document.getElementById('silnat_a_es_highest_qualification');
-    if (qualSelect) qualSelect.value = '';
-    const expSelect = document.getElementById('silnat_a_es_years_experience');
-    if (expSelect) expSelect.value = '';
-    const otherGroup = document.getElementById('silnat_a_es_highest_qualification_other_group');
-    if(otherGroup) otherGroup.style.display = 'none';
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Initial call to set form state based on default selection (if any)
-    // handleSilnatInstitutionTypeChange(); // Not calling on load to keep form initially clean
-
-    // Attach event listeners to qualification dropdowns to handle "Other" field visibility
-    const htQualificationSelect = document.getElementById('silnat_a_ht_highest_qualification');
-    if(htQualificationSelect) {
-        htQualificationSelect.addEventListener('change', function() {
-            const otherGroup = document.getElementById('silnat_a_ht_highest_qualification_other_group');
-            const otherInput = document.getElementById('silnat_a_ht_highest_qualification_other');
-            if (this.value === 'others') {
-                if(otherGroup) otherGroup.style.display = 'block';
-            } else {
-                if(otherGroup) otherGroup.style.display = 'none';
-                if(otherInput) otherInput.value = '';
-            }
-        });
-    }
-
-    const esQualificationSelect = document.getElementById('silnat_a_es_highest_qualification');
-    if(esQualificationSelect) {
-        esQualificationSelect.addEventListener('change', function() {
-            const otherGroup = document.getElementById('silnat_a_es_highest_qualification_other_group');
-            const otherInput = document.getElementById('silnat_a_es_highest_qualification_other');
-            if (this.value === 'others') {
-                if(otherGroup) otherGroup.style.display = 'block';
-            } else {
-                if(otherGroup) otherGroup.style.display = 'none';
-                if(otherInput) otherInput.value = '';
-            }
-        });
-    }
-});
-
-
 // Helper: Convert FileList to array and resize images (returns array of base64 strings)
 async function processFiles(input, maxCount) {
     const files = Array.from(input.files).slice(0, maxCount);
@@ -2230,129 +2079,28 @@ async function submitSilnat(event) {
     const form = document.getElementById('silnatForm');
     const feedback = document.getElementById('silnat_feedback');
     feedback.textContent = '';
-
-    const institutionType = document.getElementById('silnat_a_institution_type').value;
-    if (!institutionType) {
-        feedback.style.color = 'var(--lagos-red)';
-        feedback.textContent = 'Please select an Institution Type.';
-        return;
-    }
-
-    // Basic validation: Check all visible required inputs in the form
-    const visibleRequiredInputs = form.querySelectorAll('input[required]:not([style*="display: none"]):not([disabled]), select[required]:not([style*="display: none"]):not([disabled]), textarea[required]:not([style*="display: none"]):not([disabled])');
-    for (const input of visibleRequiredInputs) {
-        // Check if the input itself is within a visible conditional group
-        let parent = input.closest('.conditional-group');
-        let isVisibleConditional = true; // Assume visible if not in a conditional group
-        if (parent) {
-            isVisibleConditional = (parent.style.display !== 'none');
-        }
-
-        if (isVisibleConditional && !input.value.trim()) {
-            // Try to get label text more reliably
-            let labelText = `Field with ID '${input.id}'`;
-            const labelElement = form.querySelector(`label[for="${input.id}"]`);
-            if (labelElement) {
-                labelText = labelElement.textContent.replace('*','').trim();
-            } else { // Try parent label if input is radio/checkbox
-                 const parentLabel = input.closest('label');
-                 if(parentLabel) labelText = parentLabel.textContent.replace('*','').trim();
-            }
-
+    // Validate required fields
+    const required = ['silnat_schoolName','silnat_localGov','silnat_headTeacher','silnat_infrastructure','silnat_leadership','silnat_needs'];
+    for (const id of required) {
+        if (!document.getElementById(id).value.trim()) {
             feedback.style.color = 'var(--lagos-red)';
-            feedback.textContent = `Please fill the required field: ${labelText}.`;
-            input.focus();
+            feedback.textContent = 'Please fill all required fields.';
             return;
         }
-
-        if (input.type === 'radio' && isVisibleConditional) {
-            const radioGroupName = input.name;
-            const radioGroup = form.elements[radioGroupName];
-            let groupIsVisible = true;
-            let radioParent = input.closest('.conditional-group');
-            if(radioParent && radioParent.style.display === 'none') {
-                groupIsVisible = false;
-            }
-
-            if (groupIsVisible && radioGroup && radioGroup.value === '') {
-                 // Find a label associated with the radio group
-                const firstRadioInGroup = document.querySelector(`input[name="${radioGroupName}"]`);
-                let groupLabelText = radioGroupName;
-                if(firstRadioInGroup){
-                    const parentFormGroup = firstRadioInGroup.closest('.form-group');
-                    if(parentFormGroup){
-                        const labelElem = parentFormGroup.querySelector('label:not(.radio-inline)');
-                        if(labelElem) groupLabelText = labelElem.textContent.replace('*','').trim();
-                    }
-                }
-                 feedback.style.color = 'var(--lagos-red)';
-                 feedback.textContent = `Please make a selection for: ${groupLabelText}.`;
-                 return;
-            }
-        }
     }
-
-
     feedback.textContent = 'Submitting...';
     feedback.style.color = 'var(--lagos-blue)';
-
+    // Collect data
     const data = {
-        institution_type: institutionType,
-        section_a: {},
-        section_b: {},
-        section_c: {},
-        section_d: {},
-        respondent_details: {},
-        official_use: {}
+        schoolName: document.getElementById('silnat_schoolName').value.trim(),
+        localGov: document.getElementById('silnat_localGov').value.trim(),
+        headTeacher: document.getElementById('silnat_headTeacher').value.trim(),
+        contact: document.getElementById('silnat_contact').value.trim(),
+        infrastructure: document.getElementById('silnat_infrastructure').value,
+        leadership: document.getElementById('silnat_leadership').value,
+        needs: document.getElementById('silnat_needs').value.trim(),
+        photos: await processFiles(document.getElementById('silnat_fileInput'), 5)
     };
-
-    // Collect Section A data
-    if (institutionType === 'regular_school' || institutionType === 'special_school' || institutionType === 'home_economics_centre' || institutionType === 'mini_resource_centre') {
-        const htBioWrapper = document.getElementById('silnat_a_ht_bio_data_wrapper');
-        if (htBioWrapper && htBioWrapper.style.display !== 'none') {
-            data.section_a.head_teacher_name = document.getElementById('silnat_a_ht_name')?.value.trim();
-            data.section_a.contact_number = document.getElementById('silnat_a_ht_contact')?.value.trim();
-            data.section_a.gender = form.elements['silnat_a_ht_gender']?.value;
-            data.section_a.marital_status = form.elements['silnat_a_ht_marital_status']?.value;
-            data.section_a.highest_qualification = document.getElementById('silnat_a_ht_highest_qualification')?.value;
-            if (data.section_a.highest_qualification === 'others') {
-                data.section_a.highest_qualification_other = document.getElementById('silnat_a_ht_highest_qualification_other')?.value.trim();
-            }
-            data.section_a.years_leadership_experience = document.getElementById('silnat_a_ht_years_experience')?.value;
-        }
-    } else if (institutionType === 'lgea_secretariat') {
-        const esBioWrapper = document.getElementById('silnat_a_es_bio_data_wrapper');
-        if (esBioWrapper && esBioWrapper.style.display !== 'none') {
-            data.section_a.education_secretary_name = document.getElementById('silnat_a_es_name')?.value.trim();
-            data.section_a.contact_number = document.getElementById('silnat_a_es_contact')?.value.trim();
-            data.section_a.gender = form.elements['silnat_a_es_gender']?.value;
-            data.section_a.marital_status = form.elements['silnat_a_es_marital_status']?.value;
-            data.section_a.highest_qualification = document.getElementById('silnat_a_es_highest_qualification')?.value;
-            if (data.section_a.highest_qualification === 'others') {
-                data.section_a.highest_qualification_other = document.getElementById('silnat_a_es_highest_qualification_other')?.value.trim();
-            }
-            data.section_a.years_leadership_experience = document.getElementById('silnat_a_es_years_experience')?.value;
-        }
-    }
-
-    // These are common fields currently structured as if they are section B, but will be part of the new section B logic
-    data.section_b.institution_name_common = document.getElementById('silnat_schoolName')?.value.trim();
-    data.section_b.local_gov_common = document.getElementById('silnat_localGov')?.value.trim();
-
-    // Placeholder for original simple form fields - these will be replaced by detailed conditional fields
-    data.section_d.infrastructure_condition_old = document.getElementById('silnat_infrastructure')?.value;
-    data.section_d.leadership_structure_old = document.getElementById('silnat_leadership')?.value; // This was likely a Section A or C type question
-    data.section_c.key_needs_challenges_old = document.getElementById('silnat_needs')?.value.trim();
-
-    const fileInput = document.getElementById('silnat_fileInput');
-    if (fileInput && fileInput.files.length > 0) {
-        data.photos = await processFiles(fileInput, 5); // processFiles is defined elsewhere
-    } else {
-        data.photos = [];
-    }
-
-    console.log("Submitting SILNAT Data:", JSON.stringify(data, null, 2)); // For debugging
-
     try {
         const res = await fetch('/api/silnat', {
             method: 'POST',
