@@ -582,26 +582,135 @@ select.form-control option {
             
             <!-- TODO: Add SILNAT form here -->
 <form id="silnatForm" class="audit-form" onsubmit="submitSilnat(event)">
+            <div class="form-row full">
+                <div class="form-group">
+                    <label for="silnat_a_institution_type">Institution Type *</label>
+                    <select id="silnat_a_institution_type" name="silnat_a_institution_type" class="form-control" required onchange="handleSilnatInstitutionTypeChange()">
+                        <option value="">Select Institution Type</option>
+                        <option value="regular_school">Regular School</option>
+                        <option value="special_school">Special School</option>
+                        <option value="home_economics_centre">Home Economics Centre</option>
+                        <option value="mini_resource_centre">Mini Resource Centre</option>
+                        <option value="lgea_secretariat">LGEA Secretariat</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Section A: Bio Data - Conditional Wrappers -->
+            <div id="silnat_a_ht_bio_data_wrapper" class="conditional-group for-regular_school for-special_school for-home_economics_centre for-mini_resource_centre" style="display:none;">
+                <hr> <!-- Visual separator -->
+                <h4>Head Teacher Bio Data</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="silnat_a_ht_name">Head Teacher/Manager Name *</label>
+                        <input type="text" id="silnat_a_ht_name" name="silnat_a_ht_name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="silnat_a_ht_contact">Contact Number</label>
+                        <input type="tel" id="silnat_a_ht_contact" name="silnat_a_ht_contact" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Gender *</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_ht_gender" value="male" required> Male</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_ht_gender" value="female"> Female</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Marital Status *</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_ht_marital_status" value="single" required> Single</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_ht_marital_status" value="married"> Married</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_ht_marital_status" value="divorced"> Divorced</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_ht_marital_status" value="separated"> Separated</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_ht_marital_status" value="widow_widower"> Widow/Widower</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="silnat_a_ht_highest_qualification">Highest Qualification *</label>
+                    <select id="silnat_a_ht_highest_qualification" name="silnat_a_ht_highest_qualification" class="form-control" required>
+                        <option value="">Select Qualification</option>
+                        <option value="grade_ii">Grade II</option> <option value="nce">NCE</option> <option value="b_ed">B.Ed</option> <option value="ba_ed">BA. Ed</option> <option value="bsc_ed">B.Sc.Ed</option> <option value="hnd">HND</option> <option value="m_ed">M.Ed</option> <option value="others">Others</option>
+                    </select>
+                </div>
+                <div class="form-group conditional-sub-group for-silnat_a_ht_highest_qualification_others" style="display:none;">
+                    <label for="silnat_a_ht_highest_qualification_other">Specify Other Qualification</label>
+                    <input type="text" id="silnat_a_ht_highest_qualification_other" name="silnat_a_ht_highest_qualification_other" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="silnat_a_ht_years_experience">Years of Leadership Experience *</label>
+                    <select id="silnat_a_ht_years_experience" name="silnat_a_ht_years_experience" class="form-control" required>
+                        <option value="">Select Years</option>
+                        <option value="5_below">5 & below</option> <option value="6_10">6-10</option> <option value="11_15">11-15</option> <option value="16_20">16-20</option> <option value="21_above">21 & above</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="silnat_a_es_bio_data_wrapper" class="conditional-group for-lgea_secretariat" style="display:none;">
+                 <hr> <!-- Visual separator -->
+                <h4>Education Secretary Bio Data</h4>
+                <div class="form-row">
+                     <div class="form-group">
+                        <label for="silnat_a_es_name">Education Secretary Name *</label>
+                        <input type="text" id="silnat_a_es_name" name="silnat_a_es_name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="silnat_a_es_contact">Contact Number</label>
+                        <input type="tel" id="silnat_a_es_contact" name="silnat_a_es_contact" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Gender *</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_es_gender" value="male" required> Male</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_es_gender" value="female"> Female</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Marital Status *</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_es_marital_status" value="single" required> Single</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_es_marital_status" value="married"> Married</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_es_marital_status" value="divorced"> Divorced</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_es_marital_status" value="separated"> Separated</label>
+                        <label class="radio-inline"><input type="radio" name="silnat_a_es_marital_status" value="widow_widower"> Widow/Widower</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="silnat_a_es_highest_qualification">Highest Qualification *</label>
+                    <select id="silnat_a_es_highest_qualification" name="silnat_a_es_highest_qualification" class="form-control" required>
+                        <option value="">Select Qualification</option>
+                        <option value="grade_ii">Grade II</option> <option value="nce">NCE</option> <option value="b_ed">B.Ed</option> <option value="ba_ed">BA. Ed</option> <option value="bsc_ed">B.Sc.Ed</option> <option value="hnd">HND</option> <option value="m_ed">M.Ed</option> <option value="others">Others</option>
+                    </select>
+                </div>
+                <div class="form-group conditional-sub-group for-silnat_a_es_highest_qualification_others" style="display:none;">
+                    <label for="silnat_a_es_highest_qualification_other">Specify Other Qualification</label>
+                    <input type="text" id="silnat_a_es_highest_qualification_other" name="silnat_a_es_highest_qualification_other" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="silnat_a_es_years_experience">Years of Leadership Experience *</label>
+                    <select id="silnat_a_es_years_experience" name="silnat_a_es_years_experience" class="form-control" required>
+                        <option value="">Select Years</option>
+                        <option value="5_below">5 & below</option> <option value="6_10">6-10</option> <option value="11_15">11-15</option> <option value="16_20">16-20</option> <option value="21_above">21 & above</option>
+                    </select>
+                </div>
+            </div>
+            <hr> <!-- Visual separator -->
+            <!-- The original School Name and Local Gov fields will follow, to be refactored into Section B later -->
             <div class="form-row">
                 <div class="form-group">
-                    <label for="silnat_schoolName">School Name *</label>
-                    <input type="text" id="silnat_schoolName" class="form-control" required>
+                    <label for="silnat_schoolName">Name of School/Institution *</label>
+                    <input type="text" id="silnat_schoolName" name="silnat_b_institution_name_common" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="silnat_localGov">Local Government *</label>
-                    <input type="text" id="silnat_localGov" class="form-control" required>
+                    <input type="text" id="silnat_localGov" name="silnat_b_local_gov_common" class="form-control" required>
                 </div>
             </div>
+            <!-- The original Infrastructure Condition field will follow, to be refactored into Section D later -->
             <div class="form-row">
                 <div class="form-group">
-                    <label for="silnat_headTeacher">Head Teacher/Manager Name *</label>
-                    <input type="text" id="silnat_headTeacher" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="silnat_contact">Contact Number</label>
-                    <input type="tel" id="silnat_contact" class="form-control">
-                </div>
-            </div>
+                    <label for="silnat_infrastructure">Infrastructure Condition *</label>
             <div class="form-row">
                 <div class="form-group">
                     <label for="silnat_infrastructure">Infrastructure Condition *</label>
