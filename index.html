@@ -721,28 +721,7 @@ select.form-control option {
                     <input type="text" id="silnat_schoolName" name="silnat_b_institution_name_common" class="form-control" required>
                 </div>
                 <div class="form-group">
-<<<<<<< add-location-field-silnat
-                    <label for="silnat_b_institution_address">School/Institution Address *</label>
-                    <textarea id="silnat_b_institution_address" name="silnat_b_institution_address" class="form-control" rows="3" required></textarea>
-                </div>
-            </div>
-            <div class="form-row full">
-                <div class="form-group">
-                    <label for="silnat_location">Location *</label>
-                    <select id="silnat_location" name="silnat_location" class="form-control" required>
-                        <option value="">Select Location</option>
-                        <option value="urban">Urban</option>
-                        <option value="rural">Rural</option>
-                        <option value="riverine">Riverine</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="silnat_localGov">Local Government *</label>
-=======
                     <label for="silnat_localGov">Local Government *</label> <!-- This will be part of Section B -->
->>>>>>> main
                     <input type="text" id="silnat_localGov" name="silnat_b_local_gov_common" class="form-control" required>
                 </div>
             </div>
@@ -2251,14 +2230,6 @@ async function submitSilnat(event) {
     const form = document.getElementById('silnatForm');
     const feedback = document.getElementById('silnat_feedback');
     feedback.textContent = '';
-<<<<<<< add-location-field-silnat
-    // Validate required fields
-    // Added silnat_b_institution_address and silnat_location to required fields
-    const required = ['silnat_schoolName', 'silnat_b_institution_address', 'silnat_location', 'silnat_localGov','silnat_headTeacher','silnat_infrastructure','silnat_leadership','silnat_needs'];
-    for (const id of required) {
-        const element = document.getElementById(id);
-        if (!element || !element.value.trim()) { // Added check for element existence
-=======
 
     const institutionType = document.getElementById('silnat_a_institution_type').value;
     if (!institutionType) {
@@ -2288,7 +2259,6 @@ async function submitSilnat(event) {
                  if(parentLabel) labelText = parentLabel.textContent.replace('*','').trim();
             }
 
->>>>>>> main
             feedback.style.color = 'var(--lagos-red)';
             feedback.textContent = `Please fill the required field: ${labelText}.`;
             input.focus();
@@ -2327,18 +2297,6 @@ async function submitSilnat(event) {
     feedback.style.color = 'var(--lagos-blue)';
 
     const data = {
-<<<<<<< add-location-field-silnat
-        schoolName: document.getElementById('silnat_schoolName').value.trim(),
-        schoolAddress: document.getElementById('silnat_b_institution_address').value.trim(), // Added schoolAddress
-        location: document.getElementById('silnat_location').value.trim(), // Added location
-        localGov: document.getElementById('silnat_localGov').value.trim(),
-        headTeacher: document.getElementById('silnat_headTeacher').value.trim(),
-        contact: document.getElementById('silnat_contact').value.trim(),
-        infrastructure: document.getElementById('silnat_infrastructure').value,
-        leadership: document.getElementById('silnat_leadership').value,
-        needs: document.getElementById('silnat_needs').value.trim(),
-        photos: await processFiles(document.getElementById('silnat_fileInput'), 5)
-=======
         institution_type: institutionType,
         section_a: {},
         section_b: {},
@@ -2346,7 +2304,6 @@ async function submitSilnat(event) {
         section_d: {},
         respondent_details: {},
         official_use: {}
->>>>>>> main
     };
 
     // Collect Section A data
