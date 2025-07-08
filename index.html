@@ -811,6 +811,60 @@ select.form-control option {
                     </div>
                 </div>
             </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+                <label style="font-weight: bold; display: block; margin-bottom: 10px;">ECCDE:</label>
+                <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label for="silnat_pupils_eccde_male">Male</label>
+                        <input type="number" id="silnat_pupils_eccde_male" name="silnat_pupils_eccde_male" class="form-control" min="0" placeholder="Male">
+                    </div>
+                    <div class="form-group">
+                        <label for="silnat_pupils_eccde_female">Female</label>
+                        <input type="number" id="silnat_pupils_eccde_female" name="silnat_pupils_eccde_female" class="form-control" min="0" placeholder="Female">
+                    </div>
+                    <div class="form-group">
+                        <label for="silnat_pupils_eccde_total">Total</label>
+                        <input type="number" id="silnat_pupils_eccde_total" name="silnat_pupils_eccde_total" class="form-control" min="0" placeholder="Total" readonly style="background-color: var(--lagos-blue) !important; opacity: 0.8 !important; color: var(--lagos-white) !important;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+                <label style="font-weight: bold; display: block; margin-bottom: 10px;">Primary:</label>
+                <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label for="silnat_pupils_primary_male">Male</label>
+                        <input type="number" id="silnat_pupils_primary_male" name="silnat_pupils_primary_male" class="form-control" min="0" placeholder="Male">
+                    </div>
+                    <div class="form-group">
+                        <label for="silnat_pupils_primary_female">Female</label>
+                        <input type="number" id="silnat_pupils_primary_female" name="silnat_pupils_primary_female" class="form-control" min="0" placeholder="Female">
+                    </div>
+                    <div class="form-group">
+                        <label for="silnat_pupils_primary_total">Total</label>
+                        <input type="number" id="silnat_pupils_primary_total" name="silnat_pupils_primary_total" class="form-control" min="0" placeholder="Total" readonly style="background-color: var(--lagos-blue) !important; opacity: 0.8 !important; color: var(--lagos-white) !important;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+                <label style="font-weight: bold; display: block; margin-bottom: 10px;">Special Learners:</label>
+                <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label for="silnat_pupils_special_male">Male</label>
+                        <input type="number" id="silnat_pupils_special_male" name="silnat_pupils_special_male" class="form-control" min="0" placeholder="Male">
+                    </div>
+                    <div class="form-group">
+                        <label for="silnat_pupils_special_female">Female</label>
+                        <input type="number" id="silnat_pupils_special_female" name="silnat_pupils_special_female" class="form-control" min="0" placeholder="Female">
+                    </div>
+                    <div class="form-group">
+                        <label for="silnat_pupils_special_total">Total</label>
+                        <input type="number" id="silnat_pupils_special_total" name="silnat_pupils_special_total" class="form-control" min="0" placeholder="Total" readonly style="background-color: var(--lagos-blue) !important; opacity: 0.8 !important; color: var(--lagos-white) !important;">
+                    </div>
+                </div>
+            </div>
             <!-- End of Section B placeholder -->
 
             <div class="form-row">
@@ -2386,6 +2440,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (femalePupilsInput) {
         femalePupilsInput.addEventListener('input', updateSilnatTotalPupils);
     }
+
+    // Event listeners for SILNAT ECCDE pupil count auto-calculation
+    const malePupilsEccdeInput = document.getElementById('silnat_pupils_eccde_male');
+    const femalePupilsEccdeInput = document.getElementById('silnat_pupils_eccde_female');
+    if (malePupilsEccdeInput) { malePupilsEccdeInput.addEventListener('input', updateSilnatTotalPupilsEccde); }
+    if (femalePupilsEccdeInput) { femalePupilsEccdeInput.addEventListener('input', updateSilnatTotalPupilsEccde); }
+
+    // Event listeners for SILNAT Primary pupil count auto-calculation
+    const malePupilsPrimaryInput = document.getElementById('silnat_pupils_primary_male');
+    const femalePupilsPrimaryInput = document.getElementById('silnat_pupils_primary_female');
+    if (malePupilsPrimaryInput) { malePupilsPrimaryInput.addEventListener('input', updateSilnatTotalPupilsPrimary); }
+    if (femalePupilsPrimaryInput) { femalePupilsPrimaryInput.addEventListener('input', updateSilnatTotalPupilsPrimary); }
+
+    // Event listeners for SILNAT Special Learners pupil count auto-calculation
+    const malePupilsSpecialInput = document.getElementById('silnat_pupils_special_male');
+    const femalePupilsSpecialInput = document.getElementById('silnat_pupils_special_female');
+    if (malePupilsSpecialInput) { malePupilsSpecialInput.addEventListener('input', updateSilnatTotalPupilsSpecial); }
+    if (femalePupilsSpecialInput) { femalePupilsSpecialInput.addEventListener('input', updateSilnatTotalPupilsSpecial); }
 });
 
 // Function to update total teachers for SILNAT form
@@ -2427,6 +2499,39 @@ function updateSilnatTotalPupils() {
         const femaleCount = parseInt(femalePupilsInput.value, 10) || 0;
 
         totalPupilsInput.value = maleCount + femaleCount;
+    }
+}
+
+function updateSilnatTotalPupilsEccde() {
+    const maleInput = document.getElementById('silnat_pupils_eccde_male');
+    const femaleInput = document.getElementById('silnat_pupils_eccde_female');
+    const totalInput = document.getElementById('silnat_pupils_eccde_total');
+    if (maleInput && femaleInput && totalInput) {
+        const maleCount = parseInt(maleInput.value, 10) || 0;
+        const femaleCount = parseInt(femaleInput.value, 10) || 0;
+        totalInput.value = maleCount + femaleCount;
+    }
+}
+
+function updateSilnatTotalPupilsPrimary() {
+    const maleInput = document.getElementById('silnat_pupils_primary_male');
+    const femaleInput = document.getElementById('silnat_pupils_primary_female');
+    const totalInput = document.getElementById('silnat_pupils_primary_total');
+    if (maleInput && femaleInput && totalInput) {
+        const maleCount = parseInt(maleInput.value, 10) || 0;
+        const femaleCount = parseInt(femaleInput.value, 10) || 0;
+        totalInput.value = maleCount + femaleCount;
+    }
+}
+
+function updateSilnatTotalPupilsSpecial() {
+    const maleInput = document.getElementById('silnat_pupils_special_male');
+    const femaleInput = document.getElementById('silnat_pupils_special_female');
+    const totalInput = document.getElementById('silnat_pupils_special_total');
+    if (maleInput && femaleInput && totalInput) {
+        const maleCount = parseInt(maleInput.value, 10) || 0;
+        const femaleCount = parseInt(femaleInput.value, 10) || 0;
+        totalInput.value = maleCount + femaleCount;
     }
 }
 
