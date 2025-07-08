@@ -759,6 +759,14 @@ select.form-control option {
                     <label for="silnat_schoolName">Name of School/Institution *</label>
                     <input type="text" id="silnat_schoolName" name="silnat_b_institution_name_common" class="form-control" required>
                 </div>
+            </div>
+            <div class="form-row full">
+                <div class="form-group">
+                    <label for="silnat_b_institution_address">School/Institution Address *</label>
+                    <textarea id="silnat_b_institution_address" name="silnat_b_institution_address" class="form-control" rows="3" required></textarea>
+                </div>
+            </div>
+            <div class="form-row">
                 <div class="form-group">
                     <label for="silnat_localGov">Local Government *</label>
                     <input type="text" id="silnat_localGov" name="silnat_b_local_gov_common" class="form-control" required>
@@ -2137,9 +2145,11 @@ async function submitSilnat(event) {
     const feedback = document.getElementById('silnat_feedback');
     feedback.textContent = '';
     // Validate required fields
-    const required = ['silnat_schoolName','silnat_localGov','silnat_headTeacher','silnat_infrastructure','silnat_leadership','silnat_needs'];
+    // Added silnat_b_institution_address to required fields
+    const required = ['silnat_schoolName', 'silnat_b_institution_address', 'silnat_localGov','silnat_headTeacher','silnat_infrastructure','silnat_leadership','silnat_needs'];
     for (const id of required) {
-        if (!document.getElementById(id).value.trim()) {
+        const element = document.getElementById(id);
+        if (!element || !element.value.trim()) { // Added check for element existence
             feedback.style.color = 'var(--lagos-red)';
             feedback.textContent = 'Please fill all required fields.';
             return;
@@ -2150,6 +2160,7 @@ async function submitSilnat(event) {
     // Collect data
     const data = {
         schoolName: document.getElementById('silnat_schoolName').value.trim(),
+        schoolAddress: document.getElementById('silnat_b_institution_address').value.trim(), // Added schoolAddress
         localGov: document.getElementById('silnat_localGov').value.trim(),
         headTeacher: document.getElementById('silnat_headTeacher').value.trim(),
         contact: document.getElementById('silnat_contact').value.trim(),
