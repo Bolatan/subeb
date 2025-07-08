@@ -495,22 +495,34 @@ footer {
 /* Landing Page Layout */
 #landingPage {
     display: flex;
-    align-items: flex-start; /* Align items to the top */
+    align-items: center; /* Vertically align logo and content div */
     gap: 20px; /* Space between logo and content */
 }
 
 .landing-page-logo {
     flex-shrink: 0; /* Prevent logo from shrinking */
-    max-width: 120px; /* Adjust size as needed */
-    height: auto;
+    /* height: auto; Remove fixed auto, will be controlled by max-height or specific value */
+    max-height: 50px; /* Adjust this value to match h1's typical rendered height */
+    width: auto; /* Maintain aspect ratio */
     border-radius: 8px;
     border: 2px solid var(--lagos-yellow);
     background: var(--lagos-white);
     padding: 5px;
+    object-fit: contain; /* Ensure logo scales nicely within bounds */
 }
 
 .landing-page-content {
     flex-grow: 1; /* Content takes remaining space */
+    display: flex; /* Make this a flex container for title and cards */
+    flex-direction: column; /* Stack title and cards vertically */
+}
+
+.landing-page-content h1 {
+    /* The h1 already has inline text-align:center, margin-bottom, color, font-size:2.2rem */
+    /* We might need to adjust font-size or line-height if max-height on logo isn't enough */
+    /* For example, if 2.2rem is too large, reduce it or set line-height */
+     line-height: 1.2; /* Adjust for better vertical alignment with logo */
+     text-align: left !important; /* Override inline style for desktop if logo is to the left */
 }
 
 /* Responsive adjustments for Landing Page */
@@ -521,14 +533,13 @@ footer {
     }
 
     .landing-page-logo {
-        margin-bottom: 20px; /* Space below logo when stacked */
-        max-width: 100px; /* Slightly smaller logo for mobile stacking */
+        margin-bottom: 15px; /* Space below logo when stacked */
+        max-height: 60px; /* Slightly larger logo for mobile stacking if desired */
     }
 
-    /* Ensure the h1 title within landing-page-content is also centered on mobile */
-    /* The h1 already has inline text-align:center, this is a fallback/override if that changes */
-    #landingPage .landing-page-content h1 {
-         text-align: center !important;
+    .landing-page-content h1 {
+         text-align: center !important; /* Re-center title on mobile when stacked */
+         font-size: 1.8rem; /* Adjust font size for mobile if needed */
     }
 }
 
