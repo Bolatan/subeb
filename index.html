@@ -495,22 +495,34 @@ footer {
 /* Landing Page Layout */
 #landingPage {
     display: flex;
-    align-items: flex-start; /* Align items to the top */
+    align-items: center; /* Vertically align logo and content div */
     gap: 20px; /* Space between logo and content */
 }
 
 .landing-page-logo {
     flex-shrink: 0; /* Prevent logo from shrinking */
-    max-width: 120px; /* Adjust size as needed */
-    height: auto;
+    /* height: auto; Remove fixed auto, will be controlled by max-height or specific value */
+    max-height: 50px; /* Adjust this value to match h1's typical rendered height */
+    width: auto; /* Maintain aspect ratio */
     border-radius: 8px;
     border: 2px solid var(--lagos-yellow);
     background: var(--lagos-white);
     padding: 5px;
+    object-fit: contain; /* Ensure logo scales nicely within bounds */
 }
 
 .landing-page-content {
     flex-grow: 1; /* Content takes remaining space */
+    display: flex; /* Make this a flex container for title and cards */
+    flex-direction: column; /* Stack title and cards vertically */
+}
+
+.landing-page-content h1 {
+    /* The h1 already has inline text-align:center, margin-bottom, color, font-size:2.2rem */
+    /* We might need to adjust font-size or line-height if max-height on logo isn't enough */
+    /* For example, if 2.2rem is too large, reduce it or set line-height */
+     line-height: 1.2; /* Adjust for better vertical alignment with logo */
+     text-align: left !important; /* Override inline style for desktop if logo is to the left */
 }
 
 /* Responsive adjustments for Landing Page */
@@ -521,14 +533,13 @@ footer {
     }
 
     .landing-page-logo {
-        margin-bottom: 20px; /* Space below logo when stacked */
-        max-width: 100px; /* Slightly smaller logo for mobile stacking */
+        margin-bottom: 15px; /* Space below logo when stacked */
+        max-height: 60px; /* Slightly larger logo for mobile stacking if desired */
     }
 
-    /* Ensure the h1 title within landing-page-content is also centered on mobile */
-    /* The h1 already has inline text-align:center, this is a fallback/override if that changes */
-    #landingPage .landing-page-content h1 {
-         text-align: center !important;
+    .landing-page-content h1 {
+         text-align: center !important; /* Re-center title on mobile when stacked */
+         font-size: 1.8rem; /* Adjust font size for mobile if needed */
     }
 }
 
@@ -748,6 +759,14 @@ select.form-control option {
                     <label for="silnat_schoolName">Name of School/Institution *</label>
                     <input type="text" id="silnat_schoolName" name="silnat_b_institution_name_common" class="form-control" required>
                 </div>
+            </div>
+            <div class="form-row full">
+                <div class="form-group">
+                    <label for="silnat_b_institution_address">School/Institution Address *</label>
+                    <textarea id="silnat_b_institution_address" name="silnat_b_institution_address" class="form-control" rows="3" required></textarea>
+                </div>
+            </div>
+            <div class="form-row">
                 <div class="form-group">
                     <label for="silnat_localGov">Local Government *</label>
                     <input type="text" id="silnat_localGov" name="silnat_b_local_gov_common" class="form-control" required>
@@ -2126,9 +2145,11 @@ async function submitSilnat(event) {
     const feedback = document.getElementById('silnat_feedback');
     feedback.textContent = '';
     // Validate required fields
-    const required = ['silnat_schoolName','silnat_localGov','silnat_headTeacher','silnat_infrastructure','silnat_leadership','silnat_needs'];
+    // Added silnat_b_institution_address to required fields
+    const required = ['silnat_schoolName', 'silnat_b_institution_address', 'silnat_localGov','silnat_headTeacher','silnat_infrastructure','silnat_leadership','silnat_needs'];
     for (const id of required) {
-        if (!document.getElementById(id).value.trim()) {
+        const element = document.getElementById(id);
+        if (!element || !element.value.trim()) { // Added check for element existence
             feedback.style.color = 'var(--lagos-red)';
             feedback.textContent = 'Please fill all required fields.';
             return;
@@ -2139,6 +2160,7 @@ async function submitSilnat(event) {
     // Collect data
     const data = {
         schoolName: document.getElementById('silnat_schoolName').value.trim(),
+        schoolAddress: document.getElementById('silnat_b_institution_address').value.trim(), // Added schoolAddress
         localGov: document.getElementById('silnat_localGov').value.trim(),
         headTeacher: document.getElementById('silnat_headTeacher').value.trim(),
         contact: document.getElementById('silnat_contact').value.trim(),
