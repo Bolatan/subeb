@@ -565,8 +565,11 @@ select.form-control option {
     <div class="container">
         <!-- Landing Page: Four Survey Cards -->
         <div id="landingPage" class="section">
-            <h1 style="text-align:center;margin-bottom:32px;color:var(--lagos-navy);font-size:2.2rem;">Welcome to LASUBEB/PIMU Needs Assessment Portal</h1>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;max-width:900px;margin:0 auto;">
+            <div class="landing-header">
+                <img src="subeb.jpg" alt="LASUBEB Logo" class="landing-logo">
+                <h1 style="color:var(--lagos-navy);font-size:2.2rem; margin-left: 20px; flex-grow: 1; text-align: center;">Welcome to LASUBEB/PIMU Needs Assessment Portal</h1>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;max-width:900px;margin:0 auto; margin-top: 32px;">
                 <div class="survey-card" onclick="showSurvey('silnat')">
                     <h2>School Infrastructure & Leadership<br>(SILNAT)</h2>
                     <p>For Head Teachers/Managers</p>
@@ -720,6 +723,21 @@ select.form-control option {
                     <label for="silnat_schoolName">Name of School/Institution *</label> <!-- This label was already updated -->
                     <input type="text" id="silnat_schoolName" name="silnat_b_institution_name_common" class="form-control" required>
                 </div>
+                <div class="form-group">
+                    <label for="silnat_schoolAddress_common">Address of School/Institution *</label>
+                    <textarea id="silnat_schoolAddress_common" name="silnat_b_institution_address_common" class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="silnat_location_common">Location</label>
+                    <select id="silnat_location_common" name="silnat_b_location_common" class="form-control">
+                        <option value="">Select Location (Optional)</option>
+                        <option value="urban">Urban</option>
+                        <option value="rural">Rural</option>
+                        <option value="riverine">Riverine</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
                 <div class="form-group">
                     <label for="silnat_localGov">Local Government *</label> <!-- This will be part of Section B -->
                     <input type="text" id="silnat_localGov" name="silnat_b_local_gov_common" class="form-control" required>
@@ -1160,6 +1178,46 @@ select.form-control option {
 }
 .audit-form {
   color: var(--lagos-white);
+}
+
+.landing-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the start */
+    padding: 10px 0; /* Adjust padding as needed */
+    margin-bottom: 20px; /* Space below the header */
+    border-bottom: 2px solid var(--lagos-yellow); /* Optional: adds a separator line */
+}
+
+.landing-logo {
+    height: 50px; /* Adjust height as needed, e.g., to match other headers */
+    width: auto; /* Maintain aspect ratio */
+    margin-right: 15px; /* Space between logo and title */
+    border-radius: 6px; /* Optional: if you want rounded corners like other logo */
+    border: 2px solid var(--lagos-navy); /* Optional: border for the logo */
+}
+
+/* Ensure h1 in landing page takes available space and centers text if logo is not too wide */
+#landingPage .landing-header h1 {
+    flex-grow: 1;
+    text-align: center; /* Center title text */
+    margin-bottom: 0; /* Remove default h1 margin if it was affecting alignment */
+    font-size: 1.8rem; /* Adjust font size for responsiveness if needed */
+}
+
+@media (max-width: 768px) {
+    .landing-header {
+        flex-direction: column; /* Stack logo and title on smaller screens */
+        text-align: center;
+    }
+    .landing-logo {
+        margin-bottom: 10px; /* Space between logo and title when stacked */
+        height: 40px; /* Slightly smaller logo on mobile */
+    }
+    #landingPage .landing-header h1 {
+        font-size: 1.5rem; /* Adjust title font size for mobile */
+        margin-left: 0; /* Reset margin for stacked layout */
+    }
 }
 
     </style>
@@ -2337,6 +2395,8 @@ async function submitSilnat(event) {
 
     // These are common fields currently structured as if they are section B, but will be part of the new section B logic
     data.section_b.institution_name_common = document.getElementById('silnat_schoolName')?.value.trim();
+    data.section_b.institution_address_common = document.getElementById('silnat_schoolAddress_common')?.value.trim();
+    data.section_b.location_common = document.getElementById('silnat_location_common')?.value; // Optional field
     data.section_b.local_gov_common = document.getElementById('silnat_localGov')?.value.trim();
 
     // Placeholder for original simple form fields - these will be replaced by detailed conditional fields
