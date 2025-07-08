@@ -721,6 +721,12 @@ select.form-control option {
                     <input type="text" id="silnat_schoolName" name="silnat_b_institution_name_common" class="form-control" required>
                 </div>
                 <div class="form-group">
+                    <label for="silnat_schoolAddress_common">Address of School/Institution *</label>
+                    <textarea id="silnat_schoolAddress_common" name="silnat_b_institution_address_common" class="form-control" rows="3" required></textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
                     <label for="silnat_localGov">Local Government *</label> <!-- This will be part of Section B -->
                     <input type="text" id="silnat_localGov" name="silnat_b_local_gov_common" class="form-control" required>
                 </div>
@@ -2337,6 +2343,7 @@ async function submitSilnat(event) {
 
     // These are common fields currently structured as if they are section B, but will be part of the new section B logic
     data.section_b.institution_name_common = document.getElementById('silnat_schoolName')?.value.trim();
+    data.section_b.institution_address_common = document.getElementById('silnat_schoolAddress_common')?.value.trim();
     data.section_b.local_gov_common = document.getElementById('silnat_localGov')?.value.trim();
 
     // Placeholder for original simple form fields - these will be replaced by detailed conditional fields
