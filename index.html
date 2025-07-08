@@ -758,25 +758,20 @@ select.form-control option {
                 </div>
             </div>
 
-            <div class="form-group" style="margin-top: 20px;"> <!-- Added margin-top for spacing from previous section -->
+            <div class="form-group" style="margin-top: 20px;">
                 <label style="font-weight: bold; display: block; margin-bottom: 10px;">Number of Teachers in the School:</label>
-                <div class="form-row">
+                <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
                     <div class="form-group">
                         <label for="silnat_teachers_male">Male</label>
-                        <input type="number" id="silnat_teachers_male" name="silnat_teachers_male" class="form-control" min="0" placeholder="Number of male teachers">
+                        <input type="number" id="silnat_teachers_male" name="silnat_teachers_male" class="form-control" min="0" placeholder="Male">
                     </div>
                     <div class="form-group">
                         <label for="silnat_teachers_female">Female</label>
-                        <input type="number" id="silnat_teachers_female" name="silnat_teachers_female" class="form-control" min="0" placeholder="Number of female teachers">
+                        <input type="number" id="silnat_teachers_female" name="silnat_teachers_female" class="form-control" min="0" placeholder="Female">
                     </div>
-                </div>
-                <div class="form-row">
                     <div class="form-group">
                         <label for="silnat_teachers_total">Total</label>
-                        <input type="number" id="silnat_teachers_total" name="silnat_teachers_total" class="form-control" min="0" placeholder="Total teachers" readonly style="background-color: #e9ecef !important; opacity: 0.7 !important;"> <!-- Added style to indicate readonly better with current theme -->
-                    </div>
-                    <div class="form-group">
-                        <!-- This empty div helps to balance the row since .form-row expects two items for its grid -->
+                        <input type="number" id="silnat_teachers_total" name="silnat_teachers_total" class="form-control" min="0" placeholder="Total" readonly style="background-color: #e9ecef !important; opacity: 0.7 !important;">
                     </div>
                 </div>
             </div>
