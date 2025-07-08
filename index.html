@@ -721,7 +721,7 @@ select.form-control option {
             </div>
 
             <!-- Placeholder for existing fields that will become Section B -->
-<h4 style="margin-bottom: 20px;">Section B: School/Institution Data</h4>
+            <h4 style="margin-bottom: 20px;">Section B: School/Institution Data</h4>
             <div class="form-row">
                 <div class="form-group">
                     <label for="silnat_schoolName">Name of School/Institution *</label> <!-- This label was already updated -->
@@ -755,6 +755,29 @@ select.form-control option {
                 <div class="form-group">
                     <label for="silnat_assemblyDevotion_endTime">Assembly Devotion End Time</label>
                     <input type="time" id="silnat_assemblyDevotion_endTime" name="silnat_assemblyDevotion_endTime" class="form-control" step="900"> <!-- step="900" for 15-minute intervals -->
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;"> <!-- Added margin-top for spacing from previous section -->
+                <label style="font-weight: bold; display: block; margin-bottom: 10px;">Number of Teachers in the School:</label>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="silnat_teachers_male">Male</label>
+                        <input type="number" id="silnat_teachers_male" name="silnat_teachers_male" class="form-control" min="0" placeholder="Number of male teachers">
+                    </div>
+                    <div class="form-group">
+                        <label for="silnat_teachers_female">Female</label>
+                        <input type="number" id="silnat_teachers_female" name="silnat_teachers_female" class="form-control" min="0" placeholder="Number of female teachers">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="silnat_teachers_total">Total</label>
+                        <input type="number" id="silnat_teachers_total" name="silnat_teachers_total" class="form-control" min="0" placeholder="Total teachers" readonly style="background-color: #e9ecef !important; opacity: 0.7 !important;"> <!-- Added style to indicate readonly better with current theme -->
+                    </div>
+                    <div class="form-group">
+                        <!-- This empty div helps to balance the row since .form-row expects two items for its grid -->
+                    </div>
                 </div>
             </div>
             <!-- End of Section B placeholder -->
@@ -2297,7 +2320,34 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Event listeners for SILNAT teacher count auto-calculation
+    const maleTeachersInput = document.getElementById('silnat_teachers_male');
+    const femaleTeachersInput = document.getElementById('silnat_teachers_female');
+
+    if (maleTeachersInput) {
+        maleTeachersInput.addEventListener('input', updateSilnatTotalTeachers);
+    }
+    if (femaleTeachersInput) {
+        femaleTeachersInput.addEventListener('input', updateSilnatTotalTeachers);
+    }
+    // Initialize total teachers count in case of pre-filled values (e.g. form edit)
+    // updateSilnatTotalTeachers(); // Call if needed on form load/edit
 });
+
+// Function to update total teachers for SILNAT form
+function updateSilnatTotalTeachers() {
+    const maleTeachersInput = document.getElementById('silnat_teachers_male');
+    const femaleTeachersInput = document.getElementById('silnat_teachers_female');
+    const totalTeachersInput = document.getElementById('silnat_teachers_total');
+
+    if (maleTeachersInput && femaleTeachersInput && totalTeachersInput) {
+        const maleCount = parseInt(maleTeachersInput.value, 10) || 0;
+        const femaleCount = parseInt(femaleTeachersInput.value, 10) || 0;
+
+        totalTeachersInput.value = maleCount + femaleCount;
+    }
+}
 
 
 // Helper: Convert FileList to array and resize images (returns array of base64 strings)
