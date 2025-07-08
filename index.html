@@ -495,34 +495,22 @@ footer {
 /* Landing Page Layout */
 #landingPage {
     display: flex;
-    align-items: center; /* Vertically align logo and content div */
+    align-items: flex-start; /* Align items to the top */
     gap: 20px; /* Space between logo and content */
 }
 
 .landing-page-logo {
     flex-shrink: 0; /* Prevent logo from shrinking */
-    /* height: auto; Remove fixed auto, will be controlled by max-height or specific value */
-    max-height: 50px; /* Adjust this value to match h1's typical rendered height */
-    width: auto; /* Maintain aspect ratio */
+    max-width: 120px; /* Adjust size as needed */
+    height: auto;
     border-radius: 8px;
     border: 2px solid var(--lagos-yellow);
     background: var(--lagos-white);
     padding: 5px;
-    object-fit: contain; /* Ensure logo scales nicely within bounds */
 }
 
 .landing-page-content {
     flex-grow: 1; /* Content takes remaining space */
-    display: flex; /* Make this a flex container for title and cards */
-    flex-direction: column; /* Stack title and cards vertically */
-}
-
-.landing-page-content h1 {
-    /* The h1 already has inline text-align:center, margin-bottom, color, font-size:2.2rem */
-    /* We might need to adjust font-size or line-height if max-height on logo isn't enough */
-    /* For example, if 2.2rem is too large, reduce it or set line-height */
-     line-height: 1.2; /* Adjust for better vertical alignment with logo */
-     text-align: left !important; /* Override inline style for desktop if logo is to the left */
 }
 
 /* Responsive adjustments for Landing Page */
@@ -533,13 +521,14 @@ footer {
     }
 
     .landing-page-logo {
-        margin-bottom: 15px; /* Space below logo when stacked */
-        max-height: 60px; /* Slightly larger logo for mobile stacking if desired */
+        margin-bottom: 20px; /* Space below logo when stacked */
+        max-width: 100px; /* Slightly smaller logo for mobile stacking */
     }
 
-    .landing-page-content h1 {
-         text-align: center !important; /* Re-center title on mobile when stacked */
-         font-size: 1.8rem; /* Adjust font size for mobile if needed */
+    /* Ensure the h1 title within landing-page-content is also centered on mobile */
+    /* The h1 already has inline text-align:center, this is a fallback/override if that changes */
+    #landingPage .landing-page-content h1 {
+         text-align: center !important;
     }
 }
 
@@ -636,11 +625,9 @@ select.form-control option {
             
             <!-- TODO: Add SILNAT form here -->
 <form id="silnatForm" class="audit-form" onsubmit="submitSilnat(event)">
-            <div class="form-section-a-wrapper">
-                <h3 style="color: var(--lagos-yellow); margin-bottom: 16px; border-bottom: 2px solid var(--lagos-green); padding-bottom: 8px;">Section A: Bio Data</h3>
-                <div class="form-row full">
-                    <div class="form-group">
-                        <label for="silnat_a_institution_type">Institution Type *</label>
+            <div class="form-row full">
+                <div class="form-group">
+                    <label for="silnat_a_institution_type">Institution Type *</label>
                     <select id="silnat_a_institution_type" name="silnat_a_institution_type" class="form-control" required onchange="handleSilnatInstitutionTypeChange()">
                         <option value="">Select Institution Type</option>
                         <option value="regular_school">Regular School</option>
@@ -750,8 +737,7 @@ select.form-control option {
                         <option value="5_below">5 & below</option> <option value="6_10">6-10</option> <option value="11_15">11-15</option> <option value="16_20">16-20</option> <option value="21_above">21 & above</option>
                     </select>
                 </div>
-            </div> <!-- This closes silnat_a_es_bio_data_wrapper or silnat_a_ht_bio_data_wrapper depending on which was last -->
-            </div> <!-- This closes form-section-a-wrapper -->
+            </div>
             <hr> <!-- Visual separator -->
             <!-- The original School Name and Local Gov fields will follow, to be refactored into Section B later -->
             <div class="form-row">
