@@ -793,6 +793,24 @@ select.form-control option {
                     </div>
                 </div>
             </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+                <label style="font-weight: bold; display: block; margin-bottom: 10px;">Number of Pupils in the School:</label>
+                <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label for="silnat_pupils_male">Male</label>
+                        <input type="number" id="silnat_pupils_male" name="silnat_pupils_male" class="form-control" min="0" placeholder="Male">
+                    </div>
+                    <div class="form-group">
+                        <label for="silnat_pupils_female">Female</label>
+                        <input type="number" id="silnat_pupils_female" name="silnat_pupils_female" class="form-control" min="0" placeholder="Female">
+                    </div>
+                    <div class="form-group">
+                        <label for="silnat_pupils_total">Total</label>
+                        <input type="number" id="silnat_pupils_total" name="silnat_pupils_total" class="form-control" min="0" placeholder="Total" readonly style="background-color: #e9ecef !important; opacity: 0.7 !important;">
+                    </div>
+                </div>
+            </div>
             <!-- End of Section B placeholder -->
 
             <div class="form-row">
@@ -2357,6 +2375,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (femaleNonTeachingInput) {
         femaleNonTeachingInput.addEventListener('input', updateSilnatTotalNonTeachingStaff);
     }
+
+    // Event listeners for SILNAT pupil count auto-calculation
+    const malePupilsInput = document.getElementById('silnat_pupils_male');
+    const femalePupilsInput = document.getElementById('silnat_pupils_female');
+
+    if (malePupilsInput) {
+        malePupilsInput.addEventListener('input', updateSilnatTotalPupils);
+    }
+    if (femalePupilsInput) {
+        femalePupilsInput.addEventListener('input', updateSilnatTotalPupils);
+    }
 });
 
 // Function to update total teachers for SILNAT form
@@ -2384,6 +2413,20 @@ function updateSilnatTotalNonTeachingStaff() {
         const femaleCount = parseInt(femaleNonTeachingInput.value, 10) || 0;
 
         totalNonTeachingInput.value = maleCount + femaleCount;
+    }
+}
+
+// Function to update total pupils for SILNAT form
+function updateSilnatTotalPupils() {
+    const malePupilsInput = document.getElementById('silnat_pupils_male');
+    const femalePupilsInput = document.getElementById('silnat_pupils_female');
+    const totalPupilsInput = document.getElementById('silnat_pupils_total');
+
+    if (malePupilsInput && femalePupilsInput && totalPupilsInput) {
+        const maleCount = parseInt(malePupilsInput.value, 10) || 0;
+        const femaleCount = parseInt(femalePupilsInput.value, 10) || 0;
+
+        totalPupilsInput.value = maleCount + femaleCount;
     }
 }
 
