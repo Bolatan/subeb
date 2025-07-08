@@ -625,9 +625,11 @@ select.form-control option {
             
             <!-- TODO: Add SILNAT form here -->
 <form id="silnatForm" class="audit-form" onsubmit="submitSilnat(event)">
-            <div class="form-row full">
-                <div class="form-group">
-                    <label for="silnat_a_institution_type">Institution Type *</label>
+            <div class="form-section-a-wrapper">
+                <h3 style="color: var(--lagos-yellow); margin-bottom: 16px; border-bottom: 2px solid var(--lagos-green); padding-bottom: 8px;">Section A: Bio Data</h3>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="silnat_a_institution_type">Institution Type *</label>
                     <select id="silnat_a_institution_type" name="silnat_a_institution_type" class="form-control" required onchange="handleSilnatInstitutionTypeChange()">
                         <option value="">Select Institution Type</option>
                         <option value="regular_school">Regular School</option>
@@ -737,7 +739,8 @@ select.form-control option {
                         <option value="5_below">5 & below</option> <option value="6_10">6-10</option> <option value="11_15">11-15</option> <option value="16_20">16-20</option> <option value="21_above">21 & above</option>
                     </select>
                 </div>
-            </div>
+            </div> <!-- This closes silnat_a_es_bio_data_wrapper or silnat_a_ht_bio_data_wrapper depending on which was last -->
+            </div> <!-- This closes form-section-a-wrapper -->
             <hr> <!-- Visual separator -->
             <!-- The original School Name and Local Gov fields will follow, to be refactored into Section B later -->
             <div class="form-row">
