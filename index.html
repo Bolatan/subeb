@@ -492,6 +492,46 @@ footer {
 }
 
 
+/* Landing Page Layout */
+#landingPage {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    gap: 20px; /* Space between logo and content */
+}
+
+.landing-page-logo {
+    flex-shrink: 0; /* Prevent logo from shrinking */
+    max-width: 120px; /* Adjust size as needed */
+    height: auto;
+    border-radius: 8px;
+    border: 2px solid var(--lagos-yellow);
+    background: var(--lagos-white);
+    padding: 5px;
+}
+
+.landing-page-content {
+    flex-grow: 1; /* Content takes remaining space */
+}
+
+/* Responsive adjustments for Landing Page */
+@media (max-width: 768px) { /* Adjust breakpoint as needed */
+    #landingPage {
+        flex-direction: column;
+        align-items: center; /* Center items when stacked */
+    }
+
+    .landing-page-logo {
+        margin-bottom: 20px; /* Space below logo when stacked */
+        max-width: 100px; /* Slightly smaller logo for mobile stacking */
+    }
+
+    /* Ensure the h1 title within landing-page-content is also centered on mobile */
+    /* The h1 already has inline text-align:center, this is a fallback/override if that changes */
+    #landingPage .landing-page-content h1 {
+         text-align: center !important;
+    }
+}
+
 /* Lagos State form field branding and white text */
 .section {
   background: var(--lagos-blue);
@@ -541,9 +581,11 @@ select.form-control option {
     <div class="container">
         <!-- Landing Page: Four Survey Cards -->
         <div id="landingPage" class="section">
-            <h1 style="text-align:center;margin-bottom:32px;color:var(--lagos-navy);font-size:2.2rem;">Welcome to LASUBEB/PIMU Needs Assessment Portal</h1>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;max-width:900px;margin:0 auto;">
-                <div class="survey-card" onclick="showSurvey('silnat')">
+            <img src="subeb.jpg" alt="LASUBEB Logo" class="landing-page-logo">
+            <div class="landing-page-content">
+                <h1 style="text-align:center;margin-bottom:32px;color:var(--lagos-navy);font-size:2.2rem;">Welcome to LASUBEB/PIMU Needs Assessment Portal</h1>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;max-width:900px;margin:0 auto;">
+                    <div class="survey-card" onclick="showSurvey('silnat')">
                     <h2>School Infrastructure & Leadership<br>(SILNAT)</h2>
                     <p>For Head Teachers/Managers</p>
                 </div>
@@ -560,6 +602,7 @@ select.form-control option {
                     <p>For Learners</p>
                 </div>
             </div>
+            </div> <!-- Closing div for landing-page-content -->
         </div>
 
         <!-- Survey Sections (initially hidden) -->
