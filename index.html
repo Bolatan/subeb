@@ -718,17 +718,19 @@ select.form-control option {
             </div>
 
             <!-- Placeholder for existing fields that will become Section B -->
-            <div class="form-row">
+            <div class="form-row full">
                 <div class="form-group">
                     <label for="silnat_schoolName">Name of School/Institution *</label> <!-- This label was already updated -->
                     <input type="text" id="silnat_schoolName" name="silnat_b_institution_name_common" class="form-control" required>
                 </div>
+            </div>
+            <div class="form-row full">
                 <div class="form-group">
                     <label for="silnat_schoolAddress_common">Address of School/Institution *</label>
                     <textarea id="silnat_schoolAddress_common" name="silnat_b_institution_address_common" class="form-control" rows="3" required></textarea>
                 </div>
             </div>
-            <div class="form-row">
+            <div class="location-lga-row">
                 <div class="form-group">
                     <label for="silnat_location_common">Location</label>
                     <select id="silnat_location_common" name="silnat_b_location_common" class="form-control">
@@ -1217,6 +1219,28 @@ select.form-control option {
     #landingPage .landing-header h1 {
         font-size: 1.5rem; /* Adjust title font size for mobile */
         margin-left: 0; /* Reset margin for stacked layout */
+    }
+}
+
+/* Styles for the new location-lga-row */
+.location-lga-row {
+    display: flex;
+    gap: 20px; /* Spacing between Location and LGA fields */
+    margin-bottom: 20px; /* Standard margin below a row of fields */
+}
+
+.location-lga-row .form-group {
+    flex: 1; /* Each form group takes equal width */
+}
+
+@media (max-width: 768px) {
+    .location-lga-row {
+        flex-direction: column; /* Stack fields vertically on smaller screens */
+        gap: 0; /* Remove gap when stacked, margin-bottom on form-group will handle spacing */
+    }
+    /* Add bottom margin to the first form-group when stacked, if not already handled by .form-group's general margin-bottom */
+    .location-lga-row .form-group:first-child {
+        margin-bottom: 20px; /* Or standard form-group margin if stacking changes that */
     }
 }
 
