@@ -1511,6 +1511,7 @@ function login() {
         localStorage.setItem('auditAppCurrentUser', username);
         document.getElementById('authScreen').classList.add('hidden');
         document.getElementById('landingPage').classList.remove('hidden');
+        document.getElementById('mainApp').classList.add('hidden');
         console.log('Login successful');
         loadData();
         loadLocalGovernments();
