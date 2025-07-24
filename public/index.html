@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ogbeni API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .endpoint {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Ogbeni API</h1>
+    <p>Your API is running on Netlify Functions!</p>
+    
+    <h2>Available Endpoints:</h2>
+    
+    <div class="endpoint">
+        <strong>GET /api</strong> - Get all items
+    </div>
+    
+    <div class="endpoint">
+        <strong>GET /api/:id</strong> - Get specific item by ID
+    </div>
+    
+    <div class="endpoint">
+        <strong>POST /api</strong> - Create new item
+    </div>
+    
+    <div class="endpoint">
+        <strong>PUT /api/:id</strong> - Update item by ID
+    </div>
+    
+    <div class="endpoint">
+        <strong>DELETE /api/:id</strong> - Delete item by ID
+    </div>
+    
+    <h2>Usage:</h2>
+    <p>Make requests to <code>https://your-site-name.netlify.app/api</code></p>
+    
+    <script>
+        // Test the API
+        fetch('/api')
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Response:', data);
+            })
+            .catch(error => {
+                console.error('API Error:', error);
+            });
+    </script>
+</body>
+</html>
