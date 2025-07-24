@@ -563,8 +563,29 @@ select.form-control option {
 </head>
 <body>
     <div class="container">
+        <!-- Auth Screen -->
+        <div id="authScreen" class="auth-container hidden">
+            <h2 class="auth-title">Personnel & Facility Audit Login</h2>
+            <div class="credentials-info">
+                <p>Use the credentials below to login:</p>
+                <ul>
+                    <li><strong>Admin:</strong> admin / password123</li>
+                    <li><strong>Auditor:</strong> auditor / audit2024</li>
+                </ul>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" class="form-control" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Enter password">
+            </div>
+            <button class="btn" onclick="login()">Login</button>
+        </div>
+
         <!-- Landing Page: Four Survey Cards -->
-        <div id="landingPage" class="section">
+        <div id="landingPage" class="section hidden">
             <div class="landing-header">
                 <img src="subeb.jpg" alt="LASUBEB Logo" class="landing-logo">
                 <h1 style="color:var(--lagos-navy);font-size:2.2rem; margin-left: 20px; flex-grow: 1; text-align: center;">Welcome to LASUBEB/PIMU Needs Assessment Portal</h1>
@@ -1385,9 +1406,10 @@ select.form-control option {
         });
         document.getElementById('mainApp').classList.add('hidden');
     }
-    // On load, show landing page only
+    // On load, show login page only
     window.onload = function() {
-        document.getElementById('landingPage').classList.remove('hidden');
+        document.getElementById('authScreen').classList.remove('hidden');
+        document.getElementById('landingPage').classList.add('hidden');
         ['silnat','tcmats','lori','voices'].forEach(s => {
             document.getElementById(s+'Section').classList.add('hidden');
         });
@@ -1485,6 +1507,11 @@ function login() {
         document.getElementById('authScreen').classList.add('hidden');
         document.getElementById('landingPage').classList.remove('hidden');
         console.log('Login successful');
+        loadData();
+        loadLocalGovernments();
+        updateDashboard();
+        loadRecords();
+        updateConnectionStatus();
     } else {
         // Show error message in UI
         let msg = document.getElementById('loginErrorMsg');
