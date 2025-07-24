@@ -8,8 +8,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "build": "mkdir -p public && echo '<!DOCTYPE html><html><head><title>API</title></head><body><h1>API is running</h1><p>Your API endpoints are available at <code>/api/*</code></p></body></html>' > public/index.html"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
