@@ -1483,12 +1483,8 @@ function login() {
         // Save session to localStorage
         localStorage.setItem('auditAppCurrentUser', username);
         document.getElementById('authScreen').classList.add('hidden');
-        document.getElementById('mainApp').classList.remove('hidden');
+        document.getElementById('landingPage').classList.remove('hidden');
         console.log('Login successful');
-        loadData();
-        loadLocalGovernments();
-        updateDashboard();
-        loadRecords();
     } else {
         // Show error message in UI
         let msg = document.getElementById('loginErrorMsg');
