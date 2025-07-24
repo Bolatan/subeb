@@ -56,7 +56,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Serve the HTML file
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // API endpoint to save audit data
