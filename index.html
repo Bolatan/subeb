@@ -589,6 +589,7 @@ select.form-control option {
             <div class="landing-header">
                 <img src="subeb.jpg" alt="LASUBEB Logo" class="landing-logo">
                 <h1 style="color:var(--lagos-navy);font-size:2.2rem; margin-left: 20px; flex-grow: 1; text-align: center;">Welcome to LASUBEB/PIMU Needs Assessment Portal</h1>
+                <button class="btn btn-secondary" style="width:auto;padding:8px 16px;margin-left:20px;" onclick="logout()">Logout</button>
             </div>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;max-width:900px;margin:0 auto; margin-top: 32px;">
                 <div class="survey-card" onclick="showSurvey('silnat')">
@@ -1493,20 +1494,27 @@ function loadSession() {
 }
 
 
-       // --- PATCH: Fix frontend login bug (robust trim, lowercase, and error display) ---
 function login() {
     const username = document.getElementById('username').value.trim().toLowerCase();
     const password = document.getElementById('password').value.trim();
     console.log('Login attempt:', username, password);
+
     // Accept only exact credentials (case-insensitive username)
     if ((username === 'admin' && password === 'password123') || 
         (username === 'auditor' && password === 'audit2024')) {
         currentUser = username;
+
         // Save session to localStorage
         localStorage.setItem('auditAppCurrentUser', username);
+
+        // Hide auth screen and show landing page
         document.getElementById('authScreen').classList.add('hidden');
-        document.getElementById('landingPage').classList.remove('hidden');
-        console.log('Login successful');
+        document.getElementById('landingPage').classList.remove('hidden'); // Show landing page
+        document.getElementById('mainApp').classList.add('hidden'); // Ensure main app is hidden initially
+
+        console.log('Login successful, showing landing page.');
+
+        // Pre-load necessary data in the background
         loadData();
         loadLocalGovernments();
         updateDashboard();
@@ -1523,8 +1531,8 @@ function login() {
             msg.style.textAlign = 'center';
             document.getElementById('authScreen').appendChild(msg);
         }
-        msg.textContent = 'Invalid credentials!\n\nValid login credentials:\n• admin / password123\n• auditor / audit2024';
-        setTimeout(()=>{msg.textContent='';}, 5000);
+        msg.textContent = 'Invalid credentials! Please try again.';
+        setTimeout(() => { msg.textContent = ''; }, 5000);
         console.log('Login failed');
     }
 }
