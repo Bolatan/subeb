@@ -918,6 +918,17 @@ select.form-control option {
                     <label class="checkbox-inline"><input type="checkbox" name="silnat_multigrade_reasons" value="inadequate_teaching_staff"> Inadequate Teaching Staff</label>
                 </div>
             </div>
+            <div class="form-group">
+                <label>Is the school located within a school Complex?</label>
+                <div>
+                    <label class="radio-inline"><input type="radio" name="silnat_school_complex" value="yes" onchange="toggleSchoolComplexList(this.value)"> Yes</label>
+                    <label class="radio-inline"><input type="radio" name="silnat_school_complex" value="no" onchange="toggleSchoolComplexList(this.value)"> No</label>
+                </div>
+            </div>
+            <div id="schoolComplexList" class="form-group" style="display: none;">
+                <label for="silnat_school_complex_list">If Yes, Kindly list other Schools within the Complex</label>
+                <textarea id="silnat_school_complex_list" name="silnat_school_complex_list" class="form-control" rows="3"></textarea>
+            </div>
             </div>
             <!-- End of Section B placeholder -->
             <h4 id="sectionCHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionCContent', 'sectionCHeader')">Section C: Difficulties ▶️</h4>
@@ -2741,6 +2752,15 @@ function editRecord(id) {
 
 <script>
 // --- Survey Form Submission Logic for SILNAT, TCMATS, LORI, VOICES ---
+
+function toggleSchoolComplexList(value) {
+    const schoolComplexList = document.getElementById('schoolComplexList');
+    if (value === 'yes') {
+        schoolComplexList.style.display = 'block';
+    } else {
+        schoolComplexList.style.display = 'none';
+    }
+}
 
 function toggleSection(sectionId, headerId) {
     const section = document.getElementById(sectionId);
