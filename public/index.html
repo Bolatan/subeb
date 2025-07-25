@@ -522,9 +522,13 @@ footer {
   background: var(--lagos-blue);
   color: var(--lagos-white);
 }
-.form-group label {
+.form-group > label {
   color: var(--lagos-yellow) !important;
   font-weight: 600;
+}
+
+.form-group .form-group > label {
+    color: white !important;
 }
 .form-control,
 .form-control:focus,
