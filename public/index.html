@@ -1215,26 +1215,36 @@ select.form-control option {
                     </tbody>
                 </table>
             </div>
-
-            <div class="form-row">
+            <h4 id="sectionDHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionDContent', 'sectionDHeader')">Section D: Infrastructure ▶️</h4>
+            <div id="sectionDContent" style="display: none;">
                 <div class="form-group">
-                    <label for="silnat_infrastructure">Infrastructure Condition *</label>
-                    <select id="silnat_infrastructure" class="form-control" required>
-                        <option value="">Select condition</option>
-                        <option value="excellent">Excellent</option>
-                        <option value="good">Good</option>
-                        <option value="fair">Fair</option>
-                        <option value="poor">Poor</option>
-                    </select>
+                    <label>Signboard</label>
+                    <div>
+                        <label class="checkbox-inline"><input type="checkbox" name="silnat_signboard" value="available_good"> Available and in good condition</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="silnat_signboard" value="available_bad"> Available but not in good condition</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="silnat_signboard" value="not_available"> Not Available</label>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="silnat_leadership">Leadership Structure *</label>
-                    <select id="silnat_leadership" class="form-control" required>
-                        <option value="">Select</option>
-                        <option value="well_structured">Well Structured</option>
-                        <option value="average">Average</option>
-                        <option value="needs_improvement">Needs Improvement</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="silnat_infrastructure">Infrastructure Condition *</label>
+                        <select id="silnat_infrastructure" class="form-control" required>
+                            <option value="">Select condition</option>
+                            <option value="excellent">Excellent</option>
+                            <option value="good">Good</option>
+                            <option value="fair">Fair</option>
+                            <option value="poor">Poor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="silnat_leadership">Leadership Structure *</label>
+                        <select id="silnat_leadership" class="form-control" required>
+                            <option value="">Select</option>
+                            <option value="well_structured">Well Structured</option>
+                            <option value="average">Average</option>
+                            <option value="needs_improvement">Needs Improvement</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="form-row full">
