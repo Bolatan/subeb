@@ -522,12 +522,9 @@ footer {
   background: var(--lagos-blue);
   color: var(--lagos-white);
 }
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
 .form-group > label {
-  color: white !important;
+  color: var(--lagos-yellow) !important;
   font-weight: 600;
-  font-family: 'Poppins', sans-serif;
 }
 
 .form-group .form-group > label {
@@ -924,6 +921,17 @@ select.form-control option {
                     <label class="checkbox-inline"><input type="checkbox" name="silnat_multigrade_reasons" value="inadequate_teaching_staff"> Inadequate Teaching Staff</label>
                 </div>
             </div>
+            <div class="form-group">
+                <label>Is the school located within a school Complex?</label>
+                <div>
+                    <label class="radio-inline"><input type="radio" name="silnat_school_complex" value="yes" onchange="toggleSchoolComplexList(this.value)"> Yes</label>
+                    <label class="radio-inline"><input type="radio" name="silnat_school_complex" value="no" onchange="toggleSchoolComplexList(this.value)"> No</label>
+                </div>
+            </div>
+            <div id="schoolComplexList" class="form-group" style="display: none;">
+                <label for="silnat_school_complex_list">If Yes, Kindly list other Schools within the Complex</label>
+                <textarea id="silnat_school_complex_list" name="silnat_school_complex_list" class="form-control" rows="3"></textarea>
+            </div>
             </div>
             <!-- End of Section B placeholder -->
             <h4 id="sectionCHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionCContent', 'sectionCHeader')">Section C: Difficulties ▶️</h4>
@@ -1240,6 +1248,7 @@ select.form-control option {
                 </div>
                 <div class="form-group">
                     <label class="furniture-label">Teachers’ Furniture</label>
+
                     <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
                         <div class="form-group">
                             <label for="silnat_teachers_furniture_available">Number Available</label>
@@ -1426,6 +1435,7 @@ select.form-control option {
                         </select>
                     </div>
                 </div>
+
             </div>
             <div class="form-row full">
                 <div class="form-group">
@@ -2804,6 +2814,15 @@ function editRecord(id) {
 <script>
 // --- Survey Form Submission Logic for SILNAT, TCMATS, LORI, VOICES ---
 
+function toggleSchoolComplexList(value) {
+    const schoolComplexList = document.getElementById('schoolComplexList');
+    if (value === 'yes') {
+        schoolComplexList.style.display = 'block';
+    } else {
+        schoolComplexList.style.display = 'none';
+    }
+}
+
 function toggleSection(sectionId, headerId) {
     const section = document.getElementById(sectionId);
     const header = document.getElementById(headerId);
@@ -2816,6 +2835,18 @@ function toggleSection(sectionId, headerId) {
         } else {
             header.innerText = headerText.replace('🔽', '▶️');
         }
+    }
+}
+
+function toggleFenceDetails(radio) {
+    const fenceDetailsGroup = document.getElementById('fenceDetailsGroup');
+    const perimeterSchoolGroup = document.getElementById('perimeterSchoolGroup');
+    if (radio.value === 'yes') {
+        fenceDetailsGroup.style.display = 'block';
+        perimeterSchoolGroup.style.display = 'none';
+    } else {
+        fenceDetailsGroup.style.display = 'none';
+        perimeterSchoolGroup.style.display = 'block';
     }
 }
 
