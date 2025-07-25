@@ -1342,6 +1342,14 @@ select.form-control option {
                         <label class="radio-inline"><input type="radio" name="perimeter_fence" value="no" onchange="handlePerimeterFenceChange()"> No</label>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="silnat_classroom_repair_description">Briefly, describe the type of repair needed</label>
+                    <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group" id="school_perimeter_wrapper" style="display: none;">
+                    <label for="school_perimeter">If No, what is the perimeter of the School?</label>
+                    <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
+                </div>
                 <div class="form-group" id="perimeter_fence_state_wrapper" style="display: none;">
                     <label>If Yes, in what State?</label>
                     <div>
