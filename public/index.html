@@ -752,6 +752,17 @@ select.form-control option {
             <!-- Placeholder for existing fields that will become Section B -->
             <h4 id="sectionBHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionBContent', 'sectionBHeader')">Section B: School/Institution Data ▶️</h4>
             <div id="sectionBContent" style="display: none;">
+            <div class="form-group">
+                <label>Is the school located within a school Complex?</label>
+                <div>
+                    <label class="radio-inline"><input type="radio" name="school_complex" value="yes" onchange="handleSchoolComplexChange()"> Yes</label>
+                    <label class="radio-inline"><input type="radio" name="school_complex" value="no" onchange="handleSchoolComplexChange()"> No</label>
+                </div>
+            </div>
+            <div class="form-group" id="other_schools_in_complex_wrapper" style="display: none;">
+                <label for="other_schools_in_complex">If Yes, Kindly list other Schools within the Complex</label>
+                <textarea id="other_schools_in_complex" name="other_schools_in_complex" class="form-control" rows="3"></textarea>
+            </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="silnat_schoolName">Name of School/Institution *</label> <!-- This label was already updated -->
@@ -2734,6 +2745,16 @@ function toggleSection(sectionId, headerId) {
 }
 
 // Function to handle SILNAT Institution Type change
+function handleSchoolComplexChange() {
+    const schoolComplexValue = document.querySelector('input[name="school_complex"]:checked').value;
+    const otherSchoolsWrapper = document.getElementById('other_schools_in_complex_wrapper');
+    if (schoolComplexValue === 'yes') {
+        otherSchoolsWrapper.style.display = 'block';
+    } else {
+        otherSchoolsWrapper.style.display = 'none';
+    }
+}
+
 function handleSilnatInstitutionTypeChange() {
     const institutionType = document.getElementById('silnat_a_institution_type').value;
 
