@@ -522,12 +522,9 @@ footer {
   background: var(--lagos-blue);
   color: var(--lagos-white);
 }
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
 .form-group > label {
-  color: white !important;
+  color: var(--lagos-yellow) !important;
   font-weight: 600;
-  font-family: 'Poppins', sans-serif;
 }
 
 .form-group .form-group > label {
@@ -1235,6 +1232,7 @@ select.form-control option {
                 <div class="form-group">
 
 
+
                     <label for="silnat_potable_water_recommendations">Recommendations</label>
                     <textarea id="silnat_potable_water_recommendations" name="silnat_potable_water_recommendations" class="form-control" rows="3"></textarea>
                 </div>
@@ -1323,6 +1321,7 @@ select.form-control option {
                     <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
                 </div>
 
+
                 <div class="form-group" id="school_perimeter_wrapper" style="display: none;">
                     <label for="school_perimeter">If No, what is the perimeter of the School?</label>
                     <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
@@ -1369,9 +1368,7 @@ select.form-control option {
                         <label class="radio-inline"><input type="radio" name="perimeter_fence_state" value="major_repair"> Need Major Repair</label>
                     </div>
                 </div>
-                <ol>
-                    <li value="3">TOILET FACILITIES</li>
-                </ol>
+                
                 <div class="form-group">
                     <label for="silnat_classroom_repair_description">Briefly, describe the type of repair needed</label>
                     <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
@@ -1385,58 +1382,14 @@ select.form-control option {
                     <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
                 </div>
                 <ol>
-                    <li value="5">TOILET FACILITIES</li>
+                    <li value="3">TOILET FACILITIES</li>
                 </ol>
                 <ol>
                     <li value="4">SEPTIC TANK</li>
                 </ol>
                 <ol>
-                    <li value="6">SOURCE OF ELECTRICITY</li>
+                    <li value="5">SOURCE OF ELECTRICITY</li>
                 </ol>
-                <div class="form-group">
-                    <div>
-                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="none"> None</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="phcn"> PHCN</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="generator"> Generator</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="solar"> Solar</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="others"> Others</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>PHCN but Disconnected because of accumulated bills</label>
-                    <div>
-                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_bills" value="yes"> Yes</label>
-                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_bills" value="no"> No</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>PHCN but Disconnected because of lack of meter</label>
-                    <div>
-                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_meter" value="yes"> Yes</label>
-                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_meter" value="no"> No</label>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="silnat_infrastructure">Infrastructure Condition *</label>
-                        <select id="silnat_infrastructure" class="form-control" required>
-                            <option value="">Select condition</option>
-                            <option value="excellent">Excellent</option>
-                            <option value="good">Good</option>
-                            <option value="fair">Fair</option>
-                            <option value="poor">Poor</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="silnat_leadership">Leadership Structure *</label>
-                        <select id="silnat_leadership" class="form-control" required>
-                            <option value="">Select</option>
-                            <option value="well_structured">Well Structured</option>
-                            <option value="average">Average</option>
-                            <option value="needs_improvement">Needs Improvement</option>
-                        </select>
-                    </div>
-                </div>
             </div>
             <div class="form-row full">
                 <div class="form-group">
