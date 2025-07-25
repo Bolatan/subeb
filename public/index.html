@@ -2746,6 +2746,18 @@ function toggleSection(sectionId, headerId) {
     }
 }
 
+function toggleFenceDetails(radio) {
+    const fenceDetailsGroup = document.getElementById('fenceDetailsGroup');
+    const perimeterSchoolGroup = document.getElementById('perimeterSchoolGroup');
+    if (radio.value === 'yes') {
+        fenceDetailsGroup.style.display = 'block';
+        perimeterSchoolGroup.style.display = 'none';
+    } else {
+        fenceDetailsGroup.style.display = 'none';
+        perimeterSchoolGroup.style.display = 'block';
+    }
+}
+
 // Function to handle SILNAT Institution Type change
 function handleSilnatInstitutionTypeChange() {
     const institutionType = document.getElementById('silnat_a_institution_type').value;
