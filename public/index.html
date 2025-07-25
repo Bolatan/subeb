@@ -752,17 +752,6 @@ select.form-control option {
             <!-- Placeholder for existing fields that will become Section B -->
             <h4 id="sectionBHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionBContent', 'sectionBHeader')">Section B: School/Institution Data ▶️</h4>
             <div id="sectionBContent" style="display: none;">
-            <div class="form-group">
-                <label>Is the school located within a school Complex?</label>
-                <div>
-                    <label class="radio-inline"><input type="radio" name="school_complex" value="yes" onchange="handleSchoolComplexChange()"> Yes</label>
-                    <label class="radio-inline"><input type="radio" name="school_complex" value="no" onchange="handleSchoolComplexChange()"> No</label>
-                </div>
-            </div>
-            <div class="form-group" id="other_schools_in_complex_wrapper" style="display: none;">
-                <label for="other_schools_in_complex">If Yes, Kindly list other Schools within the Complex</label>
-                <textarea id="other_schools_in_complex" name="other_schools_in_complex" class="form-control" rows="3"></textarea>
-            </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="silnat_schoolName">Name of School/Institution *</label> <!-- This label was already updated -->
@@ -1326,10 +1315,25 @@ select.form-control option {
                     <label for="silnat_classroom_repair_description">Briefly, describe the type of repair needed</label>
                     <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
                 </div>
+                <div class="form-group" id="school_perimeter_wrapper" style="display: none;">
+                    <label for="school_perimeter">If No, what is the perimeter of the School?</label>
+                    <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
+                </div>
                 <ol>
                     <li value="2">Fencing</li>
                 </ol>
                 (shared facility)
+                <div class="form-group">
+                    <label>Is the school located within a school Complex?</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="school_complex" value="yes" onchange="handleSchoolComplexChange()"> Yes</label>
+                        <label class="radio-inline"><input type="radio" name="school_complex" value="no" onchange="handleSchoolComplexChange()"> No</label>
+                    </div>
+                </div>
+                <div class="form-group" id="other_schools_in_complex_wrapper" style="display: none;">
+                    <label for="other_schools_in_complex">If Yes, Kindly list other Schools within the Complex</label>
+                    <textarea id="other_schools_in_complex" name="other_schools_in_complex" class="form-control" rows="3"></textarea>
+                </div>
                 <div class="form-group">
                     <label>Does the school have perimeter fence:</label>
                     <div>
@@ -2773,10 +2777,13 @@ function handleSchoolComplexChange() {
 function handlePerimeterFenceChange() {
     const perimeterFenceValue = document.querySelector('input[name="perimeter_fence"]:checked').value;
     const perimeterFenceStateWrapper = document.getElementById('perimeter_fence_state_wrapper');
+    const schoolPerimeterWrapper = document.getElementById('school_perimeter_wrapper');
     if (perimeterFenceValue === 'yes') {
         perimeterFenceStateWrapper.style.display = 'block';
+        schoolPerimeterWrapper.style.display = 'none';
     } else {
         perimeterFenceStateWrapper.style.display = 'none';
+        schoolPerimeterWrapper.style.display = 'block';
     }
 }
 
