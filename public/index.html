@@ -918,11 +918,42 @@ select.form-control option {
             <h4 style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionCContent')">Section C: Difficulties 🔽</h4>
             <div id="sectionCContent" style="display: none;">
                 <p>Tick the areas where you are having difficulties in your school.</p>
-                <div class="form-row full">
-                    <div class="form-group">
-                        <textarea id="silnat_difficulties" class="form-control" rows="3"></textarea>
-                    </div>
-                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Yes</th>
+                            <th>No</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>a. Getting teachers and learners to obey rules and regulations</td>
+                            <td><input type="radio" name="discipline_a" value="yes"></td>
+                            <td><input type="radio" name="discipline_a" value="no"></td>
+                        </tr>
+                        <tr>
+                            <td>b. Handling of disciplinary cases on time and appropriately</td>
+                            <td><input type="radio" name="discipline_b" value="yes"></td>
+                            <td><input type="radio" name="discipline_b" value="no"></td>
+                        </tr>
+                        <tr>
+                            <td>c. Effecting discipline of misconduct in the school</td>
+                            <td><input type="radio" name="discipline_c" value="yes"></td>
+                            <td><input type="radio" name="discipline_c" value="no"></td>
+                        </tr>
+                        <tr>
+                            <td>d. Handling cases of lateness, truancy, etc. in the school</td>
+                            <td><input type="radio" name="discipline_d" value="yes"></td>
+                            <td><input type="radio" name="discipline_d" value="no"></td>
+                        </tr>
+                        <tr>
+                            <td>e. Handling cases of professional misconduct by teachers in the school</td>
+                            <td><input type="radio" name="discipline_e" value="yes"></td>
+                            <td><input type="radio" name="discipline_e" value="no"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="form-row">
@@ -2737,7 +2768,12 @@ async function submitSilnat(event) {
     // Placeholder for original simple form fields - these will be replaced by detailed conditional fields
     data.section_d.infrastructure_condition_old = document.getElementById('silnat_infrastructure')?.value;
     data.section_d.leadership_structure_old = document.getElementById('silnat_leadership')?.value; // This was likely a Section A or C type question
-    data.section_c.key_needs_challenges_old = document.getElementById('silnat_needs')?.value.trim();
+
+    data.section_c.discipline_a = form.elements['discipline_a']?.value;
+    data.section_c.discipline_b = form.elements['discipline_b']?.value;
+    data.section_c.discipline_c = form.elements['discipline_c']?.value;
+    data.section_c.discipline_d = form.elements['discipline_d']?.value;
+    data.section_c.discipline_e = form.elements['discipline_e']?.value;
 
     const fileInput = document.getElementById('silnat_fileInput');
     if (fileInput && fileInput.files.length > 0) {
