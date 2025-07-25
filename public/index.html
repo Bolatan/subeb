@@ -1381,18 +1381,9 @@ select.form-control option {
                     <label for="silnat_classroom_repair_description">Briefly, describe the type of repair needed</label>
                     <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
                 </div>
-                <div id="toilet_facilities_wrapper">
-                <h4 id="toiletFacilitiesHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('toiletFacilitiesContent', 'toiletFacilitiesHeader')">TOILET FACILITIES ▶️</h4>
-                <div id="toiletFacilitiesContent" style="display: none;">
-                    <div class="form-group">
-                        <label>Does the School have Toilets?</label>
-                        <div>
-                            <label class="radio-inline"><input type="radio" name="toilet_availability" value="yes"> Yes</label>
-                            <label class="radio-inline"><input type="radio" name="toilet_availability" value="no"> No</label>
-                        </div>
-                    </div>
-                </div>
-                </div>
+                <ol>
+                    <li value="5">TOILET FACILITIES</li>
+                </ol>
                 <ol>
                     <li value="4">SEPTIC TANK</li>
                 </ol>
@@ -1406,6 +1397,20 @@ select.form-control option {
                         <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="generator"> Generator</label>
                         <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="solar"> Solar</label>
                         <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="others"> Others</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>PHCN but Disconnected because of accumulated bills</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_bills" value="yes"> Yes</label>
+                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_bills" value="no"> No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>PHCN but Disconnected because of lack of meter</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_meter" value="yes"> Yes</label>
+                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_meter" value="no"> No</label>
                     </div>
                 </div>
                 <div class="form-row">
