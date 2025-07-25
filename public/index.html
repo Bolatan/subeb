@@ -533,9 +533,6 @@ footer {
 .form-group .form-group > label {
     color: white !important;
 }
-.furniture-label {
-    color: white !important;
-}
 .form-control,
 .form-control:focus,
 select.form-control,
@@ -1226,9 +1223,6 @@ select.form-control option {
                 </table>
             </div>
             <h4 id="sectionDHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionDContent', 'sectionDHeader')">Section D: ▶️</h4>
-            <ol>
-                <li value="1">Infrastructure</li>
-            </ol>
             <div id="sectionDContent" style="display: none;">
                 <div class="form-group">
                     <label>Signboard</label>
@@ -1237,6 +1231,12 @@ select.form-control option {
                         <label class="checkbox-inline"><input type="checkbox" name="silnat_signboard" value="available_bad"> Available but not in good condition</label>
                         <label class="checkbox-inline"><input type="checkbox" name="silnat_signboard" value="not_available"> Not Available</label>
                     </div>
+                </div>
+                <div class="form-group">
+
+
+                    <label for="silnat_potable_water_recommendations">Recommendations</label>
+                    <textarea id="silnat_potable_water_recommendations" name="silnat_potable_water_recommendations" class="form-control" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="furniture-label">Teachers’ Furniture</label>
@@ -1254,6 +1254,10 @@ select.form-control option {
                             <input type="number" id="silnat_teachers_furniture_additional_required" name="silnat_teachers_furniture_additional_required" class="form-control" min="0">
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="silnat_classroom_repair_description">Briefly, describe the type of repair needed</label>
+                    <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label>Classroom Condition</label>
@@ -1318,6 +1322,7 @@ select.form-control option {
                     <label for="silnat_classroom_repair_description">Briefly, describe the type of repair needed</label>
                     <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
                 </div>
+
                 <div class="form-group" id="school_perimeter_wrapper" style="display: none;">
                     <label for="school_perimeter">If No, what is the perimeter of the School?</label>
                     <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
@@ -1379,21 +1384,38 @@ select.form-control option {
                     <label for="silnat_classroom_repair_description">Briefly, describe the type of repair needed</label>
                     <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
                 </div>
-                <div id="toilet_facilities_wrapper">
-                <h4 id="toiletFacilitiesHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('toiletFacilitiesContent', 'toiletFacilitiesHeader')">TOILET FACILITIES ▶️</h4>
-                <div id="toiletFacilitiesContent" style="display: none;">
-                    <div class="form-group">
-                        <label>Does the School have Toilets?</label>
-                        <div>
-                            <label class="radio-inline"><input type="radio" name="toilet_availability" value="yes"> Yes</label>
-                            <label class="radio-inline"><input type="radio" name="toilet_availability" value="no"> No</label>
-                        </div>
-                    </div>
-                </div>
-                </div>
+                <ol>
+                    <li value="5">TOILET FACILITIES</li>
+                </ol>
                 <ol>
                     <li value="4">SEPTIC TANK</li>
                 </ol>
+                <ol>
+                    <li value="6">SOURCE OF ELECTRICITY</li>
+                </ol>
+                <div class="form-group">
+                    <div>
+                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="none"> None</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="phcn"> PHCN</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="generator"> Generator</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="solar"> Solar</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="others"> Others</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>PHCN but Disconnected because of accumulated bills</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_bills" value="yes"> Yes</label>
+                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_bills" value="no"> No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>PHCN but Disconnected because of lack of meter</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_meter" value="yes"> Yes</label>
+                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_meter" value="no"> No</label>
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="silnat_infrastructure">Infrastructure Condition *</label>
@@ -2809,29 +2831,6 @@ function toggleSection(sectionId, headerId) {
 }
 
 // Function to handle SILNAT Institution Type change
-function handleSchoolComplexChange() {
-    const schoolComplexValue = document.querySelector('input[name="school_complex"]:checked').value;
-    const otherSchoolsWrapper = document.getElementById('other_schools_in_complex_wrapper');
-    if (schoolComplexValue === 'yes') {
-        otherSchoolsWrapper.style.display = 'block';
-    } else {
-        otherSchoolsWrapper.style.display = 'none';
-    }
-}
-
-function handlePerimeterFenceChange() {
-    const perimeterFenceValue = document.querySelector('input[name="perimeter_fence"]:checked').value;
-    const perimeterFenceStateWrapper = document.getElementById('perimeter_fence_state_wrapper');
-    const schoolPerimeterWrapper = document.getElementById('school_perimeter_wrapper');
-    if (perimeterFenceValue === 'yes') {
-        perimeterFenceStateWrapper.style.display = 'block';
-        schoolPerimeterWrapper.style.display = 'none';
-    } else {
-        perimeterFenceStateWrapper.style.display = 'none';
-        schoolPerimeterWrapper.style.display = 'block';
-    }
-}
-
 function handleSilnatInstitutionTypeChange() {
     const institutionType = document.getElementById('silnat_a_institution_type').value;
 
