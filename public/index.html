@@ -742,7 +742,8 @@ select.form-control option {
             </div>
 
             <!-- Placeholder for existing fields that will become Section B -->
-            <h4 style="margin-bottom: 20px;">Section B: School/Institution Data</h4>
+            <h4 style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionBContent')">Section B: School/Institution Data 🔽</h4>
+            <div id="sectionBContent">
             <div class="form-row">
                 <div class="form-group">
                     <label for="silnat_schoolName">Name of School/Institution *</label> <!-- This label was already updated -->
@@ -911,6 +912,7 @@ select.form-control option {
                     <label class="checkbox-inline"><input type="checkbox" name="silnat_multigrade_reasons" value="inadequate_classrooms"> Inadequate Classrooms</label>
                     <label class="checkbox-inline"><input type="checkbox" name="silnat_multigrade_reasons" value="inadequate_teaching_staff"> Inadequate Teaching Staff</label>
                 </div>
+            </div>
             </div>
             <!-- End of Section B placeholder -->
 
@@ -2311,6 +2313,13 @@ function editRecord(id) {
 
 <script>
 // --- Survey Form Submission Logic for SILNAT, TCMATS, LORI, VOICES ---
+
+function toggleSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+}
 
 // Function to handle SILNAT Institution Type change
 function handleSilnatInstitutionTypeChange() {
