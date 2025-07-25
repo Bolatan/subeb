@@ -743,8 +743,8 @@ select.form-control option {
             </div>
 
             <!-- Placeholder for existing fields that will become Section B -->
-            <h4 style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionBContent')">Section B: School/Institution Data 🔽</h4>
-            <div id="sectionBContent">
+            <h4 id="sectionBHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionBContent', 'sectionBHeader')">Section B: School/Institution Data ▶️</h4>
+            <div id="sectionBContent" style="display: none;">
             <div class="form-row">
                 <div class="form-group">
                     <label for="silnat_schoolName">Name of School/Institution *</label> <!-- This label was already updated -->
@@ -916,7 +916,7 @@ select.form-control option {
             </div>
             </div>
             <!-- End of Section B placeholder -->
-            <h4 style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionCContent')">Section C: Difficulties 🔽</h4>
+            <h4 id="sectionCHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionCContent', 'sectionCHeader')">Section C: Difficulties ▶️</h4>
             <div id="sectionCContent" style="display: none;">
                 <p>Tick the areas where you are having difficulties in your school.</p>
                 <h3 style="margin-top: 20px; border-bottom: 2px solid var(--lagos-yellow); padding-bottom: 5px;">1. Control and Discipline</h3>
@@ -2619,10 +2619,18 @@ function editRecord(id) {
 <script>
 // --- Survey Form Submission Logic for SILNAT, TCMATS, LORI, VOICES ---
 
-function toggleSection(sectionId) {
+function toggleSection(sectionId, headerId) {
     const section = document.getElementById(sectionId);
-    if (section) {
-        section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    const header = document.getElementById(headerId);
+    if (section && header) {
+        const isHidden = section.style.display === 'none';
+        section.style.display = isHidden ? 'block' : 'none';
+        const headerText = header.innerText;
+        if (isHidden) {
+            header.innerText = headerText.replace('▶️', '🔽');
+        } else {
+            header.innerText = headerText.replace('🔽', '▶️');
+        }
     }
 }
 
