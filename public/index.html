@@ -530,6 +530,9 @@ footer {
 .form-group .form-group > label {
     color: white !important;
 }
+.furniture-label {
+    color: white !important;
+}
 .form-control,
 .form-control:focus,
 select.form-control,
@@ -1231,6 +1234,9 @@ select.form-control option {
                 </table>
             </div>
             <h4 id="sectionDHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionDContent', 'sectionDHeader')">Section D: ▶️</h4>
+            <ol>
+                <li value="1">Infrastructure</li>
+            </ol>
             <div id="sectionDContent" style="display: none;">
                 <div class="form-group">
                     <label>Signboard</label>
@@ -1241,7 +1247,8 @@ select.form-control option {
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Teachers’ Furniture</label>
+                    <label class="furniture-label">Teachers’ Furniture</label>
+
                     <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
                         <div class="form-group">
                             <label for="silnat_teachers_furniture_available">Number Available</label>
@@ -1256,10 +1263,6 @@ select.form-control option {
                             <input type="number" id="silnat_teachers_furniture_additional_required" name="silnat_teachers_furniture_additional_required" class="form-control" min="0">
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="silnat_classroom_repair_description">Briefly, describe the type of repair needed</label>
-                    <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label>Classroom Condition</label>
@@ -1324,46 +1327,115 @@ select.form-control option {
                     <label for="silnat_classroom_repair_description">Briefly, describe the type of repair needed</label>
                     <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
                 </div>
-                <ol start="2" style="list-style-type: decimal; padding-left: 20px; margin-top: 20px;">
-                    <li style="margin-bottom: 20px;">
-                        <strong>Fencing</strong> (shared facility)
-                        <div class="form-group">
-                            <label>Does the school have perimeter fence:</label>
-                            <div>
-                                <label class="radio-inline"><input type="radio" name="silnat_perimeter_fence" value="yes" onchange="toggleFenceDetails(this)"> Yes</label>
-                                <label class="radio-inline"><input type="radio" name="silnat_perimeter_fence" value="no" onchange="toggleFenceDetails(this)"> No</label>
-                            </div>
-                        </div>
-                        <div id="fenceDetailsGroup" class="form-group" style="display:none;">
-                            <label>If Yes, in what State?</label>
-                            <div>
-                                <label class="radio-inline"><input type="radio" name="silnat_fence_condition" value="good"> In Good Condition</label>
-                                <label class="radio-inline"><input type="radio" name="silnat_fence_condition" value="minor_repair"> Need Minor Repair</label>
-                                <label class="radio-inline"><input type="radio" name="silnat_fence_condition" value="major_repair"> Need Major Repair</label>
-                            </div>
-                        </div>
-                        <div id="perimeterSchoolGroup" class="form-group" style="display:none;">
-                            <label for="silnat_perimeter_school">If No, what is the perimeter of the School?</label>
-                            <input type="text" id="silnat_perimeter_school" name="silnat_perimeter_school" class="form-control">
-                        </div>
-                    </li>
-                    <li style="margin-bottom: 20px;">
-                        <strong>Source of Electricity</strong>
-                        <div class="form-group">
-                            <label>What is the source of electricity in the school?</label>
-                            <div>
-                                <label class="checkbox-inline"><input type="checkbox" name="silnat_electricity_source" value="national_grid"> National Grid</label>
-                                <label class="checkbox-inline"><input type="checkbox" name="silnat_electricity_source" value="generator"> Generator</label>
-                                <label class="checkbox-inline"><input type="checkbox" name="silnat_electricity_source" value="solar"> Solar</label>
-                                <label class="checkbox-inline"><input type="checkbox" name="silnat_electricity_source" value="none"> None</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="silnat_electricity_additional_info">Additional information e.g., amount involved, etc</label>
-                            <textarea id="silnat_electricity_additional_info" name="silnat_electricity_additional_info" class="form-control" rows="3"></textarea>
-                        </div>
-                    </li>
+                <div class="form-group" id="school_perimeter_wrapper" style="display: none;">
+                    <label for="school_perimeter">If No, what is the perimeter of the School?</label>
+                    <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group" id="school_perimeter_wrapper" style="display: none;">
+                    <label for="school_perimeter">If No, what is the perimeter of the School?</label>
+                    <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
+                </div>
+                <ol>
+                    <li value="2">Fencing</li>
                 </ol>
+                (shared facility)
+                <div class="form-group">
+                    <label>Is the school located within a school Complex?</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="school_complex" value="yes" onchange="handleSchoolComplexChange()"> Yes</label>
+                        <label class="radio-inline"><input type="radio" name="school_complex" value="no" onchange="handleSchoolComplexChange()"> No</label>
+                    </div>
+                </div>
+                <div class="form-group" id="other_schools_in_complex_wrapper" style="display: none;">
+                    <label for="other_schools_in_complex">If Yes, Kindly list other Schools within the Complex</label>
+                    <textarea id="other_schools_in_complex" name="other_schools_in_complex" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Is the school located within a school Complex?</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="school_complex" value="yes" onchange="handleSchoolComplexChange()"> Yes</label>
+                        <label class="radio-inline"><input type="radio" name="school_complex" value="no" onchange="handleSchoolComplexChange()"> No</label>
+                    </div>
+                </div>
+                <div class="form-group" id="other_schools_in_complex_wrapper" style="display: none;">
+                    <label for="other_schools_in_complex">If Yes, Kindly list other Schools within the Complex</label>
+                    <textarea id="other_schools_in_complex" name="other_schools_in_complex" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Does the school have perimeter fence:</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="perimeter_fence" value="yes" onchange="handlePerimeterFenceChange()"> Yes</label>
+                        <label class="radio-inline"><input type="radio" name="perimeter_fence" value="no" onchange="handlePerimeterFenceChange()"> No</label>
+                    </div>
+                </div>
+                <div class="form-group" id="school_perimeter_wrapper" style="display: none;">
+                    <label for="school_perimeter">If No, what is the perimeter of the School?</label>
+                    <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group" id="school_perimeter_wrapper" style="display: none;">
+                    <label for="school_perimeter">If No, what is the perimeter of the School?</label>
+                    <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group" id="perimeter_fence_state_wrapper" style="display: none;">
+                    <label>If Yes, in what State?</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="perimeter_fence_state" value="good"> In Good Condition</label>
+                        <label class="radio-inline"><input type="radio" name="perimeter_fence_state" value="minor_repair"> Need Minor Repair</label>
+                        <label class="radio-inline"><input type="radio" name="perimeter_fence_state" value="major_repair"> Need Major Repair</label>
+                    </div>
+                </div>
+                <ol>
+                    <li value="3">TOILET FACILITIES</li>
+                </ol>
+                <div class="form-group">
+                    <label for="silnat_classroom_repair_description">Briefly, describe the type of repair needed</label>
+                    <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group" id="school_perimeter_wrapper" style="display: none;">
+                    <label for="school_perimeter">If No, what is the perimeter of the School?</label>
+                    <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="silnat_classroom_repair_description">Briefly, describe the type of repair needed</label>
+                    <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
+                </div>
+                <div id="toilet_facilities_wrapper">
+                <h4 id="toiletFacilitiesHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('toiletFacilitiesContent', 'toiletFacilitiesHeader')">TOILET FACILITIES ▶️</h4>
+                <div id="toiletFacilitiesContent" style="display: none;">
+                    <div class="form-group">
+                        <label>Does the School have Toilets?</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="toilet_availability" value="yes"> Yes</label>
+                            <label class="radio-inline"><input type="radio" name="toilet_availability" value="no"> No</label>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <ol>
+                    <li value="4">SEPTIC TANK</li>
+                </ol>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="silnat_infrastructure">Infrastructure Condition *</label>
+                        <select id="silnat_infrastructure" class="form-control" required>
+                            <option value="">Select condition</option>
+                            <option value="excellent">Excellent</option>
+                            <option value="good">Good</option>
+                            <option value="fair">Fair</option>
+                            <option value="poor">Poor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="silnat_leadership">Leadership Structure *</label>
+                        <select id="silnat_leadership" class="form-control" required>
+                            <option value="">Select</option>
+                            <option value="well_structured">Well Structured</option>
+                            <option value="average">Average</option>
+                            <option value="needs_improvement">Needs Improvement</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
             <div class="form-row full">
                 <div class="form-group">
@@ -2779,6 +2851,29 @@ function toggleFenceDetails(radio) {
 }
 
 // Function to handle SILNAT Institution Type change
+function handleSchoolComplexChange() {
+    const schoolComplexValue = document.querySelector('input[name="school_complex"]:checked').value;
+    const otherSchoolsWrapper = document.getElementById('other_schools_in_complex_wrapper');
+    if (schoolComplexValue === 'yes') {
+        otherSchoolsWrapper.style.display = 'block';
+    } else {
+        otherSchoolsWrapper.style.display = 'none';
+    }
+}
+
+function handlePerimeterFenceChange() {
+    const perimeterFenceValue = document.querySelector('input[name="perimeter_fence"]:checked').value;
+    const perimeterFenceStateWrapper = document.getElementById('perimeter_fence_state_wrapper');
+    const schoolPerimeterWrapper = document.getElementById('school_perimeter_wrapper');
+    if (perimeterFenceValue === 'yes') {
+        perimeterFenceStateWrapper.style.display = 'block';
+        schoolPerimeterWrapper.style.display = 'none';
+    } else {
+        perimeterFenceStateWrapper.style.display = 'none';
+        schoolPerimeterWrapper.style.display = 'block';
+    }
+}
+
 function handleSilnatInstitutionTypeChange() {
     const institutionType = document.getElementById('silnat_a_institution_type').value;
 
