@@ -2751,6 +2751,32 @@ async function syncData() {
     alert(`Sync complete: ${success} record(s) synced${fail ? ', ' + fail + ' failed' : ''}.`);
 }
 
+// Connection status function
+function updateConnectionStatus() {
+    const statusDot = document.getElementById('connectionStatus');
+    const statusText = document.getElementById('connectionText');
+    
+    if (navigator.onLine) {
+        if (statusDot) {
+            statusDot.className = 'status-dot';
+        }
+        if (statusText) {
+            statusText.textContent = 'Online';
+        }
+    } else {
+        if (statusDot) {
+            statusDot.className = 'status-dot offline';
+        }
+        if (statusText) {
+            statusText.textContent = 'Offline';
+        }
+    }
+}
+
+// Listen for online/offline events
+window.addEventListener('online', updateConnectionStatus);
+window.addEventListener('offline', updateConnectionStatus);
+
 // --- PATCH: Display images in records table and audit form if available ---
 // Helper to get image URL from filename
 function getImageUrl(filename) {
