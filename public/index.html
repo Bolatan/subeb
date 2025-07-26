@@ -522,12 +522,9 @@ footer {
   background: var(--lagos-blue);
   color: var(--lagos-white);
 }
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
 .form-group > label {
-  color: white !important;
+  color: var(--lagos-yellow) !important;
   font-weight: 600;
-  font-family: 'Poppins', sans-serif;
 }
 
 .form-group .form-group > label {
@@ -1322,10 +1319,6 @@ select.form-control option {
                     <label for="school_perimeter">If No, what is the perimeter of the School?</label>
                     <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
                 </div>
-                <div class="form-group" id="school_perimeter_wrapper" style="display: none;">
-                    <label for="school_perimeter">If No, what is the perimeter of the School?</label>
-                    <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
-                </div>
                 <ol>
                     <li value="2">Fencing</li>
                 </ol>
@@ -1348,64 +1341,12 @@ select.form-control option {
                         <label class="radio-inline"><input type="radio" name="perimeter_fence" value="no" onchange="handlePerimeterFenceChange()"> No</label>
                     </div>
                 </div>
-                <div class="form-group" id="school_perimeter_wrapper" style="display: none;">
-                    <label for="school_perimeter">If No, what is the perimeter of the School?</label>
-                    <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
-                </div>
-                <div class="form-group" id="school_perimeter_wrapper" style="display: none;">
-                    <label for="school_perimeter">If No, what is the perimeter of the School?</label>
-                    <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
-                </div>
                 <div class="form-group" id="perimeter_fence_state_wrapper" style="display: none;">
                     <label>If Yes, in what State?</label>
                     <div>
                         <label class="radio-inline"><input type="radio" name="perimeter_fence_state" value="good"> In Good Condition</label>
                         <label class="radio-inline"><input type="radio" name="perimeter_fence_state" value="minor_repair"> Need Minor Repair</label>
                         <label class="radio-inline"><input type="radio" name="perimeter_fence_state" value="major_repair"> Need Major Repair</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="silnat_classroom_repair_description">Briefly, describe the type of repair needed</label>
-                    <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
-                </div>
-                <div class="form-group" id="school_perimeter_wrapper" style="display: none;">
-                    <label for="school_perimeter">If No, what is the perimeter of the School?</label>
-                    <textarea id="school_perimeter" name="school_perimeter" class="form-control" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="silnat_classroom_repair_description">Briefly, describe the type of repair needed</label>
-                    <textarea id="silnat_classroom_repair_description" name="silnat_classroom_repair_description" class="form-control" rows="3"></textarea>
-                </div>
-                <ol>
-                    <li value="5">TOILET FACILITIES</li>
-                </ol>
-                <ol>
-                    <li value="4">SEPTIC TANK</li>
-                </ol>
-                <ol>
-                    <li value="6">SOURCE OF ELECTRICITY</li>
-                </ol>
-                <div class="form-group">
-                    <div>
-                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="none"> None</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="phcn"> PHCN</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="generator"> Generator</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="solar"> Solar</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="source_of_electricity" value="others"> Others</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>PHCN but Disconnected because of accumulated bills</label>
-                    <div>
-                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_bills" value="yes"> Yes</label>
-                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_bills" value="no"> No</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>PHCN but Disconnected because of lack of meter</label>
-                    <div>
-                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_meter" value="yes"> Yes</label>
-                        <label class="radio-inline"><input type="radio" name="phcn_disconnected_meter" value="no"> No</label>
                     </div>
                 </div>
                 <div class="form-row">
@@ -1450,6 +1391,7 @@ select.form-control option {
                 <h2 style="margin-left: 15px; flex-grow: 1; margin-bottom: 0;">Teachers Classroom Management and Teaching Survey (TCMATS)</h2>
             </div>
             <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
+            <h4 style="margin-bottom: 20px;">SECTION A: Demographic information of School and Bio Data of Teacher</h4>
             <!-- TODO: Add TCMATS form here -->
             <div style="color:#888;margin-top:40px;"><form id="tcmatsForm" class="audit-form" onsubmit="submitTcmats(event)">
     <div class="form-row">
