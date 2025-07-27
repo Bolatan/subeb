@@ -1678,6 +1678,59 @@ select.form-control option {
             </div>
             <button type="submit" class="btn">Submit TCMATS Survey</button>
             <div id="tcmats_feedback" style="margin-top:15px;font-size:15px;"></div>
+            </div>
+            <h3 style="cursor: pointer;" onclick="toggleSection('tcmatsSectionC', 'tcmatsSectionCHeader')">SECTION C: SUBJECT AREA DIFFICULTIES <span id="tcmatsSectionCHeader">▶️</span></h3>
+            <div id="tcmatsSectionC" style="display: none;">
+                <p>Section C contains items on Teachers’ Subject Area Difficulties. Kindly respond by ticking (√) the appropriate box</p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>SUBJECT</th>
+                            <th>Not Difficult</th>
+                            <th>Difficult</th>
+                            <th>Very Difficult</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>English Studies</td>
+                            <td><input type="checkbox" name="subject_difficulty_english" value="not_difficult"></td>
+                            <td><input type="checkbox" name="subject_difficulty_english" value="difficult"></td>
+                            <td><input type="checkbox" name="subject_difficulty_english" value="very_difficult"></td>
+                        </tr>
+                        <tr>
+                            <td>Mathematics</td>
+                            <td><input type="checkbox" name="subject_difficulty_math" value="not_difficult"></td>
+                            <td><input type="checkbox" name="subject_difficulty_math" value="difficult"></td>
+                            <td><input type="checkbox" name="subject_difficulty_math" value="very_difficult"></td>
+                        </tr>
+                        <tr>
+                            <td>Basic Science and Technology (BST)</td>
+                            <td><input type="checkbox" name="subject_difficulty_bst" value="not_difficult"></td>
+                            <td><input type="checkbox" name="subject_difficulty_bst" value="difficult"></td>
+                            <td><input type="checkbox" name="subject_difficulty_bst" value="very_difficult"></td>
+                        </tr>
+                        <tr>
+                            <td>Religion and National Value (RNV)</td>
+                            <td><input type="checkbox" name="subject_difficulty_rnv" value="not_difficult"></td>
+                            <td><input type="checkbox" name="subject_difficulty_rnv" value="difficult"></td>
+                            <td><input type="checkbox" name="subject_difficulty_rnv" value="very_difficult"></td>
+                        </tr>
+                        <tr>
+                            <td>Pre-Vocational Studies (PVS)</td>
+                            <td><input type="checkbox" name="subject_difficulty_pvs" value="not_difficult"></td>
+                            <td><input type="checkbox" name="subject_difficulty_pvs" value="difficult"></td>
+                            <td><input type="checkbox" name="subject_difficulty_pvs" value="very_difficult"></td>
+                        </tr>
+                        <tr>
+                            <td>Yoruba</td>
+                            <td><input type="checkbox" name="subject_difficulty_yoruba" value="not_difficult"></td>
+                            <td><input type="checkbox" name="subject_difficulty_yoruba" value="difficult"></td>
+                            <td><input type="checkbox" name="subject_difficulty_yoruba" value="very_difficult"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div id="loriSection" class="section hidden">
             <div style="display: flex; align-items: center; margin-bottom: 20px;">
