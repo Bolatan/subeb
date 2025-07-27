@@ -1683,6 +1683,14 @@ select.form-control option {
                     </tbody>
                 </table>
             </div>
+            <h3 style="cursor: pointer;" onclick="toggleSection('tcmatsSectionC', 'tcmatsSectionCHeader')">SECTION C: Subject Area Difficulties <span id="tcmatsSectionCHeader">▶️</span></h3>
+            <div id="tcmatsSectionC" style="display: none;">
+                <p>In your subject area(s), kindly identify some topics that are difficult to teach. Mention 2-5.</p>
+                <div class="form-group">
+                    <label for="tcmats_difficult_topics">Difficult Topics</label>
+                    <textarea id="tcmats_difficult_topics" name="tcmats_difficult_topics" class="form-control" rows="4"></textarea>
+                </div>
+            </div>
             <button type="submit" class="btn">Submit TCMATS Survey</button>
             <div id="tcmats_feedback" style="margin-top:15px;font-size:15px;"></div>
         </div>
