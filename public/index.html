@@ -1447,6 +1447,14 @@ select.form-control option {
             </div>
             <h3>SECTION A: Demographic information of School and Bio Data of Teacher</h3>
             <div style="color:#888;margin-top:40px;"><form id="tcmatsForm" class="audit-form" onsubmit="submitTcmats(event)">
+    <div class="form-group">
+        <label>Institution:</label>
+        <div>
+            <label class="radio-inline"><input type="radio" name="tcmats_institution" value="regular_school" required> Regular School</label>
+            <label class="radio-inline"><input type="radio" name="tcmats_institution" value="special_school"> Special School</label>
+            <label class="radio-inline"><input type="radio" name="tcmats_institution" value="vocational_centre"> Vocational Centre</label>
+        </div>
+    </div>
     <div class="form-row">
         <div class="form-group">
             <label for="tcmats_teacherName">Teacher Name *</label>
