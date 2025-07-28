@@ -1693,43 +1693,360 @@ select.form-control option {
                 <br><br>
                 <u>Instruction:</u> The instrument has Three sections; Section A, B and C. Section A requires Demographic Information and Bio Data of Teacher; Section B requires Teachers’ Needs Assessment; while Section C requires Teachers’ Subject Area Difficulties. Kindly fill in the statements that are applicable to you.
             </div>
-            <!-- TODO: Add VOICES form here -->
-            <div style="color:#888;margin-top:40px;">
-<form id="voicesForm" class="audit-form" onsubmit="submitVoices(event)">
-    <div class="form-row">
-        <div class="form-group">
-            <label for="voices_learnerName">Learner Name *</label>
-            <input type="text" id="voices_learnerName" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="voices_age">Age *</label>
-            <input type="number" id="voices_age" class="form-control" min="5" max="20" required>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group">
-            <label for="voices_school">School *</label>
-            <input type="text" id="voices_school" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="voices_class">Class *</label>
-            <input type="text" id="voices_class" class="form-control" required>
-        </div>
-    </div>
-    <div class="form-row full">
-        <div class="form-group">
-            <label for="voices_opinion">Learner's Opinion *</label>
-            <textarea id="voices_opinion" class="form-control" rows="4" required></textarea>
-        </div>
-    </div>
-    <div class="form-group">
-        <label>Upload Evidence (Max 2)</label>
-        <input type="file" id="voices_fileInput" multiple accept="image/*" class="form-control">
-        <div id="voices_uploadedFiles" class="uploaded-files"></div>
-    </div>
-    <button type="submit" class="btn">Submit VOICES Survey</button>
-    <div id="voices_feedback" style="margin-top:15px;font-size:15px;"></div>
-</form></div>
+            <form id="voicesForm" class="audit-form" onsubmit="submitVoices(event)">
+                <h3 style="cursor: pointer;" onclick="toggleSection('voicesSectionA', 'voicesSectionAHeader')">SECTION A: Demographic information of School and Bio Data of Learners <span id="voicesSectionAHeader">▶️</span></h3>
+                <div id="voicesSectionA" style="display: none;">
+                    <div class="form-group">
+                        <label>Institution:</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="voices_institution" value="regular_school" required> Regular School</label>
+                            <label class="radio-inline"><input type="radio" name="voices_institution" value="special_school"> Special School</label>
+                            <label class="radio-inline"><input type="radio" name="voices_institution" value="vocational_centre"> Vocational Centre</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="voices_schoolName">Name of School</label>
+                        <input type="text" id="voices_schoolName" name="voices_schoolName" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Location:</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="voices_location" value="urban"> Urban</label>
+                            <label class="radio-inline"><input type="radio" name="voices_location" value="rural"> Rural</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="voices_lgea">LGEA:</label>
+                        <input type="text" id="voices_lgea" name="voices_lgea" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="voices_class">Class:</label>
+                        <input type="text" id="voices_class" name="voices_class" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Class Description:</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="voices_class_description" value="single_grade"> Single Grade</label>
+                            <label class="radio-inline"><input type="radio" name="voices_class_description" value="multi_grade"> Multi-grade</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender:</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="voices_gender" value="male"> Male</label>
+                            <label class="radio-inline"><input type="radio" name="voices_gender" value="female"> Female</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Average distance of School from your home:</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="voices_distance" value="less_than_1km"> Less than 1 km.</label>
+                            <label class="radio-inline"><input type="radio" name="voices_distance" value="1km_3km"> 1 km – 3 km</label>
+                            <label class="radio-inline"><input type="radio" name="voices_distance" value="above_3km"> Above 3 km</label>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="cursor: pointer;" onclick="toggleSection('voicesSectionB', 'voicesSectionBHeader')">SECTION B: Subject/Topic Difficulties <span id="voicesSectionBHeader">▶️</span></h3>
+                <div id="voicesSectionB" style="display: none;">
+                    <div class="form-group">
+                        <label>List the Subjects or Topics that you find very difficult to understand (Mention 2-5)</label>
+                        <textarea name="voices_difficult_topics" class="form-control" rows="5"></textarea>
+                    </div>
+                </div>
+
+                <h3 style="cursor: pointer;" onclick="toggleSection('voicesSectionC', 'voicesSectionCHeader')">SECTION C: Pupil’s Participation in Class <span id="voicesSectionCHeader">▶️</span></h3>
+                <div id="voicesSectionC" style="display: none;">
+                    <p>The following questions refer to your participation during lessons. Read each question carefully and underline your answer from options 1 to 5.</p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Question</th>
+                                <th>1 (No, not at all)</th>
+                                <th>2 (No, but I wanted to)</th>
+                                <th>3 (Once)</th>
+                                <th>4 (Twice)</th>
+                                <th>5 (Many)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1. Did you regularly ask question during the lessons?</td>
+                                <td><input type="radio" name="participation_1" value="1"></td>
+                                <td><input type="radio" name="participation_1" value="2"></td>
+                                <td><input type="radio" name="participation_1" value="3"></td>
+                                <td><input type="radio" name="participation_1" value="4"></td>
+                                <td><input type="radio" name="participation_1" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td>2: Did you regularly answer teachers’ questions?</td>
+                                <td><input type="radio" name="participation_2" value="1"></td>
+                                <td><input type="radio" name="participation_2" value="2"></td>
+                                <td><input type="radio" name="participation_2" value="3"></td>
+                                <td><input type="radio" name="participation_2" value="4"></td>
+                                <td><input type="radio" name="participation_2" value="5"></td>
+                            </tr>
+                           <tr>
+                                <td>3: Did you give any explanation/suggestion of activity to your classmate during lessons?</td>
+                                <td><input type="radio" name="participation_3" value="1"></td>
+                                <td><input type="radio" name="participation_3" value="2"></td>
+                                <td><input type="radio" name="participation_3" value="3"></td>
+                                <td><input type="radio" name="participation_3" value="4"></td>
+                                <td><input type="radio" name="participation_3" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td>4: Were you given opportunity to demonstrate activity to your classmate?</td>
+                                <td><input type="radio" name="participation_4" value="1"></td>
+                                <td><input type="radio" name="participation_4" value="2"></td>
+                                <td><input type="radio" name="participation_4" value="3"></td>
+                                <td><input type="radio" name="participation_4" value="4"></td>
+                                <td><input type="radio" name="participation_4" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td>5. Were you allowed to make suggestion of possible results of the activity?</td>
+                                <td><input type="radio" name="participation_5" value="1"></td>
+                                <td><input type="radio" name="participation_5" value="2"></td>
+                                <td><input type="radio" name="participation_5" value="3"></td>
+                                <td><input type="radio" name="participation_5" value="4"></td>
+                                <td><input type="radio" name="participation_5" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td>6. Did you make observation during lessons’ activities?</td>
+                                <td><input type="radio" name="participation_6" value="1"></td>
+                                <td><input type="radio" name="participation_6" value="2"></td>
+                                <td><input type="radio" name="participation_6" value="3"></td>
+                                <td><input type="radio" name="participation_6" value="4"></td>
+                                <td><input type="radio" name="participation_6" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td>7. Did you record your observation during the activities?</td>
+                                <td><input type="radio" name="participation_7" value="1"></td>
+                                <td><input type="radio" name="participation_7" value="2"></td>
+                                <td><input type="radio" name="participation_7" value="3"></td>
+                                <td><input type="radio" name="participation_7" value="4"></td>
+                                <td><input type="radio" name="participation_7" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td>8. Were you given opportunity to participate in discussion of the results of the activities?</td>
+                                <td><input type="radio" name="participation_8" value="1"></td>
+                                <td><input type="radio" name="participation_8" value="2"></td>
+                                <td><input type="radio" name="participation_8" value="3"></td>
+                                <td><input type="radio" name="participation_8" value="4"></td>
+                                <td><input type="radio" name="participation_8" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td>9. Did you write your own ideas in addition to those given by the teacher?</td>
+                                <td><input type="radio" name="participation_9" value="1"></td>
+                                <td><input type="radio" name="participation_9" value="2"></td>
+                                <td><input type="radio" name="participation_9" value="3"></td>
+                                <td><input type="radio" name="participation_9" value="4"></td>
+                                <td><input type="radio" name="participation_9" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td>10. Did you take care of your safety and classmates during classroom activities?</td>
+                                <td><input type="radio" name="participation_10" value="1"></td>
+                                <td><input type="radio" name="participation_10" value="2"></td>
+                                <td><input type="radio" name="participation_10" value="3"></td>
+                                <td><input type="radio" name="participation_10" value="4"></td>
+                                <td><input type="radio" name="participation_10" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td>11. Did you encourage your classmates to record observations?</td>
+                                <td><input type="radio" name="participation_11" value="1"></td>
+                                <td><input type="radio" name="participation_11" value="2"></td>
+                                <td><input type="radio" name="participation_11" value="3"></td>
+                                <td><input type="radio" name="participation_11" value="4"></td>
+                                <td><input type="radio" name="participation_11" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td>12. Did you help your group to pay attention to classroom activities?</td>
+                                <td><input type="radio" name="participation_12" value="1"></td>
+                                <td><input type="radio" name="participation_12" value="2"></td>
+                                <td><input type="radio" name="participation_12" value="3"></td>
+                                <td><input type="radio" name="participation_12" value="4"></td>
+                                <td><input type="radio" name="participation_12" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td>13. Did you make a true record of your observations?</td>
+                                <td><input type="radio" name="participation_13" value="1"></td>
+                                <td><input type="radio" name="participation_13" value="2"></td>
+                                <td><input type="radio" name="participation_13" value="3"></td>
+                                <td><input type="radio" name="participation_13" value="4"></td>
+                                <td><input type="radio" name="participation_13" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td>14. Did you accept your classmates’ option?</td>
+                                <td><input type="radio" name="participation_14" value="1"></td>
+                                <td><input type="radio" name="participation_14" value="2"></td>
+                                <td><input type="radio" name="participation_14" value="3"></td>
+                                <td><input type="radio" name="participation_14" value="4"></td>
+                                <td><input type="radio" name="participation_14" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td>15. Did you participate in cleaning the area after the activities?</td>
+                                <td><input type="radio" name="participation_15" value="1"></td>
+                                <td><input type="radio" name="participation_15" value="2"></td>
+                                <td><input type="radio" name="participation_15" value="3"></td>
+                                <td><input type="radio" name="participation_15" value="4"></td>
+                                <td><input type="radio" name="participation_15" value="5"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 style="cursor: pointer;" onclick="toggleSection('voicesSectionD', 'voicesSectionDHeader')">SECTION D: School Infrastructure and Facilities <span id="voicesSectionDHeader">▶️</span></h3>
+                <div id="voicesSectionD" style="display: none;">
+                    <div class="form-group">
+                        <label>a. School Building</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="school_building" value="good_condition"> In Good Condition</label>
+                            <label class="radio-inline"><input type="radio" name="school_building" value="minor_renovation"> Need Minor Renovation</label>
+                            <label class="radio-inline"><input type="radio" name="school_building" value="major_renovation"> Need Major Renovation</label>
+                            <label class="radio-inline"><input type="radio" name="school_building" value="complete_reconstruction"> Need Complete Reconstruction</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>b. Learners’ Furniture in your Class</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="furniture" value="adequate"> Adequate</label>
+                            <label class="radio-inline"><input type="radio" name="furniture" value="inadequate"> Inadequate</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>c. Classroom Condition</label>
+                        <div>
+                            <label class="checkbox-inline"><input type="checkbox" name="classroom_condition" value="beautiful"> Beautiful</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="classroom_condition" value="overcrowded"> Overcrowded</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="classroom_condition" value="bad_floor"> Bad Floor</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="classroom_condition" value="leaking_roof"> Leaking Roof</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="classroom_condition" value="bad_windows_doors"> Bad windows and Doors</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>d. School Fence</label>
+                        <div>
+                            <label>Does the School have perimeter fence:</label>
+                            <label class="radio-inline"><input type="radio" name="perimeter_fence" value="yes"> Yes</label>
+                            <label class="radio-inline"><input type="radio" name="perimeter_fence" value="no"> No</label>
+                        </div>
+                        <div>
+                            <label>If Yes, in what State?</label>
+                            <label class="radio-inline"><input type="radio" name="fence_state" value="good_with_gate"> In Good Condition with Gate</label>
+                            <label class="radio-inline"><input type="radio" name="fence_state" value="minor_repair"> Need Minor Repair</label>
+                            <label class="radio-inline"><input type="radio" name="fence_state" value="major_repair"> Need Major Repair</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>e. Toilet Facilities</label>
+                        <div>
+                            <label>Type of Toilet:</label>
+                            <label class="radio-inline"><input type="radio" name="toilet_type" value="pit"> Pit</label>
+                            <label class="radio-inline"><input type="radio" name="toilet_type" value="wc"> WC</label>
+                            <label class="radio-inline"><input type="radio" name="toilet_type" value="squat_water_flush"> Squat Water flush</label>
+                            <label class="radio-inline"><input type="radio" name="toilet_type" value="none"> None</label>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Number of Cubicle Toilet Available</label>
+                                <input type="number" name="toilet_cubicles_available" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Number in need of Minor Repair</label>
+                                <input type="number" name="toilet_cubicles_minor_repair" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Number in need of Major Repair</label>
+                                <input type="number" name="toilet_cubicles_major_repair" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Number of Additional Cubicle Toilet Required</label>
+                                <input type="number" name="toilet_cubicles_additional" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label>f. Septic Tank (Suck-away)</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="septic_tank" value="available"> Available</label>
+                            <label class="radio-inline"><input type="radio" name="septic_tank" value="not_available"> Not Available</label>
+                            <label class="radio-inline"><input type="radio" name="septic_tank" value="needs_evacuation"> Needs Evacuation</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>g. Source(s) of Portable Water</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="water_source" value="none"> None</label>
+                            <label class="radio-inline"><input type="radio" name="water_source" value="well"> Well</label>
+                            <label class="radio-inline"><input type="radio" name="water_source" value="tap_water"> Tap Water</label>
+                            <label class="radio-inline"><input type="radio" name="water_source" value="borehole"> Borehole</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>h. Sources of Electricity</label>
+                        <div>
+                            <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="none"> None</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="phcn"> PHCN</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="generator"> Generator</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="solar"> Solar</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="others"> Others</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="phcn_disconnected_bills"> PHCN but Disconnected because of accumulated bills</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="phcn_disconnected_meter"> PHCN but Disconnected because of lack of meter</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>i. Clubs and Societies Activities</label>
+                        <div>
+                            <label>Which of these Clubs and Societies is available in your School?</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="clubs" value="boys_scout"> Boys Scout</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="clubs" value="girls_guide"> Girls Guide</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="clubs" value="brigade"> Brigade</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="clubs" value="brownies"> Brownies</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="clubs" value="sheriff_guide"> Sheriff Guide</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="clubs" value="young_farmers_club"> Young Farmers Club</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="clubs" value="red_cross"> Red Cross</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="clubs" value="none"> None</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>j. How often do you do Clubs and Societies Activities in your School?</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="clubs_frequency" value="never"> Never</label>
+                            <label class="radio-inline"><input type="radio" name="clubs_frequency" value="weekly"> Weekly done</label>
+                            <label class="radio-inline"><input type="radio" name="clubs_frequency" value="monthly"> Once in a month</label>
+                            <label class="radio-inline"><input type="radio" name="clubs_frequency" value="yearly"> Once in a Year</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>k. Sports</label>
+                        <div>
+                            <label>Which of these Sport equipment is available in your School?</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="sports_equipment" value="football_field"> Football field</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="sports_equipment" value="football"> Football</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="sports_equipment" value="table_tennis"> Table tennis</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="sports_equipment" value="jersey"> Jersey</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="sports_equipment" value="batons"> Batons</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="sports_equipment" value="trophies"> Trophies</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="sports_equipment" value="none"> None</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>l. Is your School regularly waterlogged when it rained?</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="waterlogged" value="yes"> Yes</label>
+                            <label class="radio-inline"><input type="radio" name="waterlogged" value="no"> No</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>List Two major Requests Government should provide for your School</label>
+                    <textarea name="major_requests" class="form-control" rows="2"></textarea>
+                </div>
+                <p>Thank you so much for your time and patience.</p>
+                <button type="submit" class="btn">Submit VOICES Survey</button>
+                <div id="voices_feedback" style="margin-top:15px;font-size:15px;"></div>
+            </form>
         </div>
         <!-- Main Application (hidden until needed) -->
         <div id="mainApp" class="hidden">
