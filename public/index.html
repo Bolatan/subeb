@@ -646,18 +646,314 @@ select.form-control option {
 
             <h4 id="sectionAHeader_1.2" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionAContent_1.2', 'sectionAHeader_1.2')">Section A: Bio Data ▶️</h4>
             <div id="sectionAContent_1.2" style="display: none;">
+                <div class="form-group">
+                    <label>Institution Type: LGEA Secretariat</label>
+                </div>
+                <h5>Education Secretary Bio Data</h5>
+                <div class="form-group">
+                    <label>Gender:</label>
+                    <label class="radio-inline"><input type="radio" name="gender_1.2" value="male"> Male</label>
+                    <label class="radio-inline"><input type="radio" name="gender_1.2" value="female"> Female</label>
+                </div>
+                <div class="form-group">
+                    <label>Marital Status:</label>
+                    <label class="radio-inline"><input type="radio" name="marital_status_1.2" value="single"> Single</label>
+                    <label class="radio-inline"><input type="radio" name="marital_status_1.2" value="married"> Married</label>
+                    <label class="radio-inline"><input type="radio" name="marital_status_1.2" value="divorced"> Divorced</label>
+                    <label class="radio-inline"><input type="radio" name="marital_status_1.2" value="separated"> Separated</label>
+                    <label class="radio-inline"><input type="radio" name="marital_status_1.2" value="widow_widower"> Widow/Widower</label>
+                </div>
+                <div class="form-group">
+                    <label>Highest Qualification:</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.2" value="grade_ii"> Grade II</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.2" value="nce"> NCE</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.2" value="b_ed"> B.Ed</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.2" value="ba_ed"> BA. Ed</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.2" value="bsc_ed"> B.Sc.Ed</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.2" value="hnd"> HND</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.2" value="m_ed"> M.Ed</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.2" value="others"> Others</label>
+                    <input type="text" name="highest_qualification_other_1.2" placeholder="Specify other">
+                </div>
+                <div class="form-group">
+                    <label>Years of Leadership Experience:</label>
+                    <label class="radio-inline"><input type="radio" name="leadership_experience_1.2" value="5_below"> 5 & below</label>
+                    <label class="radio-inline"><input type="radio" name="leadership_experience_1.2" value="6_10"> 6-10</label>
+                    <label class="radio-inline"><input type="radio" name="leadership_experience_1.2" value="11_15"> 11-15</label>
+                    <label class="radio-inline"><input type="radio" name="leadership_experience_1.2" value="16_20"> 16-20</label>
+                    <label class="radio-inline"><input type="radio" name="leadership_experience_1.2" value="21_above"> 21 & above</label>
+                </div>
                 </div>
 
             <h4 id="sectionBHeader_1.2" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionBContent_1.2', 'sectionBHeader_1.2')">Section B: School/Institution Data ▶️</h4>
             <div id="sectionBContent_1.2" style="display: none;">
+                <div class="form-group">
+                    <label for="lgea_name_1.2">Name of LGEA:</label>
+                    <input type="text" id="lgea_name_1.2" name="lgea_name_1.2" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="lgea_address_1.2">Address:</label>
+                    <input type="text" id="lgea_address_1.2" name="lgea_address_1.2" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Location:</label>
+                    <label class="radio-inline"><input type="radio" name="location_1.2" value="urban"> Urban</label>
+                    <label class="radio-inline"><input type="radio" name="location_1.2" value="rural"> Rural</label>
+                    <label class="radio-inline"><input type="radio" name="location_1.2" value="riverine"> Riverine</label>
+                </div>
+                <h5>MEMBERS OF STAFF</h5>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Number of Staff in the LGEA:</label>
+                        <input type="number" name="staff_male_1.2" placeholder="Male" class="form-control">
+                        <input type="number" name="staff_female_1.2" placeholder="Female" class="form-control">
+                        <input type="number" name="staff_total_1.2" placeholder="Total" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Number of Staff that are Professional Teachers:</label>
+                        <input type="number" name="teachers_male_1.2" placeholder="Male" class="form-control">
+                        <input type="number" name="teachers_female_1.2" placeholder="Female" class="form-control">
+                        <input type="number" name="teachers_total_1.2" placeholder="Total" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Number of Non-teaching Staff at the LGEA:</label>
+                        <input type="number" name="non_teaching_male_1.2" placeholder="Male" class="form-control">
+                        <input type="number" name="non_teaching_female_1.2" placeholder="Female" class="form-control">
+                        <input type="number" name="non_teaching_total_1.2" placeholder="Total" class="form-control" readonly>
+                    </div>
+                </div>
                 </div>
 
             <h4 id="sectionCHeader_1.2" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionCContent_1.2', 'sectionCHeader_1.2')">Section C: Needs Assessment ▶️</h4>
             <div id="sectionCContent_1.2" style="display: none;">
+                <p>Tick the areas where you are having difficulties in your LGEA and Schools.</p>
+                <h5>Control and Discipline</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Getting Staff to obey rules and regulations</td><td><input type="radio" name="discipline_a_1.2"></td><td><input type="radio" name="discipline_a_1.2"></td></tr>
+                        <tr><td>b.</td><td>Handling of disciplinary cases on time and appropriately</td><td><input type="radio" name="discipline_b_1.2"></td><td><input type="radio" name="discipline_b_1.2"></td></tr>
+                        <tr><td>c.</td><td>Effecting discipline of misconduct in the LGEA and Schools</td><td><input type="radio" name="discipline_c_1.2"></td><td><input type="radio" name="discipline_c_1.2"></td></tr>
+                        <tr><td>d.</td><td>Handling cases of lateness, truancy, etc. in the LGEA and Schools</td><td><input type="radio" name="discipline_d_1.2"></td><td><input type="radio" name="discipline_d_1.2"></td></tr>
+                        <tr><td>e.</td><td>Handling cases of professional misconduct by Staff in the LGEA and Schools</td><td><input type="radio" name="discipline_e_1.2"></td><td><input type="radio" name="discipline_e_1.2"></td></tr>
+                    </tbody>
+                </table>
+                <h5>Cooperation and Team Work</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Assigning administrative responsibilities to Staff in the LGEA</td><td><input type="radio" name="cooperation_a_1.2"></td><td><input type="radio" name="cooperation_a_1.2"></td></tr>
+                        <tr><td>b.</td><td>Delegating of duties to subordinates</td><td><input type="radio" name="cooperation_b_1.2"></td><td><input type="radio" name="cooperation_b_1.2"></td></tr>
+                        <tr><td>c.</td><td>Getting Staff to work cooperatively to carry out assigned duties</td><td><input type="radio" name="cooperation_c_1.2"></td><td><input type="radio" name="cooperation_c_1.2"></td></tr>
+                        <tr><td>d.</td><td>Encouraging team work in the LGEA and Schools</td><td><input type="radio" name="cooperation_d_1.2"></td><td><input type="radio" name="cooperation_d_1.2"></td></tr>
+                    </tbody>
+                </table>
+                <h5>Communication in the LGEA and Schools</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Establishing effective channel of communication in the LGEA and Schools</td><td><input type="radio" name="communication_a_1.2"></td><td><input type="radio" name="communication_a_1.2"></td></tr>
+                        <tr><td>b.</td><td>Guaranteeing freedom of expression in the LGEA and Schools</td><td><input type="radio" name="communication_b_1.2"></td><td><input type="radio" name="communication_b_1.2"></td></tr>
+                        <tr><td>c.</td><td>Encouraging good communication skills among staff and Schools</td><td><input type="radio" name="communication_c_1.2"></td><td><input type="radio" name="communication_c_1.2"></td></tr>
+                    </tbody>
+                </table>
+                <h5>LGEA, Schools and Community Relations</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Getting the communities to be committed to the LGEA and school activities</td><td><input type="radio" name="community_a_1.2"></td><td><input type="radio" name="community_a_1.2"></td></tr>
+                        <tr><td>b.</td><td>Getting Staff to relate well with the immediate community</td><td><input type="radio" name="community_b_1.2"></td><td><input type="radio" name="community_b_1.2"></td></tr>
+                        <tr><td>c.</td><td>Institutionalizing SBMC in the Schools</td><td><input type="radio" name="community_c_1.2"></td><td><input type="radio" name="community_c_1.2"></td></tr>
+                        <tr><td>d.</td><td>Getting SBMC actively involved in the management and provision of facilities in the schools</td><td><input type="radio" name="community_d_1.2"></td><td><input type="radio" name="community_d_1.2"></td></tr>
+                        <tr><td>e.</td><td>Involving former pupils in the School activities</td><td><input type="radio" name="community_e_1.2"></td><td><input type="radio" name="community_e_1.2"></td></tr>
+                    </tbody>
+                </table>
+                <h5>Supervision and Monitoring</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Assessing Headteachers’ Statutory Records</td><td><input type="radio" name="supervision_a_1.2"></td><td><input type="radio" name="supervision_a_1.2"></td></tr>
+                        <tr><td>b.</td><td>Assessing Teachers’ Records</td><td><input type="radio" name="supervision_b_1.2"></td><td><input type="radio" name="supervision_b_1.2"></td></tr>
+                        <tr><td>c.</td><td>Monitoring Movement of Staff at the LGEA and Schools</td><td><input type="radio" name="supervision_c_1.2"></td><td><input type="radio" name="supervision_c_1.2"></td></tr>
+                        <tr><td>d.</td><td>Supervision of activities at the LGEA and Schools</td><td><input type="radio" name="supervision_d_1.2"></td><td><input type="radio" name="supervision_d_1.2"></td></tr>
+                    </tbody>
+                </table>
+                <h5>LGEA Records</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Maintaining the LGEA Log Book</td><td><input type="radio" name="records_a_1.2"></td><td><input type="radio" name="records_a_1.2"></td></tr>
+                        <tr><td>b.</td><td>Maintenance of Staff’ Movement Book</td><td><input type="radio" name="records_b_1.2"></td><td><input type="radio" name="records_b_1.2"></td></tr>
+                        <tr><td>c.</td><td>Keeping Staff’ Time-book</td><td><input type="radio" name="records_c_1.2"></td><td><input type="radio" name="records_c_1.2"></td></tr>
+                        <tr><td>d.</td><td>Keeping of Minutes of Staff meetings</td><td><input type="radio" name="records_d_1.2"></td><td><input type="radio" name="records_d_1.2"></td></tr>
+                        <tr><td>e.</td><td>Keeping of Visitors Book</td><td><input type="radio" name="records_e_1.2"></td><td><input type="radio" name="records_e_1.2"></td></tr>
+                    </tbody>
+                </table>
+                <h5>Health and Hygiene</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Keeping the LGEA compound clean</td><td><input type="radio" name="health_a_1.2"></td><td><input type="radio" name="health_a_1.2"></td></tr>
+                        <tr><td>b.</td><td>Keeping and stocking of First Aid box</td><td><input type="radio" name="health_b_1.2"></td><td><input type="radio" name="health_b_1.2"></td></tr>
+                        <tr><td>c.</td><td>Getting the Staff to obey hygienic rules</td><td><input type="radio" name="health_c_1.2"></td><td><input type="radio" name="health_c_1.2"></td></tr>
+                        <tr><td>d.</td><td>Getting medical services for the Staff</td><td><input type="radio" name="health_d_1.2"></td><td><input type="radio" name="health_d_1.2"></td></tr>
+                        <tr><td>E</td><td>Waste Disposal Bin</td><td><input type="radio" name="health_e_1.2"></td><td><input type="radio" name="health_e_1.2"></td></tr>
+                    </tbody>
+                </table>
                 </div>
 
             <h4 id="sectionDHeader_1.2" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionDContent_1.2', 'sectionDHeader_1.2')">Section D: School Infrastructure ▶️</h4>
             <div id="sectionDContent_1.2" style="display: none;">
+                <h5>INFRASTRUCTURE</h5>
+                <div class="form-group">
+                    <label>Signboard:</label>
+                    <label class="radio-inline"><input type="radio" name="signboard_1.2" value="available_good"> Available and in good condition</label>
+                    <label class="radio-inline"><input type="radio" name="signboard_1.2" value="available_not_good"> Available but not in good condition</label>
+                    <label class="radio-inline"><input type="radio" name="signboard_1.2" value="not_available"> Not Available</label>
+                </div>
+                <div class="form-group">
+                    <label>Description of the External Features of the LGEA Structure:</label>
+                    <label class="radio-inline"><input type="radio" name="structure_condition_1.2" value="good"> In Good Condition</label>
+                    <label class="radio-inline"><input type="radio" name="structure_condition_1.2" value="minor_renovation"> Need Minor Renovation</label>
+                    <label class="radio-inline"><input type="radio" name="structure_condition_1.2" value="major_renovation"> Need Major Renovation</label>
+                    <label class="radio-inline"><input type="radio" name="structure_condition_1.2" value="complete_reconstruction"> Need Complete Reconstruction</label>
+                </div>
+                <div class="form-group">
+                    <label>Available Offices:</label>
+                    <input type="number" name="offices_good_condition_1.2" placeholder="Number in Good Condition" class="form-control">
+                    <input type="number" name="offices_minor_repairs_1.2" placeholder="Need Minor Repairs" class="form-control">
+                    <input type="number" name="offices_major_repairs_1.2" placeholder="Needs Major Repairs" class="form-control">
+                    <input type="number" name="offices_renovation_required_1.2" placeholder="Renovation Required" class="form-control">
+                    <input type="number" name="offices_additional_required_1.2" placeholder="Number of Additional offices required" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="repair_description_1.2">Briefly, describe the type of repair/construction needed:</label>
+                    <textarea id="repair_description_1.2" name="repair_description_1.2" class="form-control"></textarea>
+                </div>
+                <h5>FURNITURE</h5>
+                <div class="form-group">
+                    <label>Staff’ Furniture:</label>
+                    <input type="number" name="staff_furniture_available_1.2" placeholder="Number Available" class="form-control">
+                    <input type="number" name="staff_furniture_good_condition_1.2" placeholder="Number in Good Condition" class="form-control">
+                    <input type="number" name="staff_furniture_required_1.2" placeholder="Additional Number Required" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Condition of Offices:</label>
+                    <input type="number" name="offices_available_1.2" placeholder="Number Available" class="form-control">
+                    <input type="number" name="offices_good_condition_2_1.2" placeholder="Number in Good Condition" class="form-control">
+                    <input type="number" name="offices_minor_repair_1.2" placeholder="Number in need of Minor Repair" class="form-control">
+                    <input type="number" name="offices_major_repair_1.2" placeholder="Number in need of Major Repair/Renovation" class="form-control">
+                    <input type="number" name="offices_additional_required_2_1.2" placeholder="Number of Additional Classroom Required" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="repair_description_2_1.2">Briefly, describe the type of repair needed:</label>
+                    <textarea id="repair_description_2_1.2" name="repair_description_2_1.2" class="form-control"></textarea>
+                </div>
+                <h5>FENCING</h5>
+                <div class="form-group">
+                    <label>a. Shared Facility</label>
+                    <p>Is the school located within a school Complex?</p>
+                    <label class="radio-inline"><input type="radio" name="shared_facility_1.2" value="yes"> Yes</label>
+                    <label class="radio-inline"><input type="radio" name="shared_facility_1.2" value="no"> No</label>
+                    <div class="form-group">
+                        <label for="shared_facility_schools_1.2">If Yes, Kindly list other Schools within the Complex</label>
+                        <textarea id="shared_facility_schools_1.2" name="shared_facility_schools_1.2" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Does the LGEA have perimeter fence:</label>
+                    <label class="radio-inline"><input type="radio" name="perimeter_fence_1.2" value="yes"> Yes</label>
+                    <label class="radio-inline"><input type="radio" name="perimeter_fence_1.2" value="no"> No</label>
+                </div>
+                <div class="form-group">
+                    <label>If Yes, in what State?</label>
+                    <label class="radio-inline"><input type="radio" name="fence_condition_1.2" value="good"> In Good Condition</label>
+                    <label class="radio-inline"><input type="radio" name="fence_condition_1.2" value="minor_repair"> Need Minor Repair</label>
+                    <label class="radio-inline"><input type="radio" name="fence_condition_1.2" value="major_repair"> Need Major Repair</label>
+                </div>
+                <div class="form-group">
+                    <label for="fence_repair_description_1.2">Briefly, describe the type of repair needed</label>
+                    <textarea id="fence_repair_description_1.2" name="fence_repair_description_1.2" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="lgea_perimeter_1.2">If No, what is the perimeter of the LGEA?</label>
+                    <input type="text" id="lgea_perimeter_1.2" name="lgea_perimeter_1.2" class="form-control">
+                </div>
+                <h5>TOILET FACILITIES</h5>
+                <div class="form-group">
+                    <label>Type of Toilet:</label>
+                    <label class="radio-inline"><input type="radio" name="toilet_type_1.2" value="pit"> Pit</label>
+                    <label class="radio-inline"><input type="radio" name="toilet_type_1.2" value="wc"> WC</label>
+                    <label class="radio-inline"><input type="radio" name="toilet_type_1.2" value="squat_water_flush"> Squat Water flush</label>
+                    <label class="radio-inline"><input type="radio" name="toilet_type_1.2" value="none"> None</label>
+                </div>
+                <div class="form-group">
+                    <input type="number" name="toilet_cubicle_available_1.2" placeholder="Number of Cubicle Toilet Available" class="form-control">
+                    <input type="number" name="toilet_minor_repair_1.2" placeholder="Number in need of Minor Repair" class="form-control">
+                    <input type="number" name="toilet_major_repair_1.2" placeholder="Number in need of Major Repair" class="form-control">
+                    <input type="number" name="toilet_renovation_required_1.2" placeholder="Renovation Required" class="form-control">
+                    <input type="number" name="toilet_additional_required_1.2" placeholder="Number of Additional Cubicle Toilet Required" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="toilet_repair_description_1.2">Briefly, describe the type of repair needed</label>
+                    <textarea id="toilet_repair_description_1.2" name="toilet_repair_description_1.2" class="form-control"></textarea>
+                </div>
+                <h5>SEPTIC TANK</h5>
+                <div class="form-group">
+                    <label class="radio-inline"><input type="radio" name="septic_tank_1.2" value="available"> Available</label>
+                    <label class="radio-inline"><input type="radio" name="septic_tank_1.2" value="not_available"> Not Available</label>
+                    <label class="radio-inline"><input type="radio" name="septic_tank_1.2" value="needs_evacuation"> Needs Evacuation</label>
+                </div>
+                <h5>SOURCE OF POTABLE WATER</h5>
+                <div class="form-group">
+                    <label class="radio-inline"><input type="radio" name="water_source_1.2" value="none"> None</label>
+                    <label class="radio-inline"><input type="radio" name="water_source_1.2" value="well"> Well</label>
+                    <label class="radio-inline"><input type="radio" name="water_source_1.2" value="tap_water"> Tap Water</label>
+                    <label class="radio-inline"><input type="radio" name="water_source_1.2" value="borehole"> Borehole</label>
+                </div>
+                <div class="form-group">
+                    <label for="water_recommendations_1.2">Recommendations</label>
+                    <textarea id="water_recommendations_1.2" name="water_recommendations_1.2" class="form-control"></textarea>
+                </div>
+                <h5>SOURCE OF ELECTRICITY</h5>
+                <div class="form-group">
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.2" value="none"> None</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.2" value="phcn"> PHCN</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.2" value="generator"> Generator</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.2" value="solar"> Solar</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.2" value="others"> Others</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.2" value="phcn_disconnected_bills"> PHCN but Disconnected because of accumulated bills</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.2" value="phcn_disconnected_meter"> PHCN but Disconnected because of lack of meter</label>
+                </div>
+                <div class="form-group">
+                    <label for="electricity_additional_info_1.2">Additional information e.g., amount involved, etc</label>
+                    <textarea id="electricity_additional_info_1.2" name="electricity_additional_info_1.2" class="form-control"></textarea>
+                </div>
+                <h5>MONITORING VEHICLES</h5>
+                <div class="form-group">
+                    <label class="radio-inline"><input type="radio" name="monitoring_vehicles_1.2" value="available"> Available</label>
+                    <label class="radio-inline"><input type="radio" name="monitoring_vehicles_1.2" value="not_available"> Not Available</label>
+                    <input type="number" name="monitoring_vehicles_needed_1.2" placeholder="Number Needed" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Is your LGEA regularly waterlogged when it rained?</label>
+                    <label class="radio-inline"><input type="radio" name="waterlogged_1.2" value="yes"> Yes</label>
+                    <label class="radio-inline"><input type="radio" name="waterlogged_1.2" value="no"> No</label>
+                </div>
+                <h5>EQUIPMENT/FACILITIES</h5>
+                <p>List of Equipment/facility expected at the LGEA</p>
+                <table class="data-table">
+                    <thead><tr><th>s/n</th><th>Equipment/facility expected</th><th>Number Available in good condition</th><th>Number required</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td><input type="text" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td></tr>
+                        <tr><td>2</td><td><input type="text" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td></tr>
+                        <tr><td>3</td><td><input type="text" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td></tr>
+                    </tbody>
+                </table>
                 </div>
         </div>
         <div id="silat_1.3Section" class="section hidden">
@@ -677,18 +973,314 @@ select.form-control option {
 
             <h4 id="sectionAHeader_1.3" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionAContent_1.3', 'sectionAHeader_1.3')">Section A: Bio Data ▶️</h4>
             <div id="sectionAContent_1.3" style="display: none;">
+                <div class="form-group">
+                    <label>Institution Type: LGEA Secretariat</label>
+                </div>
+                <h5>Education Secretary Bio Data</h5>
+                <div class="form-group">
+                    <label>Gender:</label>
+                    <label class="radio-inline"><input type="radio" name="gender_1.3" value="male"> Male</label>
+                    <label class="radio-inline"><input type="radio" name="gender_1.3" value="female"> Female</label>
+                </div>
+                <div class="form-group">
+                    <label>Marital Status:</label>
+                    <label class="radio-inline"><input type="radio" name="marital_status_1.3" value="single"> Single</label>
+                    <label class="radio-inline"><input type="radio" name="marital_status_1.3" value="married"> Married</label>
+                    <label class="radio-inline"><input type="radio" name="marital_status_1.3" value="divorced"> Divorced</label>
+                    <label class="radio-inline"><input type="radio" name="marital_status_1.3" value="separated"> Separated</label>
+                    <label class="radio-inline"><input type="radio" name="marital_status_1.3" value="widow_widower"> Widow/Widower</label>
+                </div>
+                <div class="form-group">
+                    <label>Highest Qualification:</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.3" value="grade_ii"> Grade II</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.3" value="nce"> NCE</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.3" value="b_ed"> B.Ed</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.3" value="ba_ed"> BA. Ed</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.3" value="bsc_ed"> B.Sc.Ed</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.3" value="hnd"> HND</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.3" value="m_ed"> M.Ed</label>
+                    <label class="radio-inline"><input type="radio" name="highest_qualification_1.3" value="others"> Others</label>
+                    <input type="text" name="highest_qualification_other_1.3" placeholder="Specify other">
+                </div>
+                <div class="form-group">
+                    <label>Years of Leadership Experience:</label>
+                    <label class="radio-inline"><input type="radio" name="leadership_experience_1.3" value="5_below"> 5 & below</label>
+                    <label class="radio-inline"><input type="radio" name="leadership_experience_1.3" value="6_10"> 6-10</label>
+                    <label class="radio-inline"><input type="radio" name="leadership_experience_1.3" value="11_15"> 11-15</label>
+                    <label class="radio-inline"><input type="radio" name="leadership_experience_1.3" value="16_20"> 16-20</label>
+                    <label class="radio-inline"><input type="radio" name="leadership_experience_1.3" value="21_above"> 21 & above</label>
+                </div>
                 </div>
 
             <h4 id="sectionBHeader_1.3" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionBContent_1.3', 'sectionBHeader_1.3')">Section B: School/Institution Data ▶️</h4>
             <div id="sectionBContent_1.3" style="display: none;">
+                <div class="form-group">
+                    <label for="lgea_name_1.3">Name of LGEA:</label>
+                    <input type="text" id="lgea_name_1.3" name="lgea_name_1.3" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="lgea_address_1.3">Address:</label>
+                    <input type="text" id="lgea_address_1.3" name="lgea_address_1.3" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Location:</label>
+                    <label class="radio-inline"><input type="radio" name="location_1.3" value="urban"> Urban</label>
+                    <label class="radio-inline"><input type="radio" name="location_1.3" value="rural"> Rural</label>
+                    <label class="radio-inline"><input type="radio" name="location_1.3" value="riverine"> Riverine</label>
+                </div>
+                <h5>MEMBERS OF STAFF</h5>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Number of Staff in the LGEA:</label>
+                        <input type="number" name="staff_male_1.3" placeholder="Male" class="form-control">
+                        <input type="number" name="staff_female_1.3" placeholder="Female" class="form-control">
+                        <input type="number" name="staff_total_1.3" placeholder="Total" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Number of Staff that are Professional Teachers:</label>
+                        <input type="number" name="teachers_male_1.3" placeholder="Male" class="form-control">
+                        <input type="number" name="teachers_female_1.3" placeholder="Female" class="form-control">
+                        <input type="number" name="teachers_total_1.3" placeholder="Total" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Number of Non-teaching Staff at the LGEA:</label>
+                        <input type="number" name="non_teaching_male_1.3" placeholder="Male" class="form-control">
+                        <input type="number" name="non_teaching_female_1.3" placeholder="Female" class="form-control">
+                        <input type="number" name="non_teaching_total_1.3" placeholder="Total" class="form-control" readonly>
+                    </div>
+                </div>
                 </div>
 
             <h4 id="sectionCHeader_1.3" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionCContent_1.3', 'sectionCHeader_1.3')">Section C: Needs Assessment ▶️</h4>
             <div id="sectionCContent_1.3" style="display: none;">
+                <p>Tick the areas where you are having difficulties in your LGEA and Schools.</p>
+                <h5>Control and Discipline</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Getting Staff to obey rules and regulations</td><td><input type="radio" name="discipline_a_1.3"></td><td><input type="radio" name="discipline_a_1.3"></td></tr>
+                        <tr><td>b.</td><td>Handling of disciplinary cases on time and appropriately</td><td><input type="radio" name="discipline_b_1.3"></td><td><input type="radio" name="discipline_b_1.3"></td></tr>
+                        <tr><td>c.</td><td>Effecting discipline of misconduct in the LGEA and Schools</td><td><input type="radio" name="discipline_c_1.3"></td><td><input type="radio" name="discipline_c_1.3"></td></tr>
+                        <tr><td>d.</td><td>Handling cases of lateness, truancy, etc. in the LGEA and Schools</td><td><input type="radio" name="discipline_d_1.3"></td><td><input type="radio" name="discipline_d_1.3"></td></tr>
+                        <tr><td>e.</td><td>Handling cases of professional misconduct by Staff in the LGEA and Schools</td><td><input type="radio" name="discipline_e_1.3"></td><td><input type="radio" name="discipline_e_1.3"></td></tr>
+                    </tbody>
+                </table>
+                <h5>Cooperation and Team Work</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Assigning administrative responsibilities to Staff in the LGEA</td><td><input type="radio" name="cooperation_a_1.3"></td><td><input type="radio" name="cooperation_a_1.3"></td></tr>
+                        <tr><td>b.</td><td>Delegating of duties to subordinates</td><td><input type="radio" name="cooperation_b_1.3"></td><td><input type="radio" name="cooperation_b_1.3"></td></tr>
+                        <tr><td>c.</td><td>Getting Staff to work cooperatively to carry out assigned duties</td><td><input type="radio" name="cooperation_c_1.3"></td><td><input type="radio" name="cooperation_c_1.3"></td></tr>
+                        <tr><td>d.</td><td>Encouraging team work in the LGEA and Schools</td><td><input type="radio" name="cooperation_d_1.3"></td><td><input type="radio" name="cooperation_d_1.3"></td></tr>
+                    </tbody>
+                </table>
+                <h5>Communication in the LGEA and Schools</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Establishing effective channel of communication in the LGEA and Schools</td><td><input type="radio" name="communication_a_1.3"></td><td><input type="radio" name="communication_a_1.3"></td></tr>
+                        <tr><td>b.</td><td>Guaranteeing freedom of expression in the LGEA and Schools</td><td><input type="radio" name="communication_b_1.3"></td><td><input type="radio" name="communication_b_1.3"></td></tr>
+                        <tr><td>c.</td><td>Encouraging good communication skills among staff and Schools</td><td><input type="radio" name="communication_c_1.3"></td><td><input type="radio" name="communication_c_1.3"></td></tr>
+                    </tbody>
+                </table>
+                <h5>LGEA, Schools and Community Relations</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Getting the communities to be committed to the LGEA and school activities</td><td><input type="radio" name="community_a_1.3"></td><td><input type="radio" name="community_a_1.3"></td></tr>
+                        <tr><td>b.</td><td>Getting Staff to relate well with the immediate community</td><td><input type="radio" name="community_b_1.3"></td><td><input type="radio" name="community_b_1.3"></td></tr>
+                        <tr><td>c.</td><td>Institutionalizing SBMC in the Schools</td><td><input type="radio" name="community_c_1.3"></td><td><input type="radio" name="community_c_1.3"></td></tr>
+                        <tr><td>d.</td><td>Getting SBMC actively involved in the management and provision of facilities in the schools</td><td><input type="radio" name="community_d_1.3"></td><td><input type="radio" name="community_d_1.3"></td></tr>
+                        <tr><td>e.</td><td>Involving former pupils in the School activities</td><td><input type="radio" name="community_e_1.3"></td><td><input type="radio" name="community_e_1.3"></td></tr>
+                    </tbody>
+                </table>
+                <h5>Supervision and Monitoring</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Assessing Headteachers’ Statutory Records</td><td><input type="radio" name="supervision_a_1.3"></td><td><input type="radio" name="supervision_a_1.3"></td></tr>
+                        <tr><td>b.</td><td>Assessing Teachers’ Records</td><td><input type="radio" name="supervision_b_1.3"></td><td><input type="radio" name="supervision_b_1.3"></td></tr>
+                        <tr><td>c.</td><td>Monitoring Movement of Staff at the LGEA and Schools</td><td><input type="radio" name="supervision_c_1.3"></td><td><input type="radio" name="supervision_c_1.3"></td></tr>
+                        <tr><td>d.</td><td>Supervision of activities at the LGEA and Schools</td><td><input type="radio" name="supervision_d_1.3"></td><td><input type="radio" name="supervision_d_1.3"></td></tr>
+                    </tbody>
+                </table>
+                <h5>LGEA Records</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Maintaining the LGEA Log Book</td><td><input type="radio" name="records_a_1.3"></td><td><input type="radio" name="records_a_1.3"></td></tr>
+                        <tr><td>b.</td><td>Maintenance of Staff’ Movement Book</td><td><input type="radio" name="records_b_1.3"></td><td><input type="radio" name="records_b_1.3"></td></tr>
+                        <tr><td>c.</td><td>Keeping Staff’ Time-book</td><td><input type="radio" name="records_c_1.3"></td><td><input type="radio" name="records_c_1.3"></td></tr>
+                        <tr><td>d.</td><td>Keeping of Minutes of Staff meetings</td><td><input type="radio" name="records_d_1.3"></td><td><input type="radio" name="records_d_1.3"></td></tr>
+                        <tr><td>e.</td><td>Keeping of Visitors Book</td><td><input type="radio" name="records_e_1.3"></td><td><input type="radio" name="records_e_1.3"></td></tr>
+                    </tbody>
+                </table>
+                <h5>Health and Hygiene</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Keeping the LGEA compound clean</td><td><input type="radio" name="health_a_1.3"></td><td><input type="radio" name="health_a_1.3"></td></tr>
+                        <tr><td>b.</td><td>Keeping and stocking of First Aid box</td><td><input type="radio" name="health_b_1.3"></td><td><input type="radio" name="health_b_1.3"></td></tr>
+                        <tr><td>c.</td><td>Getting the Staff to obey hygienic rules</td><td><input type="radio" name="health_c_1.3"></td><td><input type="radio" name="health_c_1.3"></td></tr>
+                        <tr><td>d.</td><td>Getting medical services for the Staff</td><td><input type="radio" name="health_d_1.3"></td><td><input type="radio" name="health_d_1.3"></td></tr>
+                        <tr><td>E</td><td>Waste Disposal Bin</td><td><input type="radio" name="health_e_1.3"></td><td><input type="radio" name="health_e_1.3"></td></tr>
+                    </tbody>
+                </table>
                 </div>
 
             <h4 id="sectionDHeader_1.3" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionDContent_1.3', 'sectionDHeader_1.3')">Section D: School Infrastructure ▶️</h4>
             <div id="sectionDContent_1.3" style="display: none;">
+                <h5>INFRASTRUCTURE</h5>
+                <div class="form-group">
+                    <label>Signboard:</label>
+                    <label class="radio-inline"><input type="radio" name="signboard_1.3" value="available_good"> Available and in good condition</label>
+                    <label class="radio-inline"><input type="radio" name="signboard_1.3" value="available_not_good"> Available but not in good condition</label>
+                    <label class="radio-inline"><input type="radio" name="signboard_1.3" value="not_available"> Not Available</label>
+                </div>
+                <div class="form-group">
+                    <label>Description of the External Features of the LGEA Structure:</label>
+                    <label class="radio-inline"><input type="radio" name="structure_condition_1.3" value="good"> In Good Condition</label>
+                    <label class="radio-inline"><input type="radio" name="structure_condition_1.3" value="minor_renovation"> Need Minor Renovation</label>
+                    <label class="radio-inline"><input type="radio" name="structure_condition_1.3" value="major_renovation"> Need Major Renovation</label>
+                    <label class="radio-inline"><input type="radio" name="structure_condition_1.3" value="complete_reconstruction"> Need Complete Reconstruction</label>
+                </div>
+                <div class="form-group">
+                    <label>Available Offices:</label>
+                    <input type="number" name="offices_good_condition_1.3" placeholder="Number in Good Condition" class="form-control">
+                    <input type="number" name="offices_minor_repairs_1.3" placeholder="Need Minor Repairs" class="form-control">
+                    <input type="number" name="offices_major_repairs_1.3" placeholder="Needs Major Repairs" class="form-control">
+                    <input type="number" name="offices_renovation_required_1.3" placeholder="Renovation Required" class="form-control">
+                    <input type="number" name="offices_additional_required_1.3" placeholder="Number of Additional offices required" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="repair_description_1.3">Briefly, describe the type of repair/construction needed:</label>
+                    <textarea id="repair_description_1.3" name="repair_description_1.3" class="form-control"></textarea>
+                </div>
+                <h5>FURNITURE</h5>
+                <div class="form-group">
+                    <label>Staff’ Furniture:</label>
+                    <input type="number" name="staff_furniture_available_1.3" placeholder="Number Available" class="form-control">
+                    <input type="number" name="staff_furniture_good_condition_1.3" placeholder="Number in Good Condition" class="form-control">
+                    <input type="number" name="staff_furniture_required_1.3" placeholder="Additional Number Required" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Condition of Offices:</label>
+                    <input type="number" name="offices_available_1.3" placeholder="Number Available" class="form-control">
+                    <input type="number" name="offices_good_condition_2_1.3" placeholder="Number in Good Condition" class="form-control">
+                    <input type="number" name="offices_minor_repair_1.3" placeholder="Number in need of Minor Repair" class="form-control">
+                    <input type="number" name="offices_major_repair_1.3" placeholder="Number in need of Major Repair/Renovation" class="form-control">
+                    <input type="number" name="offices_additional_required_2_1.3" placeholder="Number of Additional Classroom Required" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="repair_description_2_1.3">Briefly, describe the type of repair needed:</label>
+                    <textarea id="repair_description_2_1.3" name="repair_description_2_1.3" class="form-control"></textarea>
+                </div>
+                <h5>FENCING</h5>
+                <div class="form-group">
+                    <label>a. Shared Facility</label>
+                    <p>Is the school located within a school Complex?</p>
+                    <label class="radio-inline"><input type="radio" name="shared_facility_1.3" value="yes"> Yes</label>
+                    <label class="radio-inline"><input type="radio" name="shared_facility_1.3" value="no"> No</label>
+                    <div class="form-group">
+                        <label for="shared_facility_schools_1.3">If Yes, Kindly list other Schools within the Complex</label>
+                        <textarea id="shared_facility_schools_1.3" name="shared_facility_schools_1.3" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Does the LGEA have perimeter fence:</label>
+                    <label class="radio-inline"><input type="radio" name="perimeter_fence_1.3" value="yes"> Yes</label>
+                    <label class="radio-inline"><input type="radio" name="perimeter_fence_1.3" value="no"> No</label>
+                </div>
+                <div class="form-group">
+                    <label>If Yes, in what State?</label>
+                    <label class="radio-inline"><input type="radio" name="fence_condition_1.3" value="good"> In Good Condition</label>
+                    <label class="radio-inline"><input type="radio" name="fence_condition_1.3" value="minor_repair"> Need Minor Repair</label>
+                    <label class="radio-inline"><input type="radio" name="fence_condition_1.3" value="major_repair"> Need Major Repair</label>
+                </div>
+                <div class="form-group">
+                    <label for="fence_repair_description_1.3">Briefly, describe the type of repair needed</label>
+                    <textarea id="fence_repair_description_1.3" name="fence_repair_description_1.3" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="lgea_perimeter_1.3">If No, what is the perimeter of the LGEA?</label>
+                    <input type="text" id="lgea_perimeter_1.3" name="lgea_perimeter_1.3" class="form-control">
+                </div>
+                <h5>TOILET FACILITIES</h5>
+                <div class="form-group">
+                    <label>Type of Toilet:</label>
+                    <label class="radio-inline"><input type="radio" name="toilet_type_1.3" value="pit"> Pit</label>
+                    <label class="radio-inline"><input type="radio" name="toilet_type_1.3" value="wc"> WC</label>
+                    <label class="radio-inline"><input type="radio" name="toilet_type_1.3" value="squat_water_flush"> Squat Water flush</label>
+                    <label class="radio-inline"><input type="radio" name="toilet_type_1.3" value="none"> None</label>
+                </div>
+                <div class="form-group">
+                    <input type="number" name="toilet_cubicle_available_1.3" placeholder="Number of Cubicle Toilet Available" class="form-control">
+                    <input type="number" name="toilet_minor_repair_1.3" placeholder="Number in need of Minor Repair" class="form-control">
+                    <input type="number" name="toilet_major_repair_1.3" placeholder="Number in need of Major Repair" class="form-control">
+                    <input type="number" name="toilet_renovation_required_1.3" placeholder="Renovation Required" class="form-control">
+                    <input type="number" name="toilet_additional_required_1.3" placeholder="Number of Additional Cubicle Toilet Required" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="toilet_repair_description_1.3">Briefly, describe the type of repair needed</label>
+                    <textarea id="toilet_repair_description_1.3" name="toilet_repair_description_1.3" class="form-control"></textarea>
+                </div>
+                <h5>SEPTIC TANK</h5>
+                <div class="form-group">
+                    <label class="radio-inline"><input type="radio" name="septic_tank_1.3" value="available"> Available</label>
+                    <label class="radio-inline"><input type="radio" name="septic_tank_1.3" value="not_available"> Not Available</label>
+                    <label class="radio-inline"><input type="radio" name="septic_tank_1.3" value="needs_evacuation"> Needs Evacuation</label>
+                </div>
+                <h5>SOURCE OF POTABLE WATER</h5>
+                <div class="form-group">
+                    <label class="radio-inline"><input type="radio" name="water_source_1.3" value="none"> None</label>
+                    <label class="radio-inline"><input type="radio" name="water_source_1.3" value="well"> Well</label>
+                    <label class="radio-inline"><input type="radio" name="water_source_1.3" value="tap_water"> Tap Water</label>
+                    <label class="radio-inline"><input type="radio" name="water_source_1.3" value="borehole"> Borehole</label>
+                </div>
+                <div class="form-group">
+                    <label for="water_recommendations_1.3">Recommendations</label>
+                    <textarea id="water_recommendations_1.3" name="water_recommendations_1.3" class="form-control"></textarea>
+                </div>
+                <h5>SOURCE OF ELECTRICITY</h5>
+                <div class="form-group">
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.3" value="none"> None</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.3" value="phcn"> PHCN</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.3" value="generator"> Generator</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.3" value="solar"> Solar</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.3" value="others"> Others</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.3" value="phcn_disconnected_bills"> PHCN but Disconnected because of accumulated bills</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="electricity_source_1.3" value="phcn_disconnected_meter"> PHCN but Disconnected because of lack of meter</label>
+                </div>
+                <div class="form-group">
+                    <label for="electricity_additional_info_1.3">Additional information e.g., amount involved, etc</label>
+                    <textarea id="electricity_additional_info_1.3" name="electricity_additional_info_1.3" class="form-control"></textarea>
+                </div>
+                <h5>MONITORING VEHICLES</h5>
+                <div class="form-group">
+                    <label class="radio-inline"><input type="radio" name="monitoring_vehicles_1.3" value="available"> Available</label>
+                    <label class="radio-inline"><input type="radio" name="monitoring_vehicles_1.3" value="not_available"> Not Available</label>
+                    <input type="number" name="monitoring_vehicles_needed_1.3" placeholder="Number Needed" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Is your LGEA regularly waterlogged when it rained?</label>
+                    <label class="radio-inline"><input type="radio" name="waterlogged_1.3" value="yes"> Yes</label>
+                    <label class="radio-inline"><input type="radio" name="waterlogged_1.3" value="no"> No</label>
+                </div>
+                <h5>EQUIPMENT/FACILITIES</h5>
+                <p>List of Equipment/facility expected at the LGEA</p>
+                <table class="data-table">
+                    <thead><tr><th>s/n</th><th>Equipment/facility expected</th><th>Number Available in good condition</th><th>Number required</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td><input type="text" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td></tr>
+                        <tr><td>2</td><td><input type="text" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td></tr>
+                        <tr><td>3</td><td><input type="text" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td></tr>
+                    </tbody>
+                </table>
                 </div>
         </div>
         <div id="silat_1.4Section" class="section hidden">
