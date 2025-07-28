@@ -2369,10 +2369,17 @@ select.form-control option {
     // Navigation logic for landing/surveys
     function showSurvey(survey) {
         document.getElementById('landingPage').classList.add('hidden');
-        ['silnat','tcmats','lori','voices'].forEach(s => {
-            document.getElementById(s+'Section').classList.add('hidden');
+        ['silnat', 'tcmats', 'lori', 'voices', 'silnat_1.4'].forEach(s => {
+            const section = document.getElementById(s + 'Section');
+            if (section) {
+                section.classList.add('hidden');
+            }
         });
-        document.getElementById(survey+'Section').classList.remove('hidden');
+
+        const sectionToShow = document.getElementById(survey + 'Section');
+        if (sectionToShow) {
+            sectionToShow.classList.remove('hidden');
+        }
         // Hide main app unless you want to show it for a survey
         document.getElementById('mainApp').classList.add('hidden');
     }
