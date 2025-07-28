@@ -618,9 +618,8 @@ select.form-control option {
                     <h2>Learner Voices/Opinions<br>(VOICES)</h2>
                     <p>For Learners</p>
                 </div>
-                <div class="survey-card" onclick="showSurvey('silnat_1.4')">
-                    <h2>SCHOOL INFRASTRUCTURE AND LEADERSHIP NEEDS ASSESSMENT TOOL (SILNAT)</h2>
-                    <p>SUBEB/PIMU/NEEDS-ASSESSMENT/INSTRUMENT/1.4</p>
+                <div class="survey-card" onclick="showSurvey('silnat2')">
+                    <h2>SCHOOL INFRASTRUCTURE AND LEADERSHIP NEEDS ASSESSMENT TOOL (SILNAT) SUBEB/PIMU/NEEDS-ASSESSMENT/INSTRUMENT/1.2</h2>
                 </div>
             </div>
         </div>
@@ -1112,6 +1111,13 @@ select.form-control option {
             <button type="submit" class="btn">Submit SILNAT Survey</button>
             <div id="silnat_feedback" style="margin-top:15px;font-size:15px;"></div>
         </form>        </div>
+        <div id="silnat2Section" class="section hidden">
+            <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                <img src="subeb.jpg" alt="LASUBEB Logo" class="survey-header-logo">
+                <h2 style="margin-left: 15px; flex-grow: 1; margin-bottom: 0;">SCHOOL INFRASTRUCTURE AND LEADERSHIP NEEDS ASSESSMENT TOOL (SILNAT) SUBEB/PIMU/NEEDS-ASSESSMENT/INSTRUMENT/1.2</h2>
+            </div>
+            <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
+            </div>
         <div id="tcmatsSection" class="section hidden">
             <div style="display: flex; align-items: center; margin-bottom: 20px;">
                 <img src="subeb.jpg" alt="LASUBEB Logo" class="survey-header-logo">
@@ -2371,7 +2377,7 @@ select.form-control option {
     // Navigation logic for landing/surveys
     function showSurvey(survey) {
         document.getElementById('landingPage').classList.add('hidden');
-        ['silnat','tcmats','lori','voices'].forEach(s => {
+        ['silnat','tcmats','lori','voices', 'silnat2'].forEach(s => {
             document.getElementById(s+'Section').classList.add('hidden');
         });
         document.getElementById(survey+'Section').classList.remove('hidden');
@@ -2380,7 +2386,7 @@ select.form-control option {
     }
     function backToLanding() {
         document.getElementById('landingPage').classList.remove('hidden');
-        ['silnat','tcmats','lori','voices'].forEach(s => {
+        ['silnat','tcmats','lori','voices', 'silnat2'].forEach(s => {
             document.getElementById(s+'Section').classList.add('hidden');
         });
         document.getElementById('mainApp').classList.add('hidden');
