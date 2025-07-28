@@ -3301,11 +3301,40 @@ select.form-control option {
 
     </style>
     <script>
+    // Navigation logic for landing/surveys
+    function showSurvey(survey) {
+        if (survey === 'dashboard') {
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            showSection('dashboard');
+            return;
+        }
+
+        document.getElementById('landingPage').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        showSection(survey);
+    }
+
+    function backToLanding() {
+        document.getElementById('landingPage').classList.remove('hidden');
+        document.getElementById('mainApp').classList.add('hidden');
+    }
+
+    // On load, show login page only
+    window.onload = function() {
+        document.getElementById('authScreen').classList.remove('hidden');
+        document.getElementById('landingPage').classList.add('hidden');
+        document.getElementById('mainApp').classList.add('hidden');
+    };
         // Navigation
         function showSection(sectionName) {
             // Hide all sections
             const sections = document.querySelectorAll('.section');
-            sections.forEach(section => section.classList.add('hidden'));
+            sections.forEach(section => {
+                if(section.id !== 'landingPage' && section.id !== 'authScreen') {
+                    section.classList.add('hidden')
+                }
+            });
 
             // Show selected section
             document.getElementById(sectionName + 'Section').classList.remove('hidden');
