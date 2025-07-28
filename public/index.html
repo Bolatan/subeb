@@ -938,161 +938,160 @@ select.form-control option {
 
             <h4 id="sectionDHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionDContent', 'sectionDHeader')">Section D: School Infrastructure ▶️</h4>
             <div id="sectionDContent" style="display: none;">
-
+                <h4>1. INFRASTRUCTURE</h4>
                 <div class="form-group">
-                    <label>Is the School sharing complex with other Schools? *</label>
-                    <div class="yes-no-group">
-                        <label class="radio-inline"><input type="radio" name="school_complex" value="yes" onchange="handleSchoolComplexChange()"> Yes</label>
-                        <label class="radio-inline"><input type="radio" name="school_complex" value="no" onchange="handleSchoolComplexChange()"> No</label>
+                    <label>Signboard</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="signboard" value="available_good"> Available and in good condition</label>
+                        <label class="radio-inline"><input type="radio" name="signboard" value="available_not_good"> Available but not in good condition</label>
+                        <label class="radio-inline"><input type="radio" name="signboard" value="not_available"> Not Available</label>
                     </div>
                 </div>
-                <div id="other_schools_in_complex_wrapper" style="display:none;" class="form-group">
-                    <label for="other_schools_in_complex">If yes, mention the names of the schools</label>
-                    <textarea id="other_schools_in_complex" name="other_schools_in_complex" class="form-control" rows="2"></textarea>
-                </div>
-
                 <div class="form-group">
-                    <label>Does the School have perimeter fencing? *</label>
-                    <div class="yes-no-group">
-                        <label class="radio-inline"><input type="radio" name="perimeter_fence" value="yes" onchange="handlePerimeterFenceChange()"> Yes</label>
-                        <label class="radio-inline"><input type="radio" name="perimeter_fence" value="no" onchange="handlePerimeterFenceChange()"> No</label>
+                    <label class="furniture-label">Teachers’ Furniture</label>
+                    <div class="form-row">
+                        <div class="form-group"><label for="teachers_furniture_available">Number Available</label><input type="number" id="teachers_furniture_available" name="teachers_furniture_available" class="form-control"></div>
+                        <div class="form-group"><label for="teachers_furniture_good">Number in Good Condition</label><input type="number" id="teachers_furniture_good" name="teachers_furniture_good" class="form-control"></div>
+                        <div class="form-group"><label for="teachers_furniture_required">Additional Number Required</label><input type="number" id="teachers_furniture_required" name="teachers_furniture_required" class="form-control"></div>
                     </div>
                 </div>
-                <div id="perimeter_fence_state_wrapper" style="display:none;" class="form-group">
-                    <label for="perimeter_fence_state">If yes, state the condition</label>
-                    <input type="text" id="perimeter_fence_state" name="perimeter_fence_state" class="form-control">
+                <div class="form-group">
+                    <label class="furniture-label">ECCDE Furniture</label>
+                    <div class="form-row">
+                        <div class="form-group"><label for="eccde_furniture_available">Number Available</label><input type="number" id="eccde_furniture_available" name="eccde_furniture_available" class="form-control"></div>
+                        <div class="form-group"><label for="eccde_furniture_good">Number in Good Condition</label><input type="number" id="eccde_furniture_good" name="eccde_furniture_good" class="form-control"></div>
+                        <div class="form-group"><label for="eccde_furniture_required">Additional Number Required</label><input type="number" id="eccde_furniture_required" name="eccde_furniture_required" class="form-control"></div>
+                    </div>
                 </div>
-                <div id="school_perimeter_wrapper" style="display:none;" class="form-group">
-                    <label for="school_perimeter">If No, what is used as school perimeter?</label>
+                <div class="form-group">
+                    <label class="furniture-label">Primary Furniture</label>
+                    <div class="form-row">
+                        <div class="form-group"><label for="primary_furniture_available">Number Available</label><input type="number" id="primary_furniture_available" name="primary_furniture_available" class="form-control"></div>
+                        <div class="form-group"><label for="primary_furniture_good">Number in Good Condition</label><input type="number" id="primary_furniture_good" name="primary_furniture_good" class="form-control"></div>
+                        <div class="form-group"><label for="primary_furniture_required">Additional Number Required</label><input type="number" id="primary_furniture_required" name="primary_furniture_required" class="form-control"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="furniture-label">Classroom Condition</label>
+                    <div class="form-row">
+                        <div class="form-group"><label for="classroom_available">Number Available</label><input type="number" id="classroom_available" name="classroom_available" class="form-control"></div>
+                        <div class="form-group"><label for="classroom_good">Number in Good Condition</label><input type="number" id="classroom_good" name="classroom_good" class="form-control"></div>
+                        <div class="form-group"><label for="classroom_minor_repair">Number in need of Minor Repair</label><input type="number" id="classroom_minor_repair" name="classroom_minor_repair" class="form-control"></div>
+                        <div class="form-group"><label for="classroom_major_repair">Number in need of Major Repair/Renovation</label><input type="number" id="classroom_major_repair" name="classroom_major_repair" class="form-control"></div>
+                        <div class="form-group"><label for="classroom_required">Number of Additional Classroom Required</label><input type="number" id="classroom_required" name="classroom_required" class="form-control"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="classroom_repair_description">Briefly, describe the type of repair needed</label>
+                        <textarea id="classroom_repair_description" name="classroom_repair_description" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+
+                <h4>2. FENCING</h4>
+                <div class="form-group">
+                    <label>a. Shared Facility</label>
+                    <div>
+                        <label>Is the school located within a school Complex?</label>
+                        <label class="radio-inline"><input type="radio" name="shared_facility" value="yes"> Yes</label>
+                        <label class="radio-inline"><input type="radio" name="shared_facility" value="no"> No</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="shared_facility_schools">If Yes, Kindly list other Schools within the Complex</label>
+                        <textarea id="shared_facility_schools" name="shared_facility_schools" class="form-control" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Does the school have perimeter fence:</label>
+                    <label class="radio-inline"><input type="radio" name="perimeter_fence" value="yes"> Yes</label>
+                    <label class="radio-inline"><input type="radio" name="perimeter_fence" value="no"> No</label>
+                </div>
+                <div class="form-group">
+                    <label>If Yes, in what State?</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="fence_condition" value="good"> In Good Condition</label>
+                        <label class="radio-inline"><input type="radio" name="fence_condition" value="minor_repair"> Need Minor Repair</label>
+                        <label class="radio-inline"><input type="radio" name="fence_condition" value="major_repair"> Need Major Repair</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fence_repair_description">Briefly, describe the type of repair needed</label>
+                    <textarea id="fence_repair_description" name="fence_repair_description" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="school_perimeter">If No, what is the perimeter of the School?</label>
                     <input type="text" id="school_perimeter" name="school_perimeter" class="form-control">
                 </div>
 
+                <h4>3. TOILET FACILITIES</h4>
                 <div class="form-group">
-                    <label>What is the total number of buildings in the school? *</label>
-                    <input type="number" id="total_buildings" name="total_buildings" class="form-control" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label>How many of the buildings are in good condition? *</label>
-                    <input type="number" id="buildings_good_condition" name="buildings_good_condition" class="form-control" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label>How many of the buildings are dilapidated? *</label>
-                    <input type="number" id="buildings_dilapidated" name="buildings_dilapidated" class="form-control" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label>How many of the buildings are under construction? *</label>
-                    <input type="number" id="buildings_under_construction" name="buildings_under_construction" class="form-control" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label>What is the total number of classrooms in the school? *</label>
-                    <input type="number" id="total_classrooms" name="total_classrooms" class="form-control" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label>How many of the classrooms are in good condition? *</label>
-                    <input type="number" id="classrooms_good_condition" name="classrooms_good_condition" class="form-control" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label>How many of the classrooms are in fair condition? *</label>
-                    <input type="number" id="classrooms_fair_condition" name="classrooms_fair_condition" class="form-control" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label>How many of the classrooms are dilapidated? *</label>
-                    <input type="number" id="classrooms_dilapidated" name="classrooms_dilapidated" class="form-control" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label>Are there enough classrooms for the pupils? *</label>
-                    <div class="yes-no-group">
-                        <label class="radio-inline"><input type="radio" name="enough_classrooms" value="yes"> Yes</label>
-                        <label class="radio-inline"><input type="radio" name="enough_classrooms" value="no"> No</label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>If No, what is the shortfall? *</label>
-                    <input type="number" id="classroom_shortfall" name="classroom_shortfall" class="form-control" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label>What is the condition of furniture in the classrooms? *</label>
+                    <label>Type of Toilet:</label>
                     <div>
-                        <label class="checkbox-inline"><input type="checkbox" name="furniture_condition" value="adequate_good"> Adequate and in good condition</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="furniture_condition" value="adequate_bad"> Adequate and in bad condition</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="furniture_condition" value="inadequate"> Inadequate</label>
+                        <label class="radio-inline"><input type="radio" name="toilet_type" value="pit"> Pit</label>
+                        <label class="radio-inline"><input type="radio" name="toilet_type" value="wc"> WC</label>
+                        <label class="radio-inline"><input type="radio" name="toilet_type" value="squat_water_flush"> Squat Water flush</label>
+                        <label class="radio-inline"><input type="radio" name="toilet_type" value="none"> None</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label for="toilet_cubicle_available">Number of Cubicle Toilet Available</label><input type="number" id="toilet_cubicle_available" name="toilet_cubicle_available" class="form-control"></div>
+                    <div class="form-group"><label for="toilet_minor_repair">Number in need of Minor Repair</label><input type="number" id="toilet_minor_repair" name="toilet_minor_repair" class="form-control"></div>
+                    <div class="form-group"><label for="toilet_major_repair">Number in need of Major Repair</label><input type="number" id="toilet_major_repair" name="toilet_major_repair" class="form-control"></div>
+                    <div class="form-group"><label for="toilet_renovation_required">Renovation Required</label><input type="number" id="toilet_renovation_required" name="toilet_renovation_required" class="form-control"></div>
+                    <div class="form-group"><label for="toilet_additional_required">Number of Additional Cubicle Toilet Required</label><input type="number" id="toilet_additional_required" name="toilet_additional_required" class="form-control"></div>
+                </div>
+                <div class="form-group">
+                    <label for="toilet_repair_description">Briefly, describe the type of repair needed</label>
+                    <textarea id="toilet_repair_description" name="toilet_repair_description" class="form-control" rows="2"></textarea>
+                </div>
+
+                <h4>4. SEPTIC TANK</h4>
+                <div class="form-group">
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="septic_tank" value="available"> Available</label>
+                        <label class="radio-inline"><input type="radio" name="septic_tank" value="not_available"> Not Available</label>
+                        <label class="radio-inline"><input type="radio" name="septic_tank" value="needs_evacuation"> Needs Evacuation</label>
                     </div>
                 </div>
 
+                <h4>5. SOURCE OF POTABLE WATER</h4>
                 <div class="form-group">
-                    <label>If inadequate, what is the shortfall? *</label>
-                    <input type="number" id="furniture_shortfall" name="furniture_shortfall" class="form-control" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label>Are there provisions for the following? *</label>
-                    <div id="provisions_checkboxes">
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="head_teacher_office"> Head Teacher's Office</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="assistant_head_teacher_office"> Assistant Head Teacher's Office</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="staff_room"> Staff Room</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="sick_bay"> Sick Bay</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="library"> Library</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="toilet_head_teacher"> Toilet for Head Teacher</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="toilet_teachers"> Toilet for Teachers</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="toilet_pupils"> Toilet for Pupils</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="store"> Store</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="playground"> Playground</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="sports_facilities"> Sports Facilities</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="computer_room"> Computer Room</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="science_lab"> Science Laboratory</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="provisions" value="home_economics_lab"> Home Economics Laboratory</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="water_source" value="none"> None</label>
+                        <label class="radio-inline"><input type="radio" name="water_source" value="well"> Well</label>
+                        <label class="radio-inline"><input type="radio" name="water_source" value="tap_water"> Tap Water</label>
+                        <label class="radio-inline"><input type="radio" name="water_source" value="borehole"> Borehole</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="water_recommendations">Recommendations</label>
+                        <textarea id="water_recommendations" name="water_recommendations" class="form-control" rows="2"></textarea>
                     </div>
                 </div>
 
+                <h4>6. SOURCE OF ELECTRICITY</h4>
                 <div class="form-group">
-                    <label>What is the major source of water supply to the school? *</label>
-                    <select id="water_supply" name="water_supply" class="form-control">
-                        <option value="">Select Source</option>
-                        <option value="pipe_borne">Pipe Borne</option>
-                        <option value="borehole">Borehole</option>
-                        <option value="well">Well</option>
-                        <option value="river_stream">River/Stream</option>
-                        <option value="none">None</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Is the water supply regular and adequate? *</label>
-                    <div class="yes-no-group">
-                        <label class="radio-inline"><input type="radio" name="water_supply_adequate" value="yes"> Yes</label>
-                        <label class="radio-inline"><input type="radio" name="water_supply_adequate" value="no"> No</label>
+                    <div>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="none"> None</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="phcn"> PHCN</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="generator"> Generator</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="solar"> Solar</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="others"> Others</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="phcn_disconnected_bills"> PHCN but Disconnected because of accumulated bills</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="phcn_disconnected_meter"> PHCN but Disconnected because of lack of meter</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="electricity_additional_info">Additional information e.g., amount involved, etc</label>
+                        <textarea id="electricity_additional_info" name="electricity_additional_info" class="form-control" rows="2"></textarea>
                     </div>
                 </div>
 
+                <h4>7. Is your School regularly waterlogged when it rained?</h4>
                 <div class="form-group">
-                    <label>What is the major source of power supply to the school? *</label>
-                    <select id="power_supply" name="power_supply" class="form-control">
-                        <option value="">Select Source</option>
-                        <option value="national_grid">National Grid</option>
-                        <option value="solar">Solar</option>
-                        <option value="generator">Generator</option>
-                        <option value="none">None</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Is the power supply regular? *</label>
-                    <div class="yes-no-group">
-                        <label class="radio-inline"><input type="radio" name="power_supply_regular" value="yes"> Yes</label>
-                        <label class="radio-inline"><input type="radio" name="power_supply_regular" value="no"> No</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="waterlogged" value="yes"> Yes</label>
+                        <label class="radio-inline"><input type="radio" name="waterlogged" value="no"> No</label>
                     </div>
                 </div>
 
+                <p>Thank you so much for your time and patience.</p>
             </div>
 
             <div class="form-row full">
