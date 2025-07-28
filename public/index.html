@@ -640,19 +640,21 @@ select.form-control option {
             
             <!-- TODO: Add SILNAT form here -->
 <form id="silnatForm" class="audit-form" onsubmit="submitSilnat(event)">
-            <div class="form-row full">
-                <div class="form-group">
-                    <label for="silnat_a_institution_type">Institution Type *</label>
-                    <select id="silnat_a_institution_type" name="silnat_a_institution_type" class="form-control" required onchange="handleSilnatInstitutionTypeChange()">
-                        <option value="">Select Institution Type</option>
-                        <option value="regular_school">Regular School</option>
-                        <option value="special_school">Special School</option>
-                        <option value="home_economics_centre">Home Economics Centre</option>
-                        <option value="mini_resource_centre">Mini Resource Centre</option>
-                        <option value="lgea_secretariat">LGEA Secretariat</option>
-                    </select>
-                </div>
+    <h4 style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionAContent', 'sectionAHeader')">SECTION A: BIO-DATA ▶️</h4>
+    <div id="sectionAContent" style="display: none;">
+        <div class="form-row full">
+            <div class="form-group">
+                <label for="silnat_a_institution_type">Institution Type *</label>
+                <select id="silnat_a_institution_type" name="silnat_a_institution_type" class="form-control" required onchange="handleSilnatInstitutionTypeChange()">
+                    <option value="">Select Institution Type</option>
+                    <option value="regular_school">Regular School</option>
+                    <option value="special_school">Special School</option>
+                    <option value="home_economics_centre">Home Economics Centre</option>
+                    <option value="mini_resource_centre">Mini Resource Centre</option>
+                    <option value="lgea_secretariat">LGEA Secretariat</option>
+                </select>
             </div>
+        </div>
             <!-- Section A: Bio Data - Conditional Part -->
             <div id="silnat_a_ht_bio_data_wrapper" class="conditional-group for-regular_school for-special_school for-home_economics_centre for-mini_resource_centre" style="display:none;">
                 <h4>Head Teacher Bio Data</h4>
@@ -926,7 +928,7 @@ select.form-control option {
             </div>
             </div>
             <!-- End of Section B placeholder -->
-
+    </div>
             <h4 id="sectionCHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionCContent', 'sectionCHeader')">Section C: Needs Assessment ▶️</h4>
             <div id="sectionCContent" style="display: none;">
                 <p>Subject Area Difficulties</p>
