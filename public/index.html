@@ -618,9 +618,9 @@ select.form-control option {
                     <h2>Learner Voices/Opinions<br>(VOICES)</h2>
                     <p>For Learners</p>
                 </div>
-                <div class="survey-card" onclick="showSurvey('silnat_1.4')">
+                <div class="survey-card" onclick="showSurvey('silnat_new')">
                     <h2>SCHOOL INFRASTRUCTURE AND LEADERSHIP NEEDS ASSESSMENT TOOL (SILNAT)</h2>
-                    <p>SUBEB/PIMU/NEEDS-ASSESSMENT/INSTRUMENT/1.4</p>
+                    <p>SUBEB/PIMU/NEEDS-ASSESSMENT/INSTRUMENT/1.3</p>
                 </div>
             </div>
         </div>
@@ -632,7 +632,8 @@ select.form-control option {
                 <h2 style="margin-left: 15px; flex-grow: 1; margin-bottom: 0;">School Infrastructure & Leadership Needs Assessment Tool (SILNAT)</h2>
             </div>
             <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
-            <div class="intro-card" style="background:rgb(243, 242, 240);border-left:6px solid var(--lagos-yellow);border-radius:12px;padding:22px 20px 18px 20px;margin-bottom:28px;color:var(--lagos-navy);font-size:1.08rem;line-height:1.7;">
+            <!-- Place this block right after the <h2> in #silnatSection, before the <form id="silnatForm"...> -->
+<div class="intro-card" style="background:rgb(243, 242, 240);border-left:6px solid var(--lagos-yellow);border-radius:12px;padding:22px 20px 18px 20px;margin-bottom:28px;color:var(--lagos-navy);font-size:1.08rem;line-height:1.7;">
     <strong>Dear Respondent,</strong><br><br>
     This instrument is designed to elicit responses that are capable of helping the Board of LASUBEB and PIMU to identify areas of Education Managers’ needs with the intention of helping them overcome difficulties in the course of discharging their duties. The instrument is not meant for any other purpose than to enhance productivity on the part of Education managers and for improved Education service delivery State-wide. Your support therefore is solicited to ensure successful completion of this instrument. We would appreciate your sincere responses.
     <br><br>
@@ -641,7 +642,8 @@ select.form-control option {
     <u>Instruction:</u> The instrument has Four Sections. Section A requires Bio Data; Section B requires School/Institution Data; Section C contains items on Education Managers’ Needs Assessment while Section D is on School Infrastructure. Kindly fill in the statements that are applicable to your school.
 </div>
             
-            <form id="silnatForm" class="audit-form" onsubmit="submitSilnat(event)">
+            <!-- TODO: Add SILNAT form here -->
+<form id="silnatForm" class="audit-form" onsubmit="submitSilnat(event)">
     <h4 id="sectionAHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionAContent', 'sectionAHeader')">SECTION A: BIO-DATA ▶️</h4>
     <div id="sectionAContent" style="display: none;">
         <div class="form-row full">
@@ -1125,6 +1127,76 @@ select.form-control option {
                 <br><br>
                 <u>Instruction:</u> The instrument has Three sections; Section A, B and C. Section A requires Demographic Information and Bio Data of Teacher; Section B requires Teachers’ Needs Assessment; while Section C requires Teachers’ Subject Area Difficulties. Kindly fill in the statements that are applicable to you.
             </div>
+        <div id="silnat_newSection" class="section hidden">
+            <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                <img src="subeb.jpg" alt="LASUBEB Logo" class="survey-header-logo">
+                <h2 style="margin-left: 15px; flex-grow: 1; margin-bottom: 0;">SCHOOL INFRASTRUCTURE AND LEADERSHIP NEEDS ASSESSMENT TOOL (SILNAT)</h2>
+            </div>
+            <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
+            <div class="intro-card" style="background:rgb(243, 242, 240);border-left:6px solid var(--lagos-yellow);border-radius:12px;padding:22px 20px 18px 20px;margin-bottom:28px;color:var(--lagos-navy);font-size:1.08rem;line-height:1.7;">
+                <strong>Dear Respondent,</strong><br><br>
+                This instrument is designed to elicit responses that are capable of helping the Board of LASUBEB and PIMU to identify areas of Education Managers’ needs with the intention of helping them overcome difficulties in the course of discharging their duties. The instrument is not meant for any other purpose than to enhance productivity on the part of Education managers and for improved Education service delivery State-wide. Your support therefore is solicited to ensure successful completion of this instrument. We would appreciate your sincere responses.
+                <br><br>
+                <strong>Thank you.</strong>
+                <br><br>
+                <u>Instruction:</u> The instrument has Four Sections. Section A requires Bio Data; Section B requires Institution Data; Section C contains items on Education Managers’ Needs Assessment while Section D is on School Infrastructure. Kindly fill in the statements that are applicable to your school.
+            </div>
+
+            <h4 id="sectionAHeader_new" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionAContent_new', 'sectionAHeader_new')">Section A: Bio Data ▶️</h4>
+            <div id="sectionAContent_new" style="display: none;">
+                <div class="form-group">
+                    <label>Institution Type:</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="institution_type" value="lgea_secretariat"> LGEA Secretariat</label>
+                        <label class="radio-inline"><input type="radio" name="institution_type" value="regular_school"> Regular School</label>
+                        <label class="radio-inline"><input type="radio" name="institution_type" value="special_school"> Special School</label>
+                        <label class="radio-inline"><input type="radio" name="institution_type" value="home_economics_centre"> Home Economics Centre</label>
+                        <label class="radio-inline"><input type="radio" name="institution_type" value="mini_resource_centre"> Mini Resource Centre</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Gender:</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="gender" value="male"> Male</label>
+                        <label class="radio-inline"><input type="radio" name="gender" value="female"> Female</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Marital Status:</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="marital_status" value="single"> Single</label>
+                        <label class="radio-inline"><input type="radio" name="marital_status" value="married"> Married</label>
+                        <label class="radio-inline"><input type="radio" name="marital_status" value="divorced"> Divorced</label>
+                        <label class="radio-inline"><input type="radio" name="marital_status" value="separated"> Separated</label>
+                        <label class="radio-inline"><input type="radio" name="marital_status" value="widow_widower"> Widow/Widower</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Highest Qualification:</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="grade_ii"> Grade II</label>
+                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="nce"> NCE</label>
+                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="b_ed"> B.Ed</label>
+                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="ba_ed"> BA. Ed</label>
+                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="bsc_ed"> B.Sc.Ed</label>
+                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="hnd"> HND</label>
+                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="m_ed"> M.Ed</label>
+                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="others"> Others</label>
+                        <input type="text" name="highest_qualification_other" placeholder="Specify other" style="display: none;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Years of Leadership Experience:</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="leadership_experience" value="5_below"> 5 & below</label>
+                        <label class="radio-inline"><input type="radio" name="leadership_experience" value="6_10"> 6-10</label>
+                        <label class="radio-inline"><input type="radio" name="leadership_experience" value="11_15"> 11-15</label>
+                        <label class="radio-inline"><input type="radio" name="leadership_experience" value="16_20"> 16-20</label>
+                        <label class="radio-inline"><input type="radio" name="leadership_experience" value="21_above"> 21 & above</label>
+                    </div>
+                </div>
+            </div>
+        </div>
             <h3 style="cursor: pointer;" onclick="toggleSection('tcmatsSectionA', 'tcmatsSectionAHeader')">SECTION A: Demographic information of School and Bio Data of Teacher <span id="tcmatsSectionAHeader">▶️</span></h3>
             <div id="tcmatsSectionA" style="display: none;">
             <div style="color:#888;margin-top:40px;"><form id="tcmatsForm" class="audit-form" onsubmit="submitTcmats(event)">
@@ -2369,24 +2441,10 @@ select.form-control option {
     // Navigation logic for landing/surveys
     function showSurvey(survey) {
         document.getElementById('landingPage').classList.add('hidden');
-        ['silnat', 'tcmats', 'lori', 'voices', 'silnat_1.4'].forEach(s => {
-            const section = document.getElementById(s + 'Section');
-            if (section) {
-                section.classList.add('hidden');
-            }
+        ['silnat','tcmats','lori','voices', 'silnat_new'].forEach(s => {
+            document.getElementById(s+'Section').classList.add('hidden');
         });
-
-        if (survey === 'silnat_1.4') {
-            const sectionToShow = document.getElementById('silnatSection');
-            if (sectionToShow) {
-                sectionToShow.classList.remove('hidden');
-            }
-        } else {
-            const sectionToShow = document.getElementById(survey + 'Section');
-            if (sectionToShow) {
-                sectionToShow.classList.remove('hidden');
-            }
-        }
+        document.getElementById(survey+'Section').classList.remove('hidden');
         // Hide main app unless you want to show it for a survey
         document.getElementById('mainApp').classList.add('hidden');
     }
