@@ -3445,8 +3445,11 @@ select.form-control option {
     }
     function backToLanding() {
         document.getElementById('landingPage').classList.remove('hidden');
-        ['silnat','tcmats','lori','voices'].forEach(s => {
-            document.getElementById(s+'Section').classList.add('hidden');
+        ['silnat','tcmats','lori','voices', 'silat_1.2', 'silat_1.3', 'silat_1.4'].forEach(s => {
+            const section = document.getElementById(s + 'Section');
+            if (section) {
+                section.classList.add('hidden');
+            }
         });
         document.getElementById('mainApp').classList.add('hidden');
     }
