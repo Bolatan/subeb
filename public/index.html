@@ -618,13 +618,13 @@ select.form-control option {
                     <h2>Learner Voices/Opinions<br>(VOICES)</h2>
                     <p>For Learners</p>
                 </div>
-                <div class="survey-card" onclick="showSurvey('silnat_1.3')">
+                <div class="survey-card" onclick="toggleSection('silat_1.3Section', 'sectionBHeader_1.3')">
                     <h2>silnat 1.3</h2>
                 </div>
-                <div class="survey-card" onclick="showSurvey('silat_1.2')">
+                <div class="survey-card" onclick="toggleSection('silat_1.2Section', 'sectionBHeader_1.2')">
                     <h2>silat 1.2</h2>
                 </div>
-                <div class="survey-card" onclick="showSurvey('silat_1.4')">
+                <div class="survey-card" onclick="toggleSection('silat_1.4Section', 'sectionBHeader_1.4')">
                     <h2>silat 1.4</h2>
                 </div>
             </div>
@@ -2835,20 +2835,15 @@ select.form-control option {
     // Navigation logic for landing/surveys
     function showSurvey(survey) {
         document.getElementById('landingPage').classList.add('hidden');
-        ['silnat','tcmats','lori','voices', 'silnat_new', 'silat_1.2', 'silat_1.3', 'silat_1.4'].forEach(s => {
+        ['silnat','tcmats','lori','voices', 'silnat_new'].forEach(s => {
             const section = document.getElementById(s + 'Section');
             if (section) {
                 section.classList.add('hidden');
             }
         });
 
-        // Special handling for silnat_1.3 -> silat_1.3Section
-        let sectionToShow = survey;
-        if (survey === 'silnat_1.3') {
-            sectionToShow = 'silat_1.3';
-        }
-
-        const targetSection = document.getElementById(sectionToShow + 'Section');
+        // Show the main section for the survey
+        const targetSection = document.getElementById(survey + 'Section');
         if (targetSection) {
             targetSection.classList.remove('hidden');
         }
