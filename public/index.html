@@ -1567,6 +1567,112 @@ select.form-control option {
     </div>
     <h4 id="loriSectionCHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('loriSectionCContent', 'loriSectionCHeader')">Section C ▶️</h4>
     <div id="loriSectionCContent" style="display: none;">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>ITEM</th>
+                    <th>YES</th>
+                    <th>NO</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>i</td>
+                    <td>The classroom is clean and tidy</td>
+                    <td><input type="radio" name="lori_c_1" value="yes"></td>
+                    <td><input type="radio" name="lori_c_1" value="no"></td>
+                </tr>
+                <tr>
+                    <td>ii</td>
+                    <td>The classroom is well-decorated with charts and teaching aids</td>
+                    <td><input type="radio" name="lori_c_2" value="yes"></td>
+                    <td><input type="radio" name="lori_c_2" value="no"></td>
+                </tr>
+                <tr>
+                    <td>iii</td>
+                    <td>The classroom has good cross ventilation</td>
+                    <td><input type="radio" name="lori_c_3" value="yes"></td>
+                    <td><input type="radio" name="lori_c_3" value="no"></td>
+                </tr>
+                <tr>
+                    <td>iv</td>
+                    <td>The sitting arrangement is in order</td>
+                    <td><input type="radio" name="lori_c_4" value="yes"></td>
+                    <td><input type="radio" name="lori_c_4" value="no"></td>
+                </tr>
+                <tr>
+                    <td>v</td>
+                    <td>The chalkboard/whiteboard is in good condition</td>
+                    <td><input type="radio" name="lori_c_5" value="yes"></td>
+                    <td><input type="radio" name="lori_c_5" value="no"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="lori_c_observer_summary">Observer's Summary Comment</label>
+            <textarea id="lori_c_observer_summary" name="lori_c_observer_summary" class="form-control" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="lori_c_observer_name">Name of Observer</label>
+            <input type="text" id="lori_c_observer_name" name="lori_c_observer_name" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="lori_c_went_well_1">8. What two things went very well? (i)</label>
+            <input type="text" id="lori_c_went_well_1" name="lori_c_went_well_1" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="lori_c_went_well_2">(ii)</label>
+            <input type="text" id="lori_c_went_well_2" name="lori_c_went_well_2" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="lori_c_could_be_different_1">9. What two things could be done differently next time? (i)</label>
+            <input type="text" id="lori_c_could_be_different_1" name="lori_c_could_be_different_1" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="lori_c_could_be_different_2">(ii)</label>
+            <input type="text" id="lori_c_could_be_different_2" name="lori_c_could_be_different_2" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="lori_c_support_needed">10. What support is needed going forward and on which area</label>
+            <textarea id="lori_c_support_needed" name="lori_c_support_needed" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="lori_c_teacher_name">Name of Teacher</label>
+                <input type="text" id="lori_c_teacher_name" name="lori_c_teacher_name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="lori_c_teacher_signature">Signature</label>
+                <input type="text" id="lori_c_teacher_signature" name="lori_c_teacher_signature" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="lori_c_teacher_date">Date</label>
+                <input type="date" id="lori_c_teacher_date" name="lori_c_teacher_date" class="form-control">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="lori_c_observer_name_2">Name of Observer</label>
+                <input type="text" id="lori_c_observer_name_2" name="lori_c_observer_name_2" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="lori_c_observer_designation">Designation</label>
+                <input type="text" id="lori_c_observer_designation" name="lori_c_observer_designation" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="lori_c_observer_phone">Phone Number</label>
+                <input type="tel" id="lori_c_observer_phone" name="lori_c_observer_phone" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="lori_c_observer_signature">Signature</label>
+                <input type="text" id="lori_c_observer_signature" name="lori_c_observer_signature" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="lori_c_observer_date">Date</label>
+                <input type="date" id="lori_c_observer_date" name="lori_c_observer_date" class="form-control">
+            </div>
+        </div>
     </div>
     <button type="submit" class="btn">Submit LORI Survey</button>
     <div id="lori_feedback" style="margin-top:15px;font-size:15px;"></div>
