@@ -618,9 +618,8 @@ select.form-control option {
                     <h2>Learner Voices/Opinions<br>(VOICES)</h2>
                     <p>For Learners</p>
                 </div>
-                <div class="survey-card" onclick="showSurvey('silnat_new')">
-                    <h2>SCHOOL INFRASTRUCTURE AND LEADERSHIP NEEDS ASSESSMENT TOOL (SILNAT)</h2>
-                    <p>SUBEB/PIMU/NEEDS-ASSESSMENT/INSTRUMENT/1.3</p>
+                <div class="survey-card" onclick="showSurvey('silnat2')">
+                    <h2>SILNAT 1.2</h2>
                 </div>
             </div>
         </div>
@@ -1112,25 +1111,10 @@ select.form-control option {
             <button type="submit" class="btn">Submit SILNAT Survey</button>
             <div id="silnat_feedback" style="margin-top:15px;font-size:15px;"></div>
         </form>        </div>
-        <div id="tcmatsSection" class="section hidden">
+        <div id="silnat2Section" class="section hidden">
             <div style="display: flex; align-items: center; margin-bottom: 20px;">
                 <img src="subeb.jpg" alt="LASUBEB Logo" class="survey-header-logo">
-                <h2 style="margin-left: 15px; flex-grow: 1; margin-bottom: 0;">Teachers Classroom Management and Teaching Survey (TCMATS)</h2>
-            </div>
-            <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
-            <!-- TODO: Add TCMATS form here -->
-            <div class="intro-card" style="background:rgb(243, 242, 240);border-left:6px solid var(--lagos-yellow);border-radius:12px;padding:22px 20px 18px 20px;margin-bottom:28px;color:var(--lagos-navy);font-size:1.08rem;line-height:1.7;">
-                <strong>Dear Respondent,</strong><br><br>
-                This instrument is designed to elicit responses that are capable of helping the Board of LASUBEB and PIMU to identify areas of Teachers’ needs with the intention of helping them overcome difficulties in the course of discharging their duties. The instrument is not meant for any other purpose than to enhance productivity on the part of Teachers and for improved education service delivery State-wide. Your support therefore is solicited to ensure successful completion of this instrument. We would appreciate your sincere responses.
-                <br><br>
-                <strong>Thank you.</strong>
-                <br><br>
-                <u>Instruction:</u> The instrument has Three sections; Section A, B and C. Section A requires Demographic Information and Bio Data of Teacher; Section B requires Teachers’ Needs Assessment; while Section C requires Teachers’ Subject Area Difficulties. Kindly fill in the statements that are applicable to you.
-            </div>
-        <div id="silnat_newSection" class="section hidden">
-            <div style="display: flex; align-items: center; margin-bottom: 20px;">
-                <img src="subeb.jpg" alt="LASUBEB Logo" class="survey-header-logo">
-                <h2 style="margin-left: 15px; flex-grow: 1; margin-bottom: 0;">SCHOOL INFRASTRUCTURE AND LEADERSHIP NEEDS ASSESSMENT TOOL (SILNAT)</h2>
+                <h2 style="margin-left: 15px; flex-grow: 1; margin-bottom: 0;">SILNAT 1.2</h2>
             </div>
             <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
             <div class="intro-card" style="background:rgb(243, 242, 240);border-left:6px solid var(--lagos-yellow);border-radius:12px;padding:22px 20px 18px 20px;margin-bottom:28px;color:var(--lagos-navy);font-size:1.08rem;line-height:1.7;">
@@ -1138,12 +1122,9 @@ select.form-control option {
                 This instrument is designed to elicit responses that are capable of helping the Board of LASUBEB and PIMU to identify areas of Education Managers’ needs with the intention of helping them overcome difficulties in the course of discharging their duties. The instrument is not meant for any other purpose than to enhance productivity on the part of Education managers and for improved Education service delivery State-wide. Your support therefore is solicited to ensure successful completion of this instrument. We would appreciate your sincere responses.
                 <br><br>
                 <strong>Thank you.</strong>
-                <br><br>
-                <u>Instruction:</u> The instrument has Four Sections. Section A requires Bio Data; Section B requires Institution Data; Section C contains items on Education Managers’ Needs Assessment while Section D is on School Infrastructure. Kindly fill in the statements that are applicable to your school.
             </div>
-
-            <h4 id="sectionAHeader_new" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionAContent_new', 'sectionAHeader_new')">Section A: Bio Data ▶️</h4>
-            <div id="sectionAContent_new" style="display: none;">
+            <h4 id="sectionAHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionAContent', 'sectionAHeader')">SECTION A: BIO-DATA ▶️</h4>
+            <div id="sectionAContent" style="display: none;">
                 <div class="form-group">
                     <label>Institution Type:</label>
                     <div>
@@ -1174,29 +1155,345 @@ select.form-control option {
                 <div class="form-group">
                     <label>Highest Qualification:</label>
                     <div>
-                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="grade_ii"> Grade II</label>
-                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="nce"> NCE</label>
-                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="b_ed"> B.Ed</label>
-                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="ba_ed"> BA. Ed</label>
-                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="bsc_ed"> B.Sc.Ed</label>
-                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="hnd"> HND</label>
-                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="m_ed"> M.Ed</label>
-                        <label class="radio-inline"><input type="radio" name="highest_qualification" value="others"> Others</label>
-                        <input type="text" name="highest_qualification_other" placeholder="Specify other" style="display: none;">
+                        <label class="radio-inline"><input type="radio" name="qualification" value="grade_ii"> Grade II</label>
+                        <label class="radio-inline"><input type="radio" name="qualification" value="nce"> NCE</label>
+                        <label class="radio-inline"><input type="radio" name="qualification" value="b_ed"> B.Ed</label>
+                        <label class="radio-inline"><input type="radio" name="qualification" value="ba_ed"> BA. Ed</label>
+                        <label class="radio-inline"><input type="radio" name="qualification" value="bsc_ed"> B.Sc.Ed</label>
+                        <label class="radio-inline"><input type="radio" name="qualification" value="hnd"> HND</label>
+                        <label class="radio-inline"><input type="radio" name="qualification" value="m_ed"> M.Ed</label>
+                        <label class="radio-inline"><input type="radio" name="qualification" value="others"> Others</label>
+                        <input type="text" name="qualification_other" class="form-control" placeholder="Specify other">
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Years of Leadership Experience:</label>
                     <div>
-                        <label class="radio-inline"><input type="radio" name="leadership_experience" value="5_below"> 5 & below</label>
-                        <label class="radio-inline"><input type="radio" name="leadership_experience" value="6_10"> 6-10</label>
-                        <label class="radio-inline"><input type="radio" name="leadership_experience" value="11_15"> 11-15</label>
-                        <label class="radio-inline"><input type="radio" name="leadership_experience" value="16_20"> 16-20</label>
-                        <label class="radio-inline"><input type="radio" name="leadership_experience" value="21_above"> 21 & above</label>
+                        <label class="radio-inline"><input type="radio" name="experience" value="5_below"> 5 & below</label>
+                        <label class="radio-inline"><input type="radio" name="experience" value="6_10"> 6-10</label>
+                        <label class="radio-inline"><input type="radio" name="experience" value="11_15"> 11-15</label>
+                        <label class="radio-inline"><input type="radio" name="experience" value="16_20"> 16-20</label>
+                        <label class="radio-inline"><input type="radio" name="experience" value="21_above"> 21 & above</label>
                     </div>
                 </div>
             </div>
+            <h4 id="sectionBHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionBContent', 'sectionBHeader')">Section B: School/Institution Data ▶️</h4>
+            <div id="sectionBContent" style="display: none;">
+                <div class="form-group">
+                    <label for="school_name">Name of School/Institution:</label>
+                    <input type="text" id="school_name" name="school_name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Location:</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="location" value="urban"> Urban</label>
+                        <label class="radio-inline"><input type="radio" name="location" value="rural"> Rural</label>
+                        <label class="radio-inline"><input type="radio" name="location" value="riverine"> Riverine</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lgea">LGEA:</label>
+                    <input type="text" id="lgea" name="lgea" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="vocation">Types of Vocation Taught at the centre (Please specify):</label>
+                    <input type="text" id="vocation" name="vocation" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Number of Instructors:</label>
+                    <div class="form-row">
+                        <input type="number" name="instructors_male" class="form-control" placeholder="Male">
+                        <input type="number" name="instructors_female" class="form-control" placeholder="Female">
+                        <input type="number" name="instructors_total" class="form-control" placeholder="Total" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Number of Professionally Qualified Vocational Teachers:</label>
+                    <div class="form-row">
+                        <input type="number" name="teachers_male" class="form-control" placeholder="Male">
+                        <input type="number" name="teachers_female" class="form-control" placeholder="Female">
+                        <input type="number" name="teachers_total" class="form-control" placeholder="Total" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Number of Non-Teaching Staff in the School:</label>
+                    <div class="form-row">
+                        <input type="number" name="non_teaching_male" class="form-control" placeholder="Male">
+                        <input type="number" name="non_teaching_female" class="form-control" placeholder="Female">
+                        <input type="number" name="non_teaching_total" class="form-control" placeholder="Total" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="schools_supported">Number of Schools your Centre is supporting:</label>
+                    <input type="number" id="schools_supported" name="schools_supported" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="distance">Average Distance of farthest School among the Schools under your support to the Centre in Kilometre:</label>
+                    <input type="number" id="distance" name="distance" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Average Number of Learners Attending training at the Centre:</label>
+                    <div class="form-row">
+                        <input type="number" name="learners_male" class="form-control" placeholder="Male">
+                        <input type="number" name="learners_female" class="form-control" placeholder="Female">
+                        <input type="number" name="learners_total" class="form-control" placeholder="Total" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ratio">Instructor/Pupils Ratio:</label>
+                    <input type="text" id="ratio" name="ratio" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="additional_staff">Number of Additional Instructors/Staff Required:</label>
+                    <input type="number" id="additional_staff" name="additional_staff" class="form-control">
+                </div>
+            </div>
+            <h4 id="sectionCHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionCContent', 'sectionCHeader')">Section C: Needs Assessment ▶️</h4>
+            <div id="sectionCContent" style="display: none;">
+                <h5>Control and Discipline</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Getting teachers and learners to obey rules and regulations</td><td><input type="radio" name="discipline_a" value="yes"></td><td><input type="radio" name="discipline_a" value="no"></td></tr>
+                        <tr><td>b.</td><td>Handling of disciplinary cases on time and appropriately</td><td><input type="radio" name="discipline_b" value="yes"></td><td><input type="radio" name="discipline_b" value="no"></td></tr>
+                        <tr><td>c.</td><td>Effecting discipline of misconduct in the school</td><td><input type="radio" name="discipline_c" value="yes"></td><td><input type="radio" name="discipline_c" value="no"></td></tr>
+                        <tr><td>d.</td><td>Handling cases of lateness, truancy, etc. in the school</td><td><input type="radio" name="discipline_d" value="yes"></td><td><input type="radio" name="discipline_d" value="no"></td></tr>
+                        <tr><td>e.</td><td>Handling cases of professional misconduct by teachers in the school</td><td><input type="radio" name="discipline_e" value="yes"></td><td><input type="radio" name="discipline_e" value="no"></td></tr>
+                    </tbody>
+                </table>
+                <h5>Cooperation and Team Work</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Assigning administrative responsibilities in the school to teachers</td><td><input type="radio" name="cooperation_a" value="yes"></td><td><input type="radio" name="cooperation_a" value="no"></td></tr>
+                        <tr><td>b.</td><td>Delegating of duties to subordinates</td><td><input type="radio" name="cooperation_b" value="yes"></td><td><input type="radio" name="cooperation_b" value="no"></td></tr>
+                        <tr><td>c.</td><td>Getting teachers to work cooperatively to carry out assigned duties</td><td><input type="radio" name="cooperation_c" value="yes"></td><td><input type="radio" name="cooperation_c" value="no"></td></tr>
+                        <tr><td>d.</td><td>Encouraging team work in the school</td><td><input type="radio" name="cooperation_d" value="yes"></td><td><input type="radio" name="cooperation_d" value="no"></td></tr>
+                    </tbody>
+                </table>
+                <h5>Communication in the School</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Establishing effective channel of communication in the school</td><td><input type="radio" name="communication_a" value="yes"></td><td><input type="radio" name="communication_a" value="no"></td></tr>
+                        <tr><td>b.</td><td>Guaranteeing freedom of expression in the school</td><td><input type="radio" name="communication_b" value="yes"></td><td><input type="radio" name="communication_b" value="no"></td></tr>
+                        <tr><td>c.</td><td>Encouraging good communication skills among staff and learners</td><td><input type="radio" name="communication_c" value="yes"></td><td><input type="radio" name="communication_c" value="no"></td></tr>
+                    </tbody>
+                </table>
+                <h5>School and Community Relations</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Getting the community to be committed to the school activities</td><td><input type="radio" name="community_a" value="yes"></td><td><input type="radio" name="community_a" value="no"></td></tr>
+                        <tr><td>b.</td><td>Getting teachers to relate well with the school community</td><td><input type="radio" name="community_b" value="yes"></td><td><input type="radio" name="community_b" value="no"></td></tr>
+                        <tr><td>c.</td><td>Institutionalizing SBMC in the school</td><td><input type="radio" name="community_c" value="yes"></td><td><input type="radio" name="community_c" value="no"></td></tr>
+                        <tr><td>d.</td><td>Getting SBMC actively involved in the management and provision of facilities in the school</td><td><input type="radio" name="community_d" value="yes"></td><td><input type="radio" name="community_d" value="no"></td></tr>
+                        <tr><td>e.</td><td>Involving former pupils in the school activities</td><td><input type="radio" name="community_e" value="yes"></td><td><input type="radio" name="community_e" value="no"></td></tr>
+                    </tbody>
+                </table>
+                <h5>Supervision and Monitoring</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Assessing teachers’ lesson plan before lesson delivery</td><td><input type="radio" name="supervision_a" value="yes"></td><td><input type="radio" name="supervision_a" value="no"></td></tr>
+                        <tr><td>b.</td><td>Getting teachers supervised during lesson presentations</td><td><input type="radio" name="supervision_b" value="yes"></td><td><input type="radio" name="supervision_b" value="no"></td></tr>
+                        <tr><td>c.</td><td>Monitoring tests and assignments in the school</td><td><input type="radio" name="supervision_c" value="yes"></td><td><input type="radio" name="supervision_c" value="no"></td></tr>
+                        <tr><td>d.</td><td>Monitoring of class attendances of teachers and learners</td><td><input type="radio" name="supervision_d" value="yes"></td><td><input type="radio" name="supervision_d" value="no"></td></tr>
+                        <tr><td>e.</td><td>Supervision of co-curricular activities in the school</td><td><input type="radio" name="supervision_e" value="yes"></td><td><input type="radio" name="supervision_e" value="no"></td></tr>
+                    </tbody>
+                </table>
+                <h5>School Records</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Maintaining the School Log Book</td><td><input type="radio" name="records_a" value="yes"></td><td><input type="radio" name="records_a" value="no"></td></tr>
+                        <tr><td>b.</td><td>Maintenance of daily classroom register by teachers</td><td><input type="radio" name="records_b" value="yes"></td><td><input type="radio" name="records_b" value="no"></td></tr>
+                        <tr><td>c.</td><td>Maintaining Weekly Diaries</td><td><input type="radio" name="records_c" value="yes"></td><td><input type="radio" name="records_c" value="no"></td></tr>
+                        <tr><td>d.</td><td>Maintenance of Teachers’ Movement Book</td><td><input type="radio" name="records_d" value="yes"></td><td><input type="radio" name="records_d" value="no"></td></tr>
+                        <tr><td>e.</td><td>Keeping Teachers’ Time-book</td><td><input type="radio" name="records_e" value="yes"></td><td><input type="radio" name="records_e" value="no"></td></tr>
+                        <tr><td>f.</td><td>Keeping of Admission Register</td><td><input type="radio" name="records_f" value="yes"></td><td><input type="radio" name="records_f" value="no"></td></tr>
+                        <tr><td>g.</td><td>Keeping of Minutes of Staff meetings</td><td><input type="radio" name="records_g" value="yes"></td><td><input type="radio" name="records_g" value="no"></td></tr>
+                        <tr><td>h.</td><td>Keeping of Examination Records</td><td><input type="radio" name="records_h" value="yes"></td><td><input type="radio" name="records_h" value="no"></td></tr>
+                        <tr><td>i.</td><td>Keeping of Visitors Book</td><td><input type="radio" name="records_i" value="yes"></td><td><input type="radio" name="records_i" value="no"></td></tr>
+                    </tbody>
+                </table>
+                <h5>Health and Hygiene</h5>
+                <table class="data-table">
+                    <thead><tr><th>S/N</th><th>ITEM</th><th>Yes</th><th>No</th></tr></thead>
+                    <tbody>
+                        <tr><td>a.</td><td>Keeping the school compound clean</td><td><input type="radio" name="health_a" value="yes"></td><td><input type="radio" name="health_a" value="no"></td></tr>
+                        <tr><td>b.</td><td>Keeping and stocking of First Aid box</td><td><input type="radio" name="health_b" value="yes"></td><td><input type="radio" name="health_b" value="no"></td></tr>
+                        <tr><td>c.</td><td>Getting the pupils obey hygienic rules</td><td><input type="radio" name="health_c" value="yes"></td><td><input type="radio" name="health_c" value="no"></td></tr>
+                        <tr><td>d.</td><td>Getting medical services for the pupils</td><td><input type="radio" name="health_d" value="yes"></td><td><input type="radio" name="health_d" value="no"></td></tr>
+                        <tr><td>E</td><td>Hand Washing Station</td><td><input type="radio" name="health_e" value="yes"></td><td><input type="radio" name="health_e" value="no"></td></tr>
+                        <tr><td>F</td><td>Waste Disposal Bin</td><td><input type="radio" name="health_f" value="yes"></td><td><input type="radio" name="health_f" value="no"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <h4 id="sectionDHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionDContent', 'sectionDHeader')">Section D: School Infrastructure ▶️</h4>
+            <div id="sectionDContent" style="display: none;">
+                <h5>INFRASTRUCTURE</h5>
+                <div class="form-group">
+                    <label>Signboard:</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="signboard" value="available_good"> Available and in good condition</label>
+                        <label class="radio-inline"><input type="radio" name="signboard" value="available_not_good"> Available but not in good condition</label>
+                        <label class="radio-inline"><input type="radio" name="signboard" value="not_available"> Not Available</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Teachers’ Furniture:</label>
+                    <div class="form-row">
+                        <input type="number" name="teachers_furniture_available" class="form-control" placeholder="Number Available">
+                        <input type="number" name="teachers_furniture_good" class="form-control" placeholder="Number in Good Condition">
+                        <input type="number" name="teachers_furniture_required" class="form-control" placeholder="Additional Number Required">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Learners Furniture:</label>
+                    <div class="form-row">
+                        <input type="number" name="learners_furniture_available" class="form-control" placeholder="Number Available">
+                        <input type="number" name="learners_furniture_good" class="form-control" placeholder="Number in Good Condition">
+                        <input type="number" name="learners_furniture_required" class="form-control" placeholder="Additional Number Required">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Classroom Condition:</label>
+                    <div class="form-row">
+                        <input type="number" name="classroom_available" class="form-control" placeholder="Number Available">
+                        <input type="number" name="classroom_good" class="form-control" placeholder="Number in Good Condition">
+                        <input type="number" name="classroom_minor_repair" class="form-control" placeholder="Number in need of Minor Repair">
+                        <input type="number" name="classroom_major_repair" class="form-control" placeholder="Number in need of Major Repair/Renovation">
+                        <input type="number" name="classroom_required" class="form-control" placeholder="Number of Additional Classroom Required">
+                    </div>
+                    <textarea name="classroom_repair_description" class="form-control" placeholder="Briefly, describe the type of repair needed"></textarea>
+                </div>
+                <h5>FENCING</h5>
+                <div class="form-group">
+                    <label>Is the school located within a school Complex?</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="shared_facility" value="yes"> Yes</label>
+                        <label class="radio-inline"><input type="radio" name="shared_facility" value="no"> No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="shared_facility_schools">If Yes, Kindly list other Schools within the Complex</label>
+                    <textarea id="shared_facility_schools" name="shared_facility_schools" class="form-control" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Does the school have perimeter fence:</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="perimeter_fence" value="yes"> Yes</label>
+                        <label class="radio-inline"><input type="radio" name="perimeter_fence" value="no"> No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>If Yes, in what State?</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="fence_condition" value="good"> In Good Condition</label>
+                        <label class="radio-inline"><input type="radio" name="fence_condition" value="minor_repair"> Need Minor Repair</label>
+                        <label class="radio-inline"><input type="radio" name="fence_condition" value="major_repair"> Need Major Repair</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fence_repair_description">Briefly, describe the type of repair needed</label>
+                    <textarea id="fence_repair_description" name="fence_repair_description" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="school_perimeter">If No, what is the perimeter of the School?</label>
+                    <input type="text" id="school_perimeter" name="school_perimeter" class="form-control">
+                </div>
+                <h5>TOILET FACILITIES</h5>
+                <div class="form-group">
+                    <label>Type of Toilet:</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="toilet_type" value="pit"> Pit</label>
+                        <label class="radio-inline"><input type="radio" name="toilet_type" value="wc"> WC</label>
+                        <label class="radio-inline"><input type="radio" name="toilet_type" value="squat_water_flush"> Squat Water flush</label>
+                        <label class="radio-inline"><input type="radio" name="toilet_type" value="none"> None</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <input type="number" name="toilet_cubicle_available" class="form-control" placeholder="Number of Cubicle Toilet Available">
+                        <input type="number" name="toilet_minor_repair" class="form-control" placeholder="Number in need of Minor Repair">
+                        <input type="number" name="toilet_major_repair" class="form-control" placeholder="Number in need of Major Repair">
+                        <input type="number" name="toilet_renovation_required" class="form-control" placeholder="Renovation Required">
+                        <input type="number" name="toilet_additional_required" class="form-control" placeholder="Number of Additional Cubicle Toilet Required">
+                    </div>
+                    <textarea name="toilet_repair_description" class="form-control" placeholder="Briefly, describe the type of repair needed"></textarea>
+                </div>
+                <h5>SEPTIC TANK</h5>
+                <div class="form-group">
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="septic_tank" value="available"> Available</label>
+                        <label class="radio-inline"><input type="radio" name="septic_tank" value="not_available"> Not Available</label>
+                        <label class="radio-inline"><input type="radio" name="septic_tank" value="needs_evacuation"> Needs Evacuation</label>
+                    </div>
+                </div>
+                <h5>SOURCE OF POTABLE WATER</h5>
+                <div class="form-group">
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="water_source" value="none"> None</label>
+                        <label class="radio-inline"><input type="radio" name="water_source" value="well"> Well</label>
+                        <label class="radio-inline"><input type="radio" name="water_source" value="tap_water"> Tap Water</label>
+                        <label class="radio-inline"><input type="radio" name="water_source" value="borehole"> Borehole</label>
+                    </div>
+                    <textarea name="water_recommendations" class="form-control" placeholder="Recommendations"></textarea>
+                </div>
+                <h5>SOURCE OF ELECTRICITY</h5>
+                <div class="form-group">
+                    <div>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="none"> None</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="phcn"> PHCN</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="generator"> Generator</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="solar"> Solar</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="others"> Others</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="phcn_disconnected_bills"> PHCN but Disconnected because of accumulated bills</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="electricity_source" value="phcn_disconnected_meter"> PHCN but Disconnected because of lack of meter</label>
+                    </div>
+                    <textarea name="electricity_additional_info" class="form-control" placeholder="Additional information e.g., amount involved, etc"></textarea>
+                </div>
+                <h5>Is your School regularly waterlogged when it rained?</h5>
+                <div class="form-group">
+                    <div>
+                        <label class="radio-inline"><input type="radio" name="waterlogged" value="yes"> Yes</label>
+                        <label class="radio-inline"><input type="radio" name="waterlogged" value="no"> No</label>
+                    </div>
+                </div>
+                <h5>Equipment/Facilities</h5>
+                <p>List of Equipment/facility expected at the Centre</p>
+                <table class="data-table">
+                    <thead><tr><th>s/n</th><th>Equipment/facility expected</th><th>Number Available in good condition</th><th>Number required</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td><input type="text" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td></tr>
+                        <tr><td>2</td><td><input type="text" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td></tr>
+                        <tr><td>3</td><td><input type="text" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td></tr>
+                        <tr><td>4</td><td><input type="text" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td></tr>
+                        <tr><td>5</td><td><input type="text" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <div id="tcmatsSection" class="section hidden">
+            <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                <img src="subeb.jpg" alt="LASUBEB Logo" class="survey-header-logo">
+                <h2 style="margin-left: 15px; flex-grow: 1; margin-bottom: 0;">Teachers Classroom Management and Teaching Survey (TCMATS)</h2>
+            </div>
+            <button class="btn btn-secondary" style="width:auto;margin-bottom:20px;" onclick="backToLanding()">← Back to Home</button>
+            <!-- TODO: Add TCMATS form here -->
+            <div class="intro-card" style="background:rgb(243, 242, 240);border-left:6px solid var(--lagos-yellow);border-radius:12px;padding:22px 20px 18px 20px;margin-bottom:28px;color:var(--lagos-navy);font-size:1.08rem;line-height:1.7;">
+                <strong>Dear Respondent,</strong><br><br>
+                This instrument is designed to elicit responses that are capable of helping the Board of LASUBEB and PIMU to identify areas of Teachers’ needs with the intention of helping them overcome difficulties in the course of discharging their duties. The instrument is not meant for any other purpose than to enhance productivity on the part of Teachers and for improved education service delivery State-wide. Your support therefore is solicited to ensure successful completion of this instrument. We would appreciate your sincere responses.
+                <br><br>
+                <strong>Thank you.</strong>
+                <br><br>
+                <u>Instruction:</u> The instrument has Three sections; Section A, B and C. Section A requires Demographic Information and Bio Data of Teacher; Section B requires Teachers’ Needs Assessment; while Section C requires Teachers’ Subject Area Difficulties. Kindly fill in the statements that are applicable to you.
+            </div>
             <h3 style="cursor: pointer;" onclick="toggleSection('tcmatsSectionA', 'tcmatsSectionAHeader')">SECTION A: Demographic information of School and Bio Data of Teacher <span id="tcmatsSectionAHeader">▶️</span></h3>
             <div id="tcmatsSectionA" style="display: none;">
             <div style="color:#888;margin-top:40px;"><form id="tcmatsForm" class="audit-form" onsubmit="submitTcmats(event)">
@@ -2441,7 +2738,7 @@ select.form-control option {
     // Navigation logic for landing/surveys
     function showSurvey(survey) {
         document.getElementById('landingPage').classList.add('hidden');
-        ['silnat','tcmats','lori','voices', 'silnat_new'].forEach(s => {
+        ['silnat','tcmats','lori','voices', 'silnat2'].forEach(s => {
             document.getElementById(s+'Section').classList.add('hidden');
         });
         document.getElementById(survey+'Section').classList.remove('hidden');
@@ -2450,7 +2747,7 @@ select.form-control option {
     }
     function backToLanding() {
         document.getElementById('landingPage').classList.remove('hidden');
-        ['silnat','tcmats','lori','voices'].forEach(s => {
+        ['silnat','tcmats','lori','voices', 'silnat2'].forEach(s => {
             document.getElementById(s+'Section').classList.add('hidden');
         });
         document.getElementById('mainApp').classList.add('hidden');
