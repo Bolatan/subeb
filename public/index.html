@@ -1380,24 +1380,27 @@ select.form-control option {
             </div>
             <!-- TODO: Add LORI form here -->
             <div style="color:#888;margin-top:40px;"><form id="loriForm" class="audit-form" onsubmit="submitLori(event)">
-    <div class="form-row">
-        <div class="form-group">
-            <label for="lori_assessorName">Assessor Name *</label>
-            <input type="text" id="lori_assessorName" class="form-control" required>
+    <h4 id="loriSectionAHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('loriSectionAContent', 'loriSectionAHeader')">Section A: Demographic Data ▶️</h4>
+    <div id="loriSectionAContent" style="display: none;">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="lori_assessorName">Assessor Name *</label>
+                <input type="text" id="lori_assessorName" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="lori_teacherName">Teacher Name *</label>
+                <input type="text" id="lori_teacherName" class="form-control" required>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="lori_teacherName">Teacher Name *</label>
-            <input type="text" id="lori_teacherName" class="form-control" required>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group">
-            <label for="lori_school">School *</label>
-            <input type="text" id="lori_school" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="lori_class">Class *</label>
-            <input type="text" id="lori_class" class="form-control" required>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="lori_school">School *</label>
+                <input type="text" id="lori_school" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="lori_class">Class *</label>
+                <input type="text" id="lori_class" class="form-control" required>
+            </div>
         </div>
     </div>
     <div class="form-row full">
