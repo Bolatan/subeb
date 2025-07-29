@@ -52,6 +52,66 @@ app.post('/api/audits', (req, res) => {
   res.json({ success: true });
 });
 
+// Endpoint for SILNAT survey
+app.post('/api/silnat', (req, res) => {
+    const audits = loadAudits();
+    const newAudit = {
+        id: Date.now(),
+        surveyType: 'silnat',
+        ...req.body,
+        synced: true,
+        timestamp: new Date().toISOString()
+    };
+    audits.push(newAudit);
+    saveAudits(audits);
+    res.json({ success: true });
+});
+
+// Endpoint for TCMATS survey
+app.post('/api/tcmats', (req, res) => {
+    const audits = loadAudits();
+    const newAudit = {
+        id: Date.now(),
+        surveyType: 'tcmats',
+        ...req.body,
+        synced: true,
+        timestamp: new Date().toISOString()
+    };
+    audits.push(newAudit);
+    saveAudits(audits);
+    res.json({ success: true });
+});
+
+// Endpoint for LORI survey
+app.post('/api/lori', (req, res) => {
+    const audits = loadAudits();
+    const newAudit = {
+        id: Date.now(),
+        surveyType: 'lori',
+        ...req.body,
+        synced: true,
+        timestamp: new Date().toISOString()
+    };
+    audits.push(newAudit);
+    saveAudits(audits);
+    res.json({ success: true });
+});
+
+// Endpoint for VOICES survey
+app.post('/api/voices', (req, res) => {
+    const audits = loadAudits();
+    const newAudit = {
+        id: Date.now(),
+        surveyType: 'voices',
+        ...req.body,
+        synced: true,
+        timestamp: new Date().toISOString()
+    };
+    audits.push(newAudit);
+    saveAudits(audits);
+    res.json({ success: true });
+});
+
 // ...your other server code...
 
 app.listen(3001, () => console.log('Server running on port 3001'));
