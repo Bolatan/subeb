@@ -641,6 +641,20 @@ select.form-control option {
             <h4 id="sectionAHeader_1.2" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionAContent_1.2', 'sectionAHeader_1.2')">Section A: Bio Data ▶️</h4>
             <div id="sectionAContent_1.2" style="display: none;">
                 <div class="form-group">
+                    <label>Geo-location</label>
+                    <button type="button" class="location-btn" onclick="getLocation('silat_1.2')">Capture Location</button>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="silat_1.2_latitude">Latitude</label>
+                            <input type="text" id="silat_1.2_latitude" name="silat_1.2_latitude" class="form-control" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="silat_1.2_longitude">Longitude</label>
+                            <input type="text" id="silat_1.2_longitude" name="silat_1.2_longitude" class="form-control" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label>Institution Type: LGEA Secretariat</label>
                 </div>
                 <h5>Education Secretary Bio Data</h5>
@@ -968,6 +982,20 @@ select.form-control option {
             <h4 id="sectionAHeader_1.3" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionAContent_1.3', 'sectionAHeader_1.3')">Section A: Bio Data ▶️</h4>
             <div id="sectionAContent_1.3" style="display: none;">
                 <div class="form-group">
+                    <label>Geo-location</label>
+                    <button type="button" class="location-btn" onclick="getLocation('silat_1.3')">Capture Location</button>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="silat_1.3_latitude">Latitude</label>
+                            <input type="text" id="silat_1.3_latitude" name="silat_1.3_latitude" class="form-control" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="silat_1.3_longitude">Longitude</label>
+                            <input type="text" id="silat_1.3_longitude" name="silat_1.3_longitude" class="form-control" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label>Institution Type: LGEA Secretariat</label>
                 </div>
                 <h5>Education Secretary Bio Data</h5>
@@ -1294,6 +1322,20 @@ select.form-control option {
 
             <h4 id="sectionAHeader_1.4" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionAContent_1.4', 'sectionAHeader_1.4')">Section A: Bio Data ▶️</h4>
             <div id="sectionAContent_1.4" style="display: none;">
+                <div class="form-group">
+                    <label>Geo-location</label>
+                    <button type="button" class="location-btn" onclick="getLocation('silat_1.4')">Capture Location</button>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="silat_1.4_latitude">Latitude</label>
+                            <input type="text" id="silat_1.4_latitude" name="silat_1.4_latitude" class="form-control" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="silat_1.4_longitude">Longitude</label>
+                            <input type="text" id="silat_1.4_longitude" name="silat_1.4_longitude" class="form-control" disabled>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label>Institution Type: LGEA Secretariat</label>
                 </div>
@@ -1626,6 +1668,20 @@ select.form-control option {
 <form id="silnatForm" class="audit-form" onsubmit="submitSilnat(event)">
     <h4 id="sectionAHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionAContent', 'sectionAHeader')">SECTION A: BIO-DATA ▶️</h4>
     <div id="sectionAContent" style="display: none;">
+        <div class="form-group">
+            <label>Geo-location</label>
+            <button type="button" class="location-btn" onclick="getLocation('silnat')">Capture Location</button>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="silnat_latitude">Latitude</label>
+                    <input type="text" id="silnat_latitude" name="silnat_latitude" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="silnat_longitude">Longitude</label>
+                    <input type="text" id="silnat_longitude" name="silnat_longitude" class="form-control" disabled>
+                </div>
+            </div>
+        </div>
         <div class="form-row full">
             <div class="form-group">
                 <label for="silnat_a_institution_type">Institution Type *</label>
@@ -2180,6 +2236,20 @@ select.form-control option {
             <div id="tcmatsSectionA" style="display: none;">
             <div style="color:#888;margin-top:40px;"><form id="tcmatsForm" class="audit-form" onsubmit="submitTcmats(event)">
     <div class="form-group">
+        <label>Geo-location</label>
+        <button type="button" class="location-btn" onclick="getLocation('tcmats')">Capture Location</button>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="tcmats_latitude">Latitude</label>
+                <input type="text" id="tcmats_latitude" name="tcmats_latitude" class="form-control" disabled>
+            </div>
+            <div class="form-group">
+                <label for="tcmats_longitude">Longitude</label>
+                <input type="text" id="tcmats_longitude" name="tcmats_longitude" class="form-control" disabled>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
         <label>Institution:</label>
         <div>
             <label class="radio-inline"><input type="radio" name="tcmats_institution" value="regular_school" required> Regular School</label>
@@ -2434,6 +2504,20 @@ select.form-control option {
             <div style="color:#888;margin-top:40px;"><form id="loriForm" class="audit-form" onsubmit="submitLori(event)">
     <h4 id="loriSectionAHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('loriSectionAContent', 'loriSectionAHeader')">Section A: Demographic Data ▶️</h4>
     <div id="loriSectionAContent" style="display: none;">
+        <div class="form-group">
+            <label>Geo-location</label>
+            <button type="button" class="location-btn" onclick="getLocation('lori')">Capture Location</button>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="lori_latitude">Latitude</label>
+                    <input type="text" id="lori_latitude" name="lori_latitude" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="lori_longitude">Longitude</label>
+                    <input type="text" id="lori_longitude" name="lori_longitude" class="form-control" disabled>
+                </div>
+            </div>
+        </div>
         <table class="data-table">
             <tr>
                 <td>LGEA</td>
@@ -2748,6 +2832,20 @@ select.form-control option {
             <form id="voicesForm" class="audit-form" onsubmit="submitVoices(event)">
                 <h3 style="cursor: pointer;" onclick="toggleSection('voicesSectionA', 'voicesSectionAHeader')">SECTION A: Demographic information of School and Bio Data of Learners <span id="voicesSectionAHeader">▶️</span></h3>
                 <div id="voicesSectionA" style="display: none;">
+                    <div class="form-group">
+                        <label>Geo-location</label>
+                        <button type="button" class="location-btn" onclick="getLocation('voices')">Capture Location</button>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="voices_latitude">Latitude</label>
+                                <input type="text" id="voices_latitude" name="voices_latitude" class="form-control" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="voices_longitude">Longitude</label>
+                                <input type="text" id="voices_longitude" name="voices_longitude" class="form-control" disabled>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label>Institution:</label>
                         <div>
@@ -3463,7 +3561,7 @@ function logout() {
         }
 
         // Get current location
-        function getLocation() {
+        function getLocation(surveyName) {
             if (!navigator.geolocation) {
                 alert('Geolocation is not supported by this browser.');
                 return;
@@ -3471,8 +3569,8 @@ function logout() {
 
             navigator.geolocation.getCurrentPosition(
                 function(position) {
-                    document.getElementById('latitude').value = position.coords.latitude;
-                    document.getElementById('longitude').value = position.coords.longitude;
+                    document.getElementById(surveyName + '_latitude').value = position.coords.latitude;
+                    document.getElementById(surveyName + '_longitude').value = position.coords.longitude;
                     alert('Location captured successfully!');
                 },
                 function(error) {
