@@ -1737,7 +1737,6 @@ select.form-control option {
                     </select>
                 </div>
             </div>
-        <button class="btn" onclick="nextSection('sectionAContent', 'sectionBContent')">Next</button>
     </div>
             <!-- Placeholder for existing fields that will become Section B -->
             <h4 id="sectionBHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionBContent', 'sectionBHeader')">Section B: School/Institution Data ▶️</h4>
@@ -1911,8 +1910,6 @@ select.form-control option {
                     <label class="checkbox-inline"><input type="checkbox" name="silnat_multigrade_reasons" value="inadequate_teaching_staff"> Inadequate Teaching Staff</label>
                 </div>
             </div>
-            <button class="btn" onclick="nextSection('sectionBContent', 'sectionCContent')">Next</button>
-            <button class="btn btn-secondary" onclick="prevSection('sectionBContent', 'sectionAContent')">Previous</button>
             </div>
             <!-- End of Section B placeholder -->
 
@@ -1920,8 +1917,6 @@ select.form-control option {
             <div id="sectionCContent" style="display: none;">
                 <p>Subject Area Difficulties</p>
                 <p>In your subject area(s), kindly identify some topics that are difficult to teach. Mention 2 - 5.</p>
-                <button class="btn" onclick="nextSection('sectionCContent', 'sectionDContent')">Next</button>
-                <button class="btn btn-secondary" onclick="prevSection('sectionCContent', 'sectionBContent')">Previous</button>
             </div>
 
             <h4 id="sectionDHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionDContent', 'sectionDHeader')">Section D: School Infrastructure ▶️</h4>
@@ -2080,7 +2075,6 @@ select.form-control option {
                 </div>
 
                 <p>Thank you so much for your time and patience.</p>
-                <button class="btn btn-secondary" onclick="prevSection('sectionDContent', 'sectionCContent')">Previous</button>
             </div>
 
             <div class="form-row full">
@@ -2256,7 +2250,6 @@ select.form-control option {
             <label class="radio-inline"><input type="radio" name="tcmats_teaching_experience" value="21_and_above"> 21 & Above</label>
         </div>
     </div>
-    <button class="btn" onclick="nextSection('tcmatsSectionA', 'tcmatsSectionB')">Next</button>
     </div>
 </form></div>
             <h3 style="cursor: pointer;" onclick="toggleSection('tcmatsSectionB', 'tcmatsSectionBHeader')">SECTION B: <span id="tcmatsSectionBHeader">▶️</span></h3>
@@ -2413,8 +2406,6 @@ select.form-control option {
                         <tr><td>vii</td><td>Accessing ICT materials from the internet</td><td><input type="radio" name="ict_6" value="yes"></td><td><input type="radio" name="ict_6" value="no"></td></tr>
                     </tbody>
                 </table>
-                <button class="btn" onclick="nextSection('tcmatsSectionB', 'tcmatsSectionC')">Next</button>
-                <button class="btn btn-secondary" onclick="prevSection('tcmatsSectionB', 'tcmatsSectionA')">Previous</button>
             </div>
             <h3 style="cursor: pointer;" onclick="toggleSection('tcmatsSectionC', 'tcmatsSectionCHeader')">SECTION C: Subject Area Difficulties <span id="tcmatsSectionCHeader">▶️</span></h3>
             <div id="tcmatsSectionC" style="display: none;">
@@ -2424,7 +2415,6 @@ select.form-control option {
                     <textarea id="tcmats_difficult_topics" name="tcmats_difficult_topics" class="form-control" rows="4"></textarea>
                 </div>
             </div>
-            <button class="btn btn-secondary" onclick="prevSection('tcmatsSectionC', 'tcmatsSectionB')">Previous</button>
             <button type="submit" class="btn">Submit TCMATS Survey</button>
             <div id="tcmats_feedback" style="margin-top:15px;font-size:15px;"></div>
         </div>
@@ -2527,7 +2517,6 @@ select.form-control option {
                 </td>
             </tr>
         </table>
-        <button class="btn" onclick="nextSection('loriSectionAContent', 'loriSectionBContent')">Next</button>
     </div>
     <h4 id="loriSectionBHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('loriSectionBContent', 'loriSectionBHeader')">Section B ▶️</h4>
     <div id="loriSectionBContent" style="display: none;">
@@ -2627,8 +2616,6 @@ select.form-control option {
                 </tr>
             </tbody>
         </table>
-        <button class="btn" onclick="nextSection('loriSectionBContent', 'loriSectionCContent')">Next</button>
-        <button class="btn btn-secondary" onclick="prevSection('loriSectionBContent', 'loriSectionAContent')">Previous</button>
     </div>
     <h4 id="loriSectionCHeader" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('loriSectionCContent', 'loriSectionCHeader')">Section C ▶️</h4>
     <div id="loriSectionCContent" style="display: none;">
@@ -2739,7 +2726,6 @@ select.form-control option {
             </div>
         </div>
     </div>
-    <button class="btn btn-secondary" onclick="prevSection('loriSectionCContent', 'loriSectionBContent')">Previous</button>
     <button type="submit" class="btn">Submit LORI Survey</button>
     <div id="lori_feedback" style="margin-top:15px;font-size:15px;"></div>
 </form></div>
@@ -2762,7 +2748,6 @@ select.form-control option {
             <form id="voicesForm" class="audit-form" onsubmit="submitVoices(event)">
                 <h3 style="cursor: pointer;" onclick="toggleSection('voicesSectionA', 'voicesSectionAHeader')">SECTION A: Demographic information of School and Bio Data of Learners <span id="voicesSectionAHeader">▶️</span></h3>
                 <div id="voicesSectionA" style="display: none;">
-                    <button class="btn" onclick="nextSection('voicesSectionA', 'voicesSectionB')">Next</button>
                     <div class="form-group">
                         <label>Institution:</label>
                         <div>
@@ -2820,8 +2805,6 @@ select.form-control option {
                         <label>List the Subjects or Topics that you find very difficult to understand (Mention 2-5)</label>
                         <textarea name="voices_difficult_topics" class="form-control" rows="5" required></textarea>
                     </div>
-                    <button class="btn" onclick="nextSection('voicesSectionB', 'voicesSectionC')">Next</button>
-                    <button class="btn btn-secondary" onclick="prevSection('voicesSectionB', 'voicesSectionA')">Previous</button>
                 </div>
 
                 <h3 style="cursor: pointer;" onclick="toggleSection('voicesSectionC', 'voicesSectionCHeader')">SECTION C: Pupil’s Participation in Class <span id="voicesSectionCHeader">▶️</span></h3>
@@ -2961,8 +2944,6 @@ select.form-control option {
                             </tr>
                         </tbody>
                     </table>
-                    <button class="btn" onclick="nextSection('voicesSectionC', 'voicesSectionD')">Next</button>
-                    <button class="btn btn-secondary" onclick="prevSection('voicesSectionC', 'voicesSectionB')">Previous</button>
                 </div>
 
                 <h3 style="cursor: pointer;" onclick="toggleSection('voicesSectionD', 'voicesSectionDHeader')">SECTION D: School Infrastructure and Facilities <span id="voicesSectionDHeader">▶️</span></h3>
@@ -3115,7 +3096,6 @@ select.form-control option {
                     <textarea name="major_requests" class="form-control" rows="2"></textarea>
                 </div>
                 <p>Thank you so much for your time and patience.</p>
-                <button class="btn btn-secondary" onclick="prevSection('voicesSectionD', 'voicesSectionC')">Previous</button>
                 <button type="submit" class="btn">Submit VOICES Survey</button>
                 <div id="voices_feedback" style="margin-top:15px;font-size:15px;"></div>
             </form>
@@ -4253,31 +4233,6 @@ function backToLanding() {
     document.getElementById('landingPage').classList.remove('hidden');
 }
 
-function nextSection(currentSectionId, nextSectionId) {
-    const currentSection = document.getElementById(currentSectionId);
-    const inputs = currentSection.querySelectorAll('input[required], select[required], textarea[required]');
-    let isValid = true;
-    for (const input of inputs) {
-        if (!input.value) {
-            isValid = false;
-            input.style.border = '2px solid red';
-        } else {
-            input.style.border = '';
-        }
-    }
-
-    if (isValid) {
-        document.getElementById(currentSectionId).style.display = 'none';
-        document.getElementById(nextSectionId).style.display = 'block';
-    } else {
-        alert('Please fill all required fields in this section.');
-    }
-}
-
-function prevSection(currentSectionId, prevSectionId) {
-    document.getElementById(currentSectionId).style.display = 'none';
-    document.getElementById(prevSectionId).style.display = 'block';
-}
 
 function toggleSection(sectionId, headerId) {
     const section = document.getElementById(sectionId);
