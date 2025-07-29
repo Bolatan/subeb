@@ -949,6 +949,11 @@ select.form-control option {
                     </tbody>
                 </table>
                 </div>
+                <div class="form-group">
+                    <button type="button" class="location-btn" onclick="getLocation('silat_1.2')">Capture Geo-location</button>
+                    <input type="hidden" id="latitude_silat_1.2" name="latitude_silat_1.2">
+                    <input type="hidden" id="longitude_silat_1.2" name="longitude_silat_1.2">
+                </div>
         </div>
         <div id="silat_1.3Section" class="section hidden">
             <div style="display: flex; align-items: center; margin-bottom: 20px;">
@@ -1276,6 +1281,11 @@ select.form-control option {
                     </tbody>
                 </table>
                 </div>
+                <div class="form-group">
+                    <button type="button" class="location-btn" onclick="getLocation('silat_1.3')">Capture Geo-location</button>
+                    <input type="hidden" id="latitude_silat_1.3" name="latitude_silat_1.3">
+                    <input type="hidden" id="longitude_silat_1.3" name="longitude_silat_1.3">
+                </div>
         </div>
         <div id="silat_1.4Section" class="section hidden">
             <div style="display: flex; align-items: center; margin-bottom: 20px;">
@@ -1602,6 +1612,11 @@ select.form-control option {
                         <tr><td>3</td><td><input type="text" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td></tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="form-group">
+                <button type="button" class="location-btn" onclick="getLocation('silat_1.4')">Capture Geo-location</button>
+                <input type="hidden" id="latitude_silat_1.4" name="latitude_silat_1.4">
+                <input type="hidden" id="longitude_silat_1.4" name="longitude_silat_1.4">
             </div>
         </div>
 
@@ -2094,6 +2109,11 @@ select.form-control option {
                 <input type="file" id="silnat_fileInput" multiple accept="image/*" class="form-control">
                 <div id="silnat_uploadedFiles" class="uploaded-files"></div>
             </div>
+            <div class="form-group">
+                <button type="button" class="location-btn" onclick="getLocation('silnat')">Capture Geo-location</button>
+                <input type="hidden" id="latitude_silnat" name="latitude_silnat">
+                <input type="hidden" id="longitude_silnat" name="longitude_silnat">
+            </div>
             <button type="submit" class="btn">Submit SILNAT Survey</button>
             <div id="silnat_feedback" style="margin-top:15px;font-size:15px;"></div>
         </form>        </div>
@@ -2425,6 +2445,12 @@ select.form-control option {
                 </div>
             </div>
             <button class="btn btn-secondary" onclick="prevSection('tcmatsSectionC', 'tcmatsSectionB')">Previous</button>
+
+            <div class="form-group">
+                <button type="button" class="location-btn" onclick="getLocation('tcmats')">Capture Geo-location</button>
+                <input type="hidden" id="latitude_tcmats" name="latitude_tcmats">
+                <input type="hidden" id="longitude_tcmats" name="longitude_tcmats">
+            </div>
             <button type="submit" class="btn">Submit TCMATS Survey</button>
             <div id="tcmats_feedback" style="margin-top:15px;font-size:15px;"></div>
         </div>
@@ -2740,6 +2766,11 @@ select.form-control option {
         </div>
     </div>
     <button class="btn btn-secondary" onclick="prevSection('loriSectionCContent', 'loriSectionBContent')">Previous</button>
+    <div class="form-group">
+        <button type="button" class="location-btn" onclick="getLocation('lori')">Capture Geo-location</button>
+        <input type="hidden" id="latitude_lori" name="latitude_lori">
+        <input type="hidden" id="longitude_lori" name="longitude_lori">
+    </div>
     <button type="submit" class="btn">Submit LORI Survey</button>
     <div id="lori_feedback" style="margin-top:15px;font-size:15px;"></div>
 </form></div>
@@ -3116,6 +3147,11 @@ select.form-control option {
                 </div>
                 <p>Thank you so much for your time and patience.</p>
                 <button class="btn btn-secondary" onclick="prevSection('voicesSectionD', 'voicesSectionC')">Previous</button>
+                <div class="form-group">
+                    <button type="button" class="location-btn" onclick="getLocation('voices')">Capture Geo-location</button>
+                    <input type="hidden" id="latitude_voices" name="latitude_voices">
+                    <input type="hidden" id="longitude_voices" name="longitude_voices">
+                </div>
                 <button type="submit" class="btn">Submit VOICES Survey</button>
                 <div id="voices_feedback" style="margin-top:15px;font-size:15px;"></div>
             </form>
@@ -3483,7 +3519,7 @@ function logout() {
         }
 
         // Get current location
-        function getLocation() {
+        function getLocation(surveyName) {
             if (!navigator.geolocation) {
                 alert('Geolocation is not supported by this browser.');
                 return;
@@ -3491,8 +3527,8 @@ function logout() {
 
             navigator.geolocation.getCurrentPosition(
                 function(position) {
-                    document.getElementById('latitude').value = position.coords.latitude;
-                    document.getElementById('longitude').value = position.coords.longitude;
+                    document.getElementById('latitude_' + surveyName).value = position.coords.latitude;
+                    document.getElementById('longitude_' + surveyName).value = position.coords.longitude;
                     alert('Location captured successfully!');
                 },
                 function(error) {
@@ -4705,6 +4741,8 @@ async function submitSilnat(event) {
     data.section_b.institution_address_common = document.getElementById('silnat_schoolAddress_common')?.value.trim();
     data.section_b.location_common = document.getElementById('silnat_location_common')?.value; // Optional field
     data.section_b.local_gov_common = document.getElementById('silnat_localGov')?.value.trim();
+    data.latitude = document.getElementById('latitude_silnat').value;
+    data.longitude = document.getElementById('longitude_silnat').value;
 
     // Placeholder for original simple form fields - these will be replaced by detailed conditional fields
     data.section_d.infrastructure_condition_old = document.getElementById('silnat_infrastructure')?.value;
@@ -4807,7 +4845,9 @@ async function submitTcmats(event) {
         subject: document.getElementById('tcmats_subject').value.trim(),
         class: document.getElementById('tcmats_class').value.trim(),
         observation: document.getElementById('tcmats_observation').value.trim(),
-        evidence: await processFiles(document.getElementById('tcmats_fileInput'), 3)
+        evidence: await processFiles(document.getElementById('tcmats_fileInput'), 3),
+        latitude: document.getElementById('latitude_tcmats').value,
+        longitude: document.getElementById('longitude_tcmats').value
     };
     try {
         const res = await fetch('/api/tcmats', {
@@ -4854,7 +4894,9 @@ async function submitLori(event) {
         class: document.getElementById('lori_class').value.trim(),
         rating: document.getElementById('lori_rating').value,
         comments: document.getElementById('lori_comments').value.trim(),
-        evidence: await processFiles(document.getElementById('lori_fileInput'), 3)
+        evidence: await processFiles(document.getElementById('lori_fileInput'), 3),
+        latitude: document.getElementById('latitude_lori').value,
+        longitude: document.getElementById('longitude_lori').value
     };
     try {
         const res = await fetch('/api/lori', {
@@ -4900,7 +4942,9 @@ async function submitVoices(event) {
         school: document.getElementById('voices_school').value.trim(),
         class: document.getElementById('voices_class').value.trim(),
         opinion: document.getElementById('voices_opinion').value.trim(),
-        evidence: await processFiles(document.getElementById('voices_fileInput'), 2)
+        evidence: await processFiles(document.getElementById('voices_fileInput'), 2),
+        latitude: document.getElementById('latitude_voices').value,
+        longitude: document.getElementById('longitude_voices').value
     };
     try {
         const res = await fetch('/api/voices', {
