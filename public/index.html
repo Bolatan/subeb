@@ -1038,45 +1038,76 @@ select.form-control option {
             <h4 id="sectionBHeader_1.3" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionBContent_1.3', 'sectionBHeader_1.3')">Section B: School/Institution Data ▶️</h4>
             <div id="sectionBContent_1.3" style="display: none;">
                 <div class="form-group">
-                    <label for="lgea_name_1.3">Name of LGEA:</label>
-                    <input type="text" id="lgea_name_1.3" name="lgea_name_1.3" class="form-control">
+                    <label for="school_name_1.3">1. Name of School/Institution</label>
+                    <input type="text" id="school_name_1.3" name="school_name_1.3" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="lgea_address_1.3">Address:</label>
-                    <input type="text" id="lgea_address_1.3" name="lgea_address_1.3" class="form-control">
+                    <label for="address_1.3">2. Address:</label>
+                    <textarea id="address_1.3" name="address_1.3" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Location:</label>
+                    <label>3. Location:</label>
                     <label class="radio-inline"><input type="radio" name="location_1.3" value="urban"> Urban</label>
                     <label class="radio-inline"><input type="radio" name="location_1.3" value="rural"> Rural</label>
                     <label class="radio-inline"><input type="radio" name="location_1.3" value="riverine"> Riverine</label>
                 </div>
-                <h5>MEMBERS OF STAFF</h5>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Number of Staff in the LGEA:</label>
-                        <input type="number" name="staff_male_1.3" placeholder="Male" class="form-control">
-                        <input type="number" name="staff_female_1.3" placeholder="Female" class="form-control">
-                        <input type="number" name="staff_total_1.3" placeholder="Total" class="form-control" readonly>
+                <div class="form-group">
+                    <label for="lgea_1.3">4. LGEA:</label>
+                    <input type="text" id="lgea_1.3" name="lgea_1.3" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="vocation_type_1.3">Types of Vocation Taught at the centre¬¬ (Please specify)</label>
+                    <input type="text" id="vocation_type_1.3" name="vocation_type_1.3" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Number of Instructors:</label>
+                    <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <input type="number" name="instructors_male_1.3" placeholder="Male" class="form-control" oninput="updateTotal_1_3()">
+                        <input type="number" name="instructors_female_1.3" placeholder="Female" class="form-control" oninput="updateTotal_1_3()">
+                        <input type="number" name="instructors_total_1.3" placeholder="Total" class="form-control" readonly>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Number of Staff that are Professional Teachers:</label>
-                        <input type="number" name="teachers_male_1.3" placeholder="Male" class="form-control">
-                        <input type="number" name="teachers_female_1.3" placeholder="Female" class="form-control">
-                        <input type="number" name="teachers_total_1.3" placeholder="Total" class="form-control" readonly>
+                <div class="form-group">
+                    <label>Number of Professionally Qualified Vocational Teachers:</label>
+                    <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <input type="number" name="prof_teachers_male_1.3" placeholder="Male" class="form-control" oninput="updateTotal_1_3()">
+                        <input type="number" name="prof_teachers_female_1.3" placeholder="Female" class="form-control" oninput="updateTotal_1_3()">
+                        <input type="number" name="prof_teachers_total_1.3" placeholder="Total" class="form-control" readonly>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Number of Non-teaching Staff at the LGEA:</label>
-                        <input type="number" name="non_teaching_male_1.3" placeholder="Male" class="form-control">
-                        <input type="number" name="non_teaching_female_1.3" placeholder="Female" class="form-control">
+                <div class="form-group">
+                    <label>Number of Non-Teaching Staff in the School:</label>
+                    <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <input type="number" name="non_teaching_male_1.3" placeholder="Male" class="form-control" oninput="updateTotal_1_3()">
+                        <input type="number" name="non_teaching_female_1.3" placeholder="Female" class="form-control" oninput="updateTotal_1_3()">
                         <input type="number" name="non_teaching_total_1.3" placeholder="Total" class="form-control" readonly>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="schools_supported_1.3">Number of Schools your Centre is supporting</label>
+                    <input type="number" id="schools_supported_1.3" name="schools_supported_1.3" class="form-control">
                 </div>
+                <div class="form-group">
+                    <label for="farthest_school_dist_1.3">Average Distance of farthest School among the Schools under your support to the Centre in Kilometre</label>
+                    <input type="number" id="farthest_school_dist_1.3" name="farthest_school_dist_1.3" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Average Number of Learners Attending training at the Centre:</label>
+                    <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <input type="number" name="learners_male_1.3" placeholder="Male" class="form-control" oninput="updateTotal_1_3()">
+                        <input type="number" name="learners_female_1.3" placeholder="Female" class="form-control" oninput="updateTotal_1_3()">
+                        <input type="number" name="learners_total_1.3" placeholder="Total" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="instructor_pupil_ratio_1.3">Instructor/Pupils Ratio:</label>
+                    <input type="text" id="instructor_pupil_ratio_1.3" name="instructor_pupil_ratio_1.3" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="additional_instructors_1.3">Number of Additional Instructors/Staff Required:</label>
+                    <input type="number" id="additional_instructors_1.3" name="additional_instructors_1.3" class="form-control">
+                </div>
+            </div>
 
             <h4 id="sectionCHeader_1.3" style="margin-bottom: 20px; cursor: pointer;" onclick="toggleSection('sectionCContent_1.3', 'sectionCHeader_1.3')">Section C: Needs Assessment ▶️</h4>
             <div id="sectionCContent_1.3" style="display: none;">
@@ -4636,6 +4667,23 @@ function updateSilnatTotalPupilsEccde() {
         const femaleCount = parseInt(femaleInput.value, 10) || 0;
         totalInput.value = maleCount + femaleCount;
     }
+}
+
+function updateTotal_1_3() {
+    const updateTotalField = (maleName, femaleName, totalName) => {
+        const maleInput = document.querySelector(`input[name='${maleName}']`);
+        const femaleInput = document.querySelector(`input[name='${femaleName}']`);
+        const totalInput = document.querySelector(`input[name='${totalName}']`);
+        if (maleInput && femaleInput && totalInput) {
+            const maleCount = parseInt(maleInput.value, 10) || 0;
+            const femaleCount = parseInt(femaleInput.value, 10) || 0;
+            totalInput.value = maleCount + femaleCount;
+        }
+    };
+    updateTotalField('instructors_male_1.3', 'instructors_female_1.3', 'instructors_total_1.3');
+    updateTotalField('prof_teachers_male_1.3', 'prof_teachers_female_1.3', 'prof_teachers_total_1.3');
+    updateTotalField('non_teaching_male_1.3', 'non_teaching_female_1.3', 'non_teaching_total_1.3');
+    updateTotalField('learners_male_1.3', 'learners_female_1.3', 'learners_total_1.3');
 }
 
 function updateSilnatTotalPupilsPrimary() {
