@@ -597,31 +597,7 @@ select.form-control option {
                 <h1 style="color:white;font-size:2.2rem; margin-left: 20px; flex-grow: 1; text-align: center;">Welcome to LASUBEB/PIMU Needs Assessment Portal</h1>
             </div>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;max-width:900px;margin:0 auto; margin-top: 32px;">
-                <div class="survey-card" onclick="showSurvey('silnat')">
-                    <h2>School Infrastructure & Leadership<br>(SILNAT)</h2>
-                    <p>For Head Teachers/Managers</p>
-                </div>
-                <div class="survey-card" onclick="showSurvey('tcmats')">
-                    <h2>Teachers Classroom Management & Teaching<br>(TCMATS)</h2>
-                    <p>For Teachers</p>
-                </div>
-                <div class="survey-card" onclick="showSurvey('lori')">
-                    <h2>Lesson Observation Rating<br>(LORI)</h2>
-                    <p>For Assessors</p>
-                </div>
-                <div class="survey-card" onclick="showSurvey('voices')">
-                    <h2>Learner Voices/Opinions<br>(VOICES)</h2>
-                    <p>For Learners</p>
-                </div>
-                <div class="survey-card" onclick="showSurvey('silat_1.3')">
-                    <h2>silnat 1.3</h2>
-                </div>
-                <div class="survey-card" onclick="showSurvey('silat_1.2')">
-                    <h2>silat 1.2</h2>
-                </div>
-                <div class="survey-card" onclick="showSurvey('silat_1.4')">
-                    <h2>silat 1.4</h2>
-                </div>
+                <!-- Survey cards disabled -->
             </div>
         </div>
         <div id="silat_1.2Section" class="section hidden">
@@ -3305,10 +3281,6 @@ select.form-control option {
                 <!-- Sidebar -->
                 <div class="sidebar">
                 <div class="nav-item active" onclick="showSection('dashboard')">📊 Dashboard</div>
-                <div class="nav-item" onclick="showSection('silnat')">📝 INFRA & LEADERSHIP</div>
-                <div class="nav-item" onclick="showSection('tcmats')">👩‍🏫 TEACHER CLASSROOM MGT</div>
-                <div class="nav-item" onclick="showSection('lori')">📖 LESSON OBSERVATION</div>
-                <div class="nav-item" onclick="showSection('voices')">🎓 LEARNER VOICES</div>
                 </div>
 
                 <!-- Main Content Area -->
@@ -3546,8 +3518,8 @@ window.onload = function() {
     loadSession();
     if (currentUser) {
         document.getElementById('authScreen').classList.add('hidden');
-        document.getElementById('landingPage').classList.remove('hidden');
-        document.getElementById('mainApp').classList.add('hidden');
+        document.getElementById('landingPage').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
         document.getElementById('loginButton').classList.add('hidden');
         document.getElementById('logoutButton').classList.remove('hidden');
         loadData();
@@ -3593,8 +3565,8 @@ function login() {
         // Save session to localStorage
         localStorage.setItem('auditAppCurrentUser', username);
         document.getElementById('authScreen').classList.add('hidden');
-        document.getElementById('landingPage').classList.remove('hidden');
-        document.getElementById('mainApp').classList.add('hidden');
+        document.getElementById('landingPage').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
         document.getElementById('loginButton').classList.add('hidden');
         document.getElementById('logoutButton').classList.remove('hidden');
         console.log('Login successful');
