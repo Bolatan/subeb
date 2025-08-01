@@ -323,24 +323,36 @@ function toggleMobileSidebar() {
 
  // Load Local Government Areas into dropdown
  function loadLocalGovernments() {
-    const localGovDropdown = document.getElementById('localGov');
+    const localGovDropdown1 = document.getElementById('localGov-1');
+    const localGovDropdown2 = document.getElementById('localGov-2');
     const lgas = Object.keys(lagosStateData).sort();
-    localGovDropdown.innerHTML = '<option value="">Select Local Government</option>';
-    lgas.forEach(lga => {
-        const option = document.createElement('option');
-        option.value = lga;
-        option.textContent = lga;
-        localGovDropdown.appendChild(option);
+    [localGovDropdown1, localGovDropdown2].forEach(dropdown => {
+        if (dropdown) {
+            dropdown.innerHTML = '<option value="">Select Local Government</option>';
+            lgas.forEach(lga => {
+                const option = document.createElement('option');
+                option.value = lga;
+                option.textContent = lga;
+                dropdown.appendChild(option);
+            });
+        }
     });
     // Reset school dropdown
-    const schoolDropdown = document.getElementById('schoolName');
-    schoolDropdown.innerHTML = '<option value="">Select LGA first</option>';
-    schoolDropdown.disabled = true;
+    const schoolDropdown1 = document.getElementById('schoolName-1');
+    if(schoolDropdown1) {
+        schoolDropdown1.innerHTML = '<option value="">Select LGA first</option>';
+        schoolDropdown1.disabled = true;
+    }
+    const schoolDropdown2 = document.getElementById('schoolName-2');
+    if(schoolDropdown2) {
+        schoolDropdown2.innerHTML = '<option value="">Select LGA first</option>';
+        schoolDropdown2.disabled = true;
+    }
 }
 
-function loadSchools() {
-    const localGov = document.getElementById('localGov').value;
-    const schoolDropdown = document.getElementById('schoolName');
+function loadSchools(dropdownNum) {
+    const localGov = document.getElementById(`localGov-${dropdownNum}`).value;
+    const schoolDropdown = document.getElementById(`schoolName-${dropdownNum}`);
     schoolDropdown.innerHTML = '<option value="">Select Primary School</option>';
     if (!localGov) {
         schoolDropdown.disabled = true;
